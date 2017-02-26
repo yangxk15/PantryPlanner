@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+
     private ArrayList<Fragment> mFragmentList;
 
     @Override
