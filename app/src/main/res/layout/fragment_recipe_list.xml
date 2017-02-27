@@ -2,12 +2,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="edu.dartmouth.cs.pantryplanner.pantryplanner.RecipeListFragment">
+    tools:context="edu.dartmouth.cs.pantryplanner.pantryplanner.controller.RecipeListFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <ListView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Recipe List Fragment" />
+        android:layout_height="wrap_content"
+        android:id="@+id/my_recipe_list" />
 
 </FrameLayout>

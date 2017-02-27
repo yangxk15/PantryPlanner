@@ -27,11 +27,9 @@ import me.himanshusoni.quantityview.QuantityView;
  */
 public class PantryFragment extends Fragment {
 
-
     public PantryFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,7 +45,7 @@ public class PantryFragment extends Fragment {
         adapter.add(new AbstractMap.SimpleEntry<>(new Item("Soy sauce", ItemType.INGREDIENT), 1));
         adapter.add(new AbstractMap.SimpleEntry<>(new Item("Skim milk", ItemType.DIARY), 15));
         adapter.add(new AbstractMap.SimpleEntry<>(new Item("Spinach", ItemType.VEGETABLE), 35));
-
+        
         listView.setAdapter(adapter);
 
         return view;
@@ -61,14 +59,10 @@ public class PantryFragment extends Fragment {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent){
-
             Map.Entry<Item, Integer> entry = getItem(position);
             LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
             View listItemView = convertView;
             if (null == convertView) {
-                // we need to check if the convertView is null. If it's null,
-                // then inflate it.
                 listItemView = inflater.inflate(
                         R.layout.pantry_list, parent, false);
             }
@@ -83,6 +77,4 @@ public class PantryFragment extends Fragment {
             return listItemView;
         }
     }
-
-
 }
