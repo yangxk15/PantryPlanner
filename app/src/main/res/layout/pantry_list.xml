@@ -6,34 +6,32 @@
 
     <me.himanshusoni.quantityview.QuantityView
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/quantityView_days"
+        android:id="@+id/pantry_item_countdown_days"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        app:qv_quantity="4" />
+        android:layout_marginTop="10dp"/>
 
 
     <TextView
         android:text="Days"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textView_days"
         android:layout_weight="1"
         android:layout_gravity="center"
         android:gravity="center"/>
 
     <TextView
+        android:id="@+id/pantry_item_name"
         android:text="Apple"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textView_item_name"
         android:layout_weight="1"
         android:layout_gravity="center"
         android:gravity="center"/>
 
     <me.himanshusoni.quantityview.QuantityView
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/quantityView_quantity"
+        android:id="@+id/pantry_item_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -43,7 +41,6 @@
         android:text="items"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textView_amount_unit"
         android:layout_weight="1"
         android:layout_gravity="center"
         android:gravity="center"/>
