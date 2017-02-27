@@ -2,12 +2,339 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="edu.dartmouth.cs.pantryplanner.pantryplanner.ShoppingListFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Shopping List Fragment" />
+        android:layout_height="match_parent">
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/category_beef"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="@string/food_category_meat"
+                android:textSize="20dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/beef"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                     />
+
+                <TextView
+                    android:id="@+id/example_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:gravity="left"
+                    android:text="Beef"
+                    android:textSize="20dp"
+                    android:layout_weight="12.82" />
+
+                <me.himanshusoni.quantityview.QuantityView
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/quantityView_beaf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    app:qv_quantity="2" />
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/ground_pork"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    />
+
+                <TextView
+                    android:id="@+id/example_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:gravity="left"
+                    android:text="Ground Pork"
+                    android:textSize="20dp"
+                    android:layout_weight="12.82" />
+
+                <me.himanshusoni.quantityview.QuantityView
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/quantityView_ground_pork"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    app:qv_quantity="1" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/chicken_wings"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    />
+
+                <TextView
+                    android:id="@+id/example_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:gravity="left"
+                    android:text="Chicken Wings"
+                    android:textSize="20dp"
+                    android:layout_weight="12.82" />
+
+                <me.himanshusoni.quantityview.QuantityView
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/quantityView_chicken_wings"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    app:qv_quantity="1" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/category_diary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:textSize="20dp"
+                android:text="@string/food_category_diary" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/soy_milk"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    />
+
+                <TextView
+                    android:id="@+id/example_4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:gravity="left"
+                    android:text="Soy Milk"
+                    android:textSize="20dp"
+                    android:layout_weight="12.82" />
+
+                <me.himanshusoni.quantityview.QuantityView
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/quantityView_soy_milk"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    app:qv_quantity="2" />
+
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/category_fruit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="@string/food_category_fruit"
+                android:textSize="20dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/stawberry"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    />
+
+                <TextView
+                    android:id="@+id/example_5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:gravity="left"
+                    android:text="Strawberry"
+                    android:textSize="20dp"
+                    android:layout_weight="12.82" />
+
+                <me.himanshusoni.quantityview.QuantityView
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/quantityView_strawberry"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    app:qv_quantity="1" />
+
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/category_vegetable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="@string/food_category_vegetable"
+                android:textSize="20dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/green_pepper"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    />
+
+                <TextView
+                    android:id="@+id/example_6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:gravity="left"
+                    android:text="Green Pepper"
+                    android:textSize="20dp"
+                    android:layout_weight="12.82" />
+
+                <me.himanshusoni.quantityview.QuantityView
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/quantityView_green_pepper"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    app:qv_quantity="3" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/potato"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    />
+
+                <TextView
+                    android:id="@+id/example_7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:gravity="left"
+                    android:text="Potato"
+                    android:textSize="20dp"
+                    android:layout_weight="12.82" />
+
+                <me.himanshusoni.quantityview.QuantityView
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/quantityView_potato"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    app:qv_quantity="5" />
+
+            </LinearLayout>
+
+
+
+            <TextView
+                android:id="@+id/category_ingredient"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:textSize="20dp"
+                android:text="@string/food_category_ingredient" />
+
+
+            <TextView
+                android:id="@+id/category_other"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="@string/food_category_other"
+                android:textSize="20dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/cholocote"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    />
+
+                <TextView
+                    android:id="@+id/example_8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:gravity="left"
+                    android:text="Chocolate"
+                    android:textSize="20dp"
+                    android:layout_weight="12.82" />
+
+                <me.himanshusoni.quantityview.QuantityView
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/quantityView_chocoloate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    app:qv_quantity="1" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </FrameLayout>
