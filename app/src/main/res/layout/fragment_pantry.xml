@@ -5,9 +5,49 @@
     tools:context="edu.dartmouth.cs.pantryplanner.pantryplanner.PantryFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Pantry Fragment" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:text="Edit"
+            android:layout_width= "wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_edit_pantry"
+            android:layout_weight="1" />
+
+        <SearchView
+            android:layout_width="280dp"
+            android:layout_height="wrap_content"
+            android:searchHintIcon="@color/colorPrimary"
+            android:queryBackground="@android:color/white"
+            android:queryHint="item"/>
+
+
+        <Button
+            android:text="Add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_add_pantry"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
+        <ListView
+            android:id="@+id/pantry_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+        </ListView>
+
+    </LinearLayout>
+
 
 </FrameLayout>

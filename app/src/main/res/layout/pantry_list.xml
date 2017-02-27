@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <me.himanshusoni.quantityview.QuantityView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/quantityView_days"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:qv_quantity="4" />
+
+
+    <TextView
+        android:text="Days"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView_days"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:gravity="center"/>
+
+    <TextView
+        android:text="Apple"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView_item_name"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:gravity="center"/>
+
+    <me.himanshusoni.quantityview.QuantityView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/quantityView_quantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:qv_quantity="4" />
+
+    <TextView
+        android:text="items"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView_amount_unit"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:gravity="center"/>
+
+</LinearLayout>
