@@ -19,11 +19,9 @@ import edu.dartmouth.cs.pantryplanner.pantryplanner.R;
  */
 public class PantryFragment extends Fragment {
 
-
     public PantryFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,29 +31,24 @@ public class PantryFragment extends Fragment {
         ListView listView = (ListView) view.findViewById(R.id.pantry_list);
         PantryListAdapter adapter = new PantryListAdapter(getActivity());
         adapter.add("hehe");
+        adapter.add("haha");
+        adapter.add("lala");
+        adapter.add("dede");
         listView.setAdapter(adapter);
         return view;
     }
 
 
     private class PantryListAdapter extends ArrayAdapter<String> {
-
-
         public PantryListAdapter(Context context) {
-
             super(context, R.layout.pantry_list);
-
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent){
-
             LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
             View listItemView = convertView;
             if (null == convertView) {
-                // we need to check if the convertView is null. If it's null,
-                // then inflate it.
                 listItemView = inflater.inflate(
                         R.layout.pantry_list, parent, false);
             }
@@ -64,14 +57,7 @@ public class PantryFragment extends Fragment {
             ((TextView) listItemView.findViewById(R.id.textView_item_name)).setText("Item name");
             ((TextView) listItemView.findViewById(R.id.textView_amount_unit)).setText("Unit");
 
-//            TextView item_name = (TextView) listItemView.findViewById(R.id.textView_item_name);
-//            TextView item_unit = (TextView) listItemView.findViewById(R.id.textView_amount_unit);
-
-
-
             return listItemView;
         }
     }
-
-
 }
