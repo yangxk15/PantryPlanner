@@ -6,6 +6,7 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 
 /**
@@ -26,4 +27,9 @@ public class SettingFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_setting, container, false);
     }
 
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        ImageView imageView = (ImageView) getActivity().findViewById(R.id.imageview_setting_photo);
+        imageView.setImageResource(R.drawable.default_photo);
+    }
 }
