@@ -1,4 +1,4 @@
-package edu.dartmouth.cs.pantryplanner.pantryplanner;
+package edu.dartmouth.cs.pantryplanner.pantryplanner.controller;
 
 
 import android.os.Bundle;
@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
+import edu.dartmouth.cs.pantryplanner.pantryplanner.R;
 
 
 /**

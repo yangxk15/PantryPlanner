@@ -1,4 +1,4 @@
-package edu.dartmouth.cs.pantryplanner.pantryplanner;
+package edu.dartmouth.cs.pantryplanner.pantryplanner.controller;
 
 
 import android.os.Bundle;
@@ -7,14 +7,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import edu.dartmouth.cs.pantryplanner.pantryplanner.R;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MealPlanFragment extends Fragment {
+public class RecipeListFragment extends Fragment {
 
 
-    public MealPlanFragment() {
+    public RecipeListFragment() {
         // Required empty public constructor
     }
 
@@ -23,7 +25,7 @@ public class MealPlanFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_meal_plan, container, false);
+        return inflater.inflate(R.layout.fragment_recipe_list, container, false);
     }
 
 }

@@ -1,4 +1,4 @@
-package edu.dartmouth.cs.pantryplanner.pantryplanner;
+package edu.dartmouth.cs.pantryplanner.pantryplanner.controller;
 
 import android.content.Intent;
 import android.support.design.widget.TabLayout;
@@ -10,6 +10,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import java.util.ArrayList;
+
+import edu.dartmouth.cs.pantryplanner.pantryplanner.R;
+import edu.dartmouth.cs.pantryplanner.pantryplanner.util.RequestCode;
 
 public class MainActivity extends AppCompatActivity {
 
