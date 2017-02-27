@@ -1,5 +1,6 @@
 package edu.dartmouth.cs.pantryplanner.pantryplanner;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v13.app.FragmentPagerAdapter;
 
@@ -14,11 +15,28 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Fragment> mFragmentList;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-//Zixiao
         super.onCreate(savedInstanceState);
+
+        // TODO: 2/27/17 Login logic
+        startActivityForResult(new Intent(this, LoginActivity.class), RequestCode.LOGIN);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == RequestCode.LOGIN) {
+            switch (resultCode) {
+                case RESULT_OK:
+                    setup();
+                    break;
+                case RESULT_CANCELED:
+                    finish();
+            }
+        }
+    }
+
+    private void setup() {
         setContentView(R.layout.activity_main);
 
         mFragmentList = new ArrayList<>();
@@ -64,6 +82,5 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.main_tab_layout);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
-
     }
 }
