@@ -12,6 +12,12 @@
     tools:context="edu.dartmouth.cs.pantryplanner.pantryplanner.controller.RecipeDetailActivity">
 
     <TextView
+        android:id="@+id/textView_recipe_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
         android:id="@+id/textView_recipe_time"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

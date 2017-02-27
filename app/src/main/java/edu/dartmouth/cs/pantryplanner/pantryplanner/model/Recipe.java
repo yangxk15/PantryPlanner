@@ -1,6 +1,7 @@
 package edu.dartmouth.cs.pantryplanner.pantryplanner.model;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import lombok.AllArgsConstructor;
@@ -11,7 +12,9 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor(suppressConstructorProperties = true)
 public class Recipe {
+    String name;
     Date mealDate;
     MealType mealType;
     Map<Item, Integer> items;
+    List<String> steps;
 }

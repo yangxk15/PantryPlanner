@@ -2,6 +2,7 @@ package edu.dartmouth.cs.pantryplanner.pantryplanner.controller;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.design.widget.TabLayout;
@@ -10,6 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TabHost;
@@ -53,10 +55,19 @@ public class RecipeListFragment extends Fragment {
 //        RecipeListAdapter adapter = new RecipeListAdapter(getActivity());
 //        adapter.add("hehe");
 //        listView.setAdapter(adapter);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>
                 (this.getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, values);
 
         listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(RecipeListFragment.this.getActivity(), RecipeDetailActivity.class);
+                intent.putExtra("RecipeName", (String) adapter.getItem(position));
+                startActivity(intent);
+            }
+        });
         return view;
 
     }
