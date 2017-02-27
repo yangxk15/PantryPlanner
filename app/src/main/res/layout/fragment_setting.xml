@@ -37,6 +37,30 @@
     </LinearLayout>
 
     <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Plan dates"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginLeft="50dp"/>
+
+        <me.himanshusoni.quantityview.QuantityView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/quantityView_plan_dates"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            app:qv_quantity="7" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -48,6 +72,10 @@
             android:layout_height="wrap_content"
             android:text="Log out"
             android:onClick="onChangeClick"/>
+
     </LinearLayout>
+
+
+
 
 </LinearLayout>
