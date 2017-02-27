@@ -1,6 +1,7 @@
 package edu.dartmouth.cs.pantryplanner.pantryplanner.controller;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.design.widget.TabLayout;
 import android.support.v13.app.FragmentPagerAdapter;
 
@@ -8,6 +9,7 @@ import android.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -18,12 +20,20 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Fragment> mFragmentList;
 
+    public static final String USERNAME = "Username";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // TODO: 2/27/17 Login logic
-        startActivityForResult(new Intent(this, LoginActivity.class), RequestCode.LOGIN);
+        String username = this.getSharedPreferences(getString(R.string.app_domain), MODE_PRIVATE)
+                .getString(USERNAME, null);
+        if (username == null) {
+            startActivityForResult(new Intent(this, LoginActivity.class), RequestCode.LOGIN);
+        } else {
+            setup();
+        }
     }
 
     @Override
@@ -31,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == RequestCode.LOGIN) {
             switch (resultCode) {
                 case RESULT_OK:
+                    this.getSharedPreferences(getString(R.string.app_domain), MODE_PRIVATE)
+                            .edit().putString(USERNAME, data.getStringExtra(USERNAME)).apply();
                     setup();
                     break;
                 case RESULT_CANCELED:
