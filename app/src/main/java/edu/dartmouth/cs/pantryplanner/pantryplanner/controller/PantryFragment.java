@@ -5,10 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -25,7 +27,7 @@ import me.himanshusoni.quantityview.QuantityView;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PantryFragment extends Fragment {
+public class PantryFragment extends Fragment implements Button.OnClickListener {
 
     public PantryFragment() {
         // Required empty public constructor
@@ -48,9 +50,20 @@ public class PantryFragment extends Fragment {
         
         listView.setAdapter(adapter);
 
+        // set buttons listener
+        Button btn = (Button) view.findViewById(R.id.button_pantry_add);
+        btn.setOnClickListener(this);
         return view;
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.button_pantry_add:
+                MyDialogFragment dialogFragment = MyDialogFragment.newInstance(0);
+                dialogFragment.show(getFragmentManager(), "DIALOG_FRAGMENT");
+        }
+    }
 
     private class PantryListAdapter extends ArrayAdapter<Map.Entry<Item, Integer>> {
         public PantryListAdapter(Context context) {
