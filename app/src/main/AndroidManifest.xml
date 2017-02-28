@@ -25,10 +25,10 @@
         </activity>
         <activity
             android:name=".controller.LoginActivity"
-            android:label="@string/title_activity_login" />
+            android:label="@string/login_activity_title" />
         <activity
             android:name=".controller.RegisterActivity"
-            android:label="@string/title_activity_register" />
+            android:label="@string/register_activity_title" />
         <activity android:name=".controller.RecipeDetailActivity"></activity>
     </application>
 
