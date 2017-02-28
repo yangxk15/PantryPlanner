@@ -1,4 +1,4 @@
-package edu.dartmouth.cs.pantryplanner.pantryplanner.model;
+package edu.dartmouth.cs.pantryplanner.app.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

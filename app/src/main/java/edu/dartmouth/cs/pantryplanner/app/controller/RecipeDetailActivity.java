@@ -1,13 +1,10 @@
-package edu.dartmouth.cs.pantryplanner.pantryplanner.controller;
+package edu.dartmouth.cs.pantryplanner.app.controller;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import edu.dartmouth.cs.pantryplanner.pantryplanner.R;
+import edu.dartmouth.cs.pantryplanner.app.R;
 
 public class RecipeDetailActivity extends AppCompatActivity {
 

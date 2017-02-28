@@ -1,4 +1,4 @@
-package edu.dartmouth.cs.pantryplanner.pantryplanner.controller;
+package edu.dartmouth.cs.pantryplanner.app.controller;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -8,9 +8,8 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 
-import edu.dartmouth.cs.pantryplanner.pantryplanner.R;
+import edu.dartmouth.cs.pantryplanner.app.R;
 
 /**
  * Created by Lucidity on 17/2/27.

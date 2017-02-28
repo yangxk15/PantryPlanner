@@ -9,7 +9,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="edu.dartmouth.cs.pantryplanner.pantryplanner.controller.RecipeDetailActivity">
+    tools:context="edu.dartmouth.cs.pantryplanner.app.controller.RecipeDetailActivity">
 
     <TextView
         android:id="@+id/textView_recipe_name"

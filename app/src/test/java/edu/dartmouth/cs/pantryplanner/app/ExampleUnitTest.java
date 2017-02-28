@@ -1,4 +1,4 @@
-package edu.dartmouth.cs.pantryplanner.pantryplanner;
+package edu.dartmouth.cs.pantryplanner.app;
 
 import org.junit.Test;
 

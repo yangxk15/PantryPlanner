@@ -1,7 +1,6 @@
-package edu.dartmouth.cs.pantryplanner.pantryplanner.controller;
+package edu.dartmouth.cs.pantryplanner.app.controller;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.design.widget.TabLayout;
 import android.support.v13.app.FragmentPagerAdapter;
 
@@ -9,12 +8,11 @@ import android.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
 import java.util.ArrayList;
 
-import edu.dartmouth.cs.pantryplanner.pantryplanner.R;
-import edu.dartmouth.cs.pantryplanner.pantryplanner.util.RequestCode;
+import edu.dartmouth.cs.pantryplanner.app.R;
+import edu.dartmouth.cs.pantryplanner.app.util.RequestCode;
 
 public class MainActivity extends AppCompatActivity {
 
