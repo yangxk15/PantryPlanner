@@ -77,8 +77,8 @@ public class PantryFragment extends Fragment implements Button.OnClickListener {
                         R.layout.pantry_list, parent, false);
             }
 
-            ((QuantityView) listItemView.findViewById(R.id.pantry_item_countdown_days))
-                    .setQuantity(entry.getKey().getCountdownDays());
+//            ((QuantityView) listItemView.findViewById(R.id.pantry_item_countdown_days))
+//                    .setQuantity(entry.getKey().getCountdownDays());
             ((TextView) listItemView.findViewById(R.id.pantry_item_name))
                     .setText(entry.getKey().getName());
             ((QuantityView) listItemView.findViewById(R.id.pantry_item_number))
