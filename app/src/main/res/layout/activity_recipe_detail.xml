@@ -31,7 +31,8 @@
         android:layout_height="wrap_content"
         android:text="Ingredients:"
         android:textSize="20sp"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="10dp"
+        android:id="@+id/textView" />
 
     <TextView
         android:id="@+id/textView_recipe_ingredient"
