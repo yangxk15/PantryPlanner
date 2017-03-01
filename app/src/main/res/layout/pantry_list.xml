@@ -29,6 +29,8 @@
         android:layout_width="0dip"
         android:layout_height="fill_parent"
         android:layout_weight="3"
+        android:layout_gravity="center"
+        android:gravity="center"
         >
 
     <me.himanshusoni.quantityview.QuantityView
@@ -37,7 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:qv_quantity="20"
-        android:gravity="center"/>
+        android:layout_gravity="center" />
 </LinearLayout>
 
     <LinearLayout
@@ -65,7 +67,7 @@
     <LinearLayout
         android:layout_width="0dip"
         android:layout_height="fill_parent"
-        android:layout_weight="1.5"
+        android:layout_weight="1.2"
         >
     <TextView
         android:text="expires in"
@@ -81,7 +83,7 @@
     <LinearLayout
         android:layout_width="0dip"
         android:layout_height="fill_parent"
-        android:layout_weight="1"
+        android:layout_weight="0.7"
         >
 
     <TextView
@@ -89,7 +91,6 @@
         android:text="4"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:layout_gravity="center"
         android:gravity="center"
         android:textStyle="bold"/>
