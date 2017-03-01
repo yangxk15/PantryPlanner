@@ -21,6 +21,11 @@ public class MainActivity extends AppCompatActivity {
     public static final String USERNAME = "Username";
 
     final int[] ICONS = new int[]{
+            R.drawable.icon_pantry,
+            R.drawable.icon_meal_plan,
+            R.drawable.icon_shopping_list,
+            R.drawable.icon_receipe_list,
+            R.drawable.icon_setting_color
 
     };
 
