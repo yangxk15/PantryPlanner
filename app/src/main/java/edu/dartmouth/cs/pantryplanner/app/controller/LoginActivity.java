@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.AsyncTask;
@@ -11,12 +12,26 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.extensions.android.json.AndroidJsonFactory;
+import com.google.api.client.googleapis.json.GoogleJsonError;
+import com.google.api.client.googleapis.json.GoogleJsonResponseException;
+
+import java.io.IOException;
 
 import edu.dartmouth.cs.pantryplanner.app.R;
 import edu.dartmouth.cs.pantryplanner.app.util.EmailValidator;
+import edu.dartmouth.cs.pantryplanner.app.util.RequestCode;
+import edu.dartmouth.cs.pantryplanner.app.util.ServiceBuilderHelper;
+import edu.dartmouth.cs.pantryplanner.backend.entity.user.User;
+import edu.dartmouth.cs.pantryplanner.backend.registration.Registration;
 import lombok.AllArgsConstructor;
 
 /**
@@ -56,12 +71,40 @@ public class LoginActivity extends AppCompatActivity {
                 new OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
+                        startActivityForResult(
+                                new Intent(LoginActivity.this, RegisterActivity.class),
+                                RequestCode.REGISTER.ordinal()
+                        );
                     }
                 }
         );
+
+        SharedPreferences preferences = getSharedPreferences(
+                getString(R.string.app_domain),
+                MODE_PRIVATE
+        );
+        String email = preferences.getString("email", null);
+        String password = preferences.getString("password", null);
+        if (email != null && password != null) {
+            mEmailView.setText(email);
+            mPasswordView.setText(password);
+            new UserLoginTask(email, password).execute();
+        }
+
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == RequestCode.REGISTER.ordinal()) {
+                String email = data.getStringExtra("email");
+                String password = data.getStringExtra("password");
+                mEmailView.setText(email);
+                mPasswordView.setText(password);
+                new UserLoginTask(email, password).execute();
+            }
+        }
+    }
 
     /**
      * Attempts to sign in or register the account specified by the login form.
@@ -84,7 +127,7 @@ public class LoginActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(email)) {
             mEmailView.setError("Email cannot be empty");
             mEmailView.requestFocus();
-        } else if (EmailValidator.validate(email)) {
+        } else if (!EmailValidator.validate(email)) {
             mEmailView.setError("This email address is invalid");
             mEmailView.requestFocus();
         } else if (TextUtils.isEmpty(password)) {
@@ -140,39 +183,81 @@ public class LoginActivity extends AppCompatActivity {
      * the user.
      */
     @AllArgsConstructor(suppressConstructorProperties = true)
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+    private class UserLoginTask extends AsyncTask<Void, Void, IOException> {
 
-        private final String mEmail;
-        private final String mPassword;
+        String mEmail;
+        String mPassword;
 
         @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
+        protected IOException doInBackground(Void... params) {
+            IOException ex = null;
 
             try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
+                // Connect to the server
+                Registration regService = ServiceBuilderHelper.setup(
+                        LoginActivity.this,
+                        new Registration.Builder(
+                                AndroidHttp.newCompatibleTransport(),
+                                new AndroidJsonFactory(),
+                                null
+                        )
+                ).build();
+
+                String regId = GoogleCloudMessaging.getInstance(LoginActivity.this)
+                        .register(LoginActivity.this.getString(R.string.project_number));
+
+                regService.register(regId).execute();
+
+                User userService = ServiceBuilderHelper.setup(LoginActivity.this,
+                        new User.Builder(
+                                AndroidHttp.newCompatibleTransport(),
+                                new AndroidJsonFactory(),
+                                null
+                        )
+                ).build();
+
+                userService.login(mEmail, mPassword).execute();
+            } catch (IOException e) {
+                ex = e;
             }
 
-            // TODO: register the new account here.
-            return true;
+            return ex;
         }
 
         @Override
-        protected void onPostExecute(final Boolean success) {
+        protected void onPostExecute(IOException ex) {
             mLoginTask = null;
             showProgress(false);
 
-            if (success) {
-                Intent intent = new Intent();
-                intent.putExtra(MainActivity.USERNAME, mEmail);
-                setResult(RESULT_OK, intent);
+            if (ex == null) {
+                SharedPreferences.Editor editor =
+                        LoginActivity.this.getSharedPreferences(
+                                getString(R.string.app_domain),
+                                MODE_PRIVATE
+                        ).edit();
+                editor.putString("email", mEmail);
+                editor.putString("password", mPassword);
+                editor.apply();
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 finish();
             } else {
-                mPasswordView.setError("The password is not correct");
-                mPasswordView.requestFocus();
+                if (ex instanceof GoogleJsonResponseException) {
+                    GoogleJsonError error = ((GoogleJsonResponseException) ex).getDetails();
+                    if (ex.getMessage().contains("email")) {
+                        mEmailView.setError(error.getMessage());
+                        mEmailView.requestFocus();
+                    } else if (ex.getMessage().contains("password")) {
+                        mPasswordView.setError(error.getMessage());
+                        mPasswordView.requestFocus();
+                    }
+                } else {
+                    Toast.makeText(
+                            LoginActivity.this,
+                            "Please check your internet connection and restart the app",
+                            Toast.LENGTH_LONG
+                    ).show();
+                }
+                Log.d(this.getClass().getName(), ex.toString());
             }
         }
 

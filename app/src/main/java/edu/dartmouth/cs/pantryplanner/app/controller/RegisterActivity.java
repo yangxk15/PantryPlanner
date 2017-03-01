@@ -3,6 +3,7 @@ package edu.dartmouth.cs.pantryplanner.app.controller;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.AsyncTask;
@@ -10,14 +11,25 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.extensions.android.json.AndroidJsonFactory;
+import com.google.api.client.googleapis.json.GoogleJsonError;
+import com.google.api.client.googleapis.json.GoogleJsonResponseException;
+
+import java.io.IOException;
+
 import edu.dartmouth.cs.pantryplanner.app.R;
-import edu.dartmouth.cs.pantryplanner.app.model.User;
 import edu.dartmouth.cs.pantryplanner.app.util.EmailValidator;
+import edu.dartmouth.cs.pantryplanner.app.util.ServiceBuilderHelper;
+import edu.dartmouth.cs.pantryplanner.backend.entity.user.User;
+import edu.dartmouth.cs.pantryplanner.backend.registration.Registration;
 import lombok.AllArgsConstructor;
 
 /**
@@ -108,7 +120,7 @@ public class RegisterActivity extends AppCompatActivity {
             // Show a progress spinner, and kick off a background task to
             // perform the user register attempt.
             showProgress(true);
-            mRegisterTask = new UserRegisterTask(new User(firstName, lastName, email, password));
+            mRegisterTask = new UserRegisterTask(firstName, lastName, email, password);
             mRegisterTask.execute((Void) null);
         }
     }
@@ -154,38 +166,73 @@ public class RegisterActivity extends AppCompatActivity {
      * the user.
      */
     @AllArgsConstructor(suppressConstructorProperties = true)
-    public class UserRegisterTask extends AsyncTask<Void, Void, Boolean> {
+    private class UserRegisterTask extends AsyncTask<Void, Void, IOException> {
 
-        private final User mUser;
+        String mFirstName;
+        String mLastName;
+        String mEmail;
+        String mPassword;
 
         @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
+        protected IOException doInBackground(Void... params) {
+            IOException ex = null;
 
             try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
+                // Connect to the server
+                Registration regService = ServiceBuilderHelper.setup(
+                        RegisterActivity.this,
+                        new Registration.Builder(
+                                AndroidHttp.newCompatibleTransport(),
+                                new AndroidJsonFactory(),
+                                null
+                        )
+                ).build();
+
+                String regId = GoogleCloudMessaging.getInstance(RegisterActivity.this)
+                        .register(RegisterActivity.this.getString(R.string.project_number));
+
+                regService.register(regId).execute();
+
+                User userService = ServiceBuilderHelper.setup(RegisterActivity.this,
+                        new User.Builder(
+                                AndroidHttp.newCompatibleTransport(),
+                                new AndroidJsonFactory(),
+                                null
+                        )
+                ).build();
+
+                userService.register(mEmail, mFirstName, mLastName, mPassword).execute();
+            } catch (IOException e) {
+                ex = e;
             }
 
-            // TODO: register the new account here.
-            return true;
+            return ex;
         }
 
         @Override
-        protected void onPostExecute(final Boolean success) {
+        protected void onPostExecute(IOException ex) {
             mRegisterTask = null;
             showProgress(false);
 
-            if (success) {
+            if (ex == null) {
+                Intent intent = new Intent();
+                intent.putExtra("email", mEmail);
+                intent.putExtra("password", mPassword);
+                setResult(RESULT_OK, intent);
                 finish();
             } else {
-                Toast.makeText(
-                        RegisterActivity.this,
-                        "Registration failed. Please check your network.",
-                        Toast.LENGTH_SHORT
-                ).show();
+                if (ex instanceof GoogleJsonResponseException) {
+                    GoogleJsonError error = ((GoogleJsonResponseException) ex).getDetails();
+                    mEmailView.setError(error.getMessage());
+                    mEmailView.requestFocus();
+                } else {
+                    Toast.makeText(
+                            RegisterActivity.this,
+                            "Please check your internet connection and restart the app",
+                            Toast.LENGTH_LONG
+                    ).show();
+                }
+                Log.d(this.getClass().getName(), ex.toString());
             }
         }
 
@@ -195,5 +242,6 @@ public class RegisterActivity extends AppCompatActivity {
             showProgress(false);
         }
     }
+
 }
 
