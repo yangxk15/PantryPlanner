@@ -47,10 +47,7 @@ public class RecipeListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_recipe_list, container, false);
-        ListView listView = (ListView) view.findViewById(R.id.my_recipe_list);
-//        RecipeListAdapter adapter = new RecipeListAdapter(getActivity());
-//        adapter.add("hehe");
-//        listView.setAdapter(adapter);
+        ListView listView = (ListView) view.findViewById(R.id.listView_recipe_list);
         final ArrayAdapter<String> adapter = new ArrayAdapter<String>
                 (this.getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, values);
 
@@ -59,7 +56,7 @@ public class RecipeListFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(RecipeListFragment.this.getActivity(), RecipeDetailActivity.class);
+                Intent intent = new Intent(RecipeListFragment.this.getActivity(), DisplayRecipeActivity.class);
                 intent.putExtra("RecipeName", (String) adapter.getItem(position));
                 startActivity(intent);
             }

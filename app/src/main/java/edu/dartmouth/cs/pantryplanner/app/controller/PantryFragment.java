@@ -36,7 +36,7 @@ public class PantryFragment extends Fragment implements Button.OnClickListener {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_pantry, container, false);
 
-        ListView listView = (ListView) view.findViewById(R.id.pantry_list);
+        ListView listView = (ListView) view.findViewById(R.id.listView_pantry_list);
         PantryListAdapter adapter = new PantryListAdapter(getActivity());
 
         adapter.add(new AbstractMap.SimpleEntry<>(new Item("Beef", ItemType.MEAT), 5));
@@ -64,7 +64,7 @@ public class PantryFragment extends Fragment implements Button.OnClickListener {
 
     private class PantryListAdapter extends ArrayAdapter<Map.Entry<Item, Integer>> {
         public PantryListAdapter(Context context) {
-            super(context, R.layout.pantry_list);
+            super(context, R.layout.list_pantry);
         }
 
         @Override
@@ -74,7 +74,7 @@ public class PantryFragment extends Fragment implements Button.OnClickListener {
             View listItemView = convertView;
             if (null == convertView) {
                 listItemView = inflater.inflate(
-                        R.layout.pantry_list, parent, false);
+                        R.layout.list_pantry, parent, false);
             }
 
 //            ((QuantityView) listItemView.findViewById(R.id.pantry_item_countdown_days))
