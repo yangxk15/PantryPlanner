@@ -49,7 +49,7 @@ public class RecipeListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_recipe_list, container, false);
         ListView listView = (ListView) view.findViewById(R.id.listView_recipe_list);
         final ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                (this.getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, values);
+                (this.getActivity(), R.layout.list_recipe, android.R.id.text1, values);
 
         listView.setAdapter(adapter);
 
