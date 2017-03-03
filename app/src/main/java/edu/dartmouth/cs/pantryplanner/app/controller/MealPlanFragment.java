@@ -4,6 +4,7 @@ package edu.dartmouth.cs.pantryplanner.app.controller;
 import android.content.Context;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +18,16 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import com.google.api.client.util.DateTime;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 
 import edu.dartmouth.cs.pantryplanner.app.R;
 import edu.dartmouth.cs.pantryplanner.backend.entity.recipeRecordApi.model.RecipeRecord;
+import edu.dartmouth.cs.pantryplanner.backend.entity.recipeRecordApi.model.Recipe;
 import edu.dartmouth.cs.pantryplanner.common.MealType;
-import edu.dartmouth.cs.pantryplanner.common.Recipe;
 
 
 /**
@@ -30,7 +35,6 @@ import edu.dartmouth.cs.pantryplanner.common.Recipe;
  */
 public class MealPlanFragment extends Fragment {
     MealPlanAdapter mMealPlanAdapter;
-    private Date cur = new Date();
     public MealPlanFragment() {
         // Required empty public constructor
     }
@@ -45,7 +49,7 @@ public class MealPlanFragment extends Fragment {
         dataProcess();
 
         listView.setAdapter(mMealPlanAdapter);
-
+        //TODO: click listener
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             // jump to display recipe
             @Override
@@ -60,53 +64,67 @@ public class MealPlanFragment extends Fragment {
 
     // TODO:
     private void dataProcess() {
-        /*  ArrayList<ArrayList<ArrayList<Meal>>>
-                      Day       Tag       Meal
+        /*  HashMap<String, ArrayList<ArrayList<Meal>>>
+                    Day       Tag       Meal
          */
-        // TODO: 3/3/17 read from server
-        // get List of recipeRecord
-        Recipe newrecipe1 = new Recipe("Beacon", new Date(), MealType.BREAKFAST, null, null);
-        Recipe newrecipe2 = new Recipe("Milk", new Date(), MealType.LUNCH, null, null);
-        Recipe newrecipe3 = new Recipe("Broccoli", new Date(), MealType.LUNCH, null, null);
-        ArrayList<Recipe> breakfast = new ArrayList<>();
-        ArrayList<Recipe> lunch = new ArrayList<>();
-        breakfast.add(newrecipe1);
-        lunch.add(newrecipe2);
-        lunch.add(newrecipe3);
 
-        ArrayList<ArrayList<Recipe>> mealtype = new ArrayList<>();
-        mealtype.add(breakfast);
-        mealtype.add(lunch);
+        RecipeRecord newrecipe1 = new RecipeRecord();
+        newrecipe1.setDate(new DateTime(new Date()));
+        newrecipe1.setMealType(MealType.BREAKFAST.name());
+        Log.d(MealType.BREAKFAST.name(), "mealtype");
+        Recipe reci = new Recipe();
+        reci.setName("Bacon");
+        newrecipe1.setRecipe(reci);
+        //RecipeRecord newrecipe2 = new Recipe("Milk", new Date(), MealType.DINNER, null, null);
+        //RecipeRecord newrecipe3 = new Recipe("Broccoli", new Date(), MealType.DINNER, null, null);
 
-        ArrayList<ArrayList<Recipe>> mealtype2 = new ArrayList<>();
-        mealtype2.add(lunch);
+        ArrayList<RecipeRecord> recipes = new ArrayList<>();
+        recipes.add(newrecipe1);
+        //recipes.add(newrecipe2);
+        //recipes.add(newrecipe3);
 
-        ArrayList<ArrayList<ArrayList<Recipe>>> map = new ArrayList<>();
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat formatter = new SimpleDateFormat("MMM dd yyyy");
+        HashMap<String, ArrayList<ArrayList<RecipeRecord>>> dateMap = new HashMap<>();
+        for (int i = 0; i < 7; ++i) {
+            ArrayList<ArrayList<RecipeRecord>> mealTypeList = new ArrayList<>();
+            for (int j = 3; j > 0; --j) {
+                mealTypeList.add(new ArrayList<RecipeRecord>());
+            }
+            dateMap.put(formatter.format(calendar.getTime()), mealTypeList);
+            calendar.add(Calendar.DATE, 1);
+        }
 
-        ArrayList<Date> dateMap = new ArrayList<>();
-        dateMap.add(cur);
-        Date now = new Date();
-        dateMap.add(now);
+        //for (RecipeRecord recipe: recipes) {
+            ArrayList<ArrayList<RecipeRecord>> mealTypeList = dateMap.get(formatter.format(Calendar.getInstance().getTime()));
+            mealTypeList.get(0).add(newrecipe1);
+        //}
 
+        // remove all empty meal type list
+        Iterator it = dateMap.entrySet().iterator();
+        while (it.hasNext()) {
+            HashMap.Entry pair = (HashMap.Entry)it.next();
+            ArrayList<ArrayList<Recipe>> mealTypeList2 = (ArrayList)pair.getValue();
+            for (int i = MealType.values().length - 1; i >=0; --i) {
+                if (mealTypeList2.get(i).size() == 0) {
+                    mealTypeList2.remove(i);
+                }
+            }
+        }
 
-        map.add(mealtype);
-        map.add(mealtype2);
-
-        mMealPlanAdapter = new MealPlanAdapter(this.getActivity(), dateMap, map);
+        mMealPlanAdapter = new MealPlanAdapter(this.getActivity(), dateMap);
     }
 
 
 
     private class MealPlanAdapter extends BaseExpandableListAdapter {
-        ArrayList<ArrayList<ArrayList<Recipe>>> groupMap;
-        ArrayList<Date> dateMap;
+        HashMap<String, ArrayList<ArrayList<RecipeRecord>>> groupMap;
         Context context;
 
-        public MealPlanAdapter(Context context, ArrayList<Date> dateMap,
-                               ArrayList<ArrayList<ArrayList<Recipe>>> groupMap) {
+        public MealPlanAdapter(Context context,
+                               HashMap<String, ArrayList<ArrayList<RecipeRecord>>> groupMap) {
             this.context = context;
             this.groupMap = groupMap;
-            this.dateMap = dateMap;
         }
 
         @Override
@@ -116,17 +134,17 @@ public class MealPlanFragment extends Fragment {
 
         @Override
         public int getChildrenCount(int groupPosition) {
-            return groupMap.get(groupPosition).size();
+            return ((ArrayList) getGroup(groupPosition)).size();
         }
 
         @Override
         public Object getGroup(int groupPosition) {
-            return groupMap.get(groupPosition);
+            return groupMap.get(getDate(groupPosition));
         }
 
         @Override
         public Object getChild(int groupPosition, int childPosition) {
-            return groupMap.get(groupPosition).get(childPosition);
+            return ((ArrayList)getGroup(groupPosition)).get(childPosition);
         }
 
         @Override
@@ -151,23 +169,24 @@ public class MealPlanFragment extends Fragment {
             View view = inflater.inflate(R.layout.list_meal_plan_date, parent, false);
 
             TextView textView = (TextView) view.findViewById(R.id.textView_meal_plan_date);
-            textView.setText((new SimpleDateFormat("MMM dd yyyy")).format(dateMap.get(groupPosition)));
+            textView.setText(getDate(groupPosition));
             return view;
         }
 
         @Override
         public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-            ArrayList<Recipe> recipes = (ArrayList<Recipe>) getChild(groupPosition, childPosition);
-            String[] recipenames = new String[recipes.size()];
-            for (int i = 0; i < recipenames.length; ++i) {
-                recipenames[i] = recipes.get(i).getName();
-            }
-
             LayoutInflater inflater = (LayoutInflater) context
                         .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
             View view = inflater.inflate(R.layout.list_meal_plan_mealtype, parent, false);
 
+            ArrayList<RecipeRecord> recipes = (ArrayList<RecipeRecord>) getChild(groupPosition, childPosition);
+
+            String[] recipenames = new String[recipes.size()];
+            for (int i = 0; i < recipenames.length; ++i) {
+                recipenames[i] = recipes.get(i).getRecipe().getName();
+            }
+
+            // set layout height
             LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.layout_meal_mealtype);
             ViewGroup.LayoutParams params = linearLayout.getLayoutParams();
             //TODO: set height suitably
@@ -175,20 +194,34 @@ public class MealPlanFragment extends Fragment {
             linearLayout.setLayoutParams(params);
 
             TextView mealType = (TextView) view.findViewById(R.id.textView_meal_type);
-            mealType.setText(recipes.get(0).getMealType().toString());
+            mealType.setText("" + MealType.values()[childPosition]);
 
             // ArrayAdapter for each meal type
             ListView listView = (ListView) view.findViewById(R.id.textView_meal_plan_recipe);
             ArrayAdapter<String> adapter = new ArrayAdapter(context,
                     android.R.layout.simple_list_item_1, android.R.id.text1, recipenames);
             listView.setAdapter(adapter);
-
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Log.d("position", "" + position);
+                }
+            });
             return view;
         }
 
         @Override
         public boolean isChildSelectable(int groupPosition, int childPosition) {
             return true;
+        }
+
+        private String getDate(int groupPosition) {
+            if (groupPosition == 0) {
+                return new SimpleDateFormat("MMM dd yyyy").format(new Date());
+            }
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.DATE, groupPosition);
+            return new SimpleDateFormat("MMM dd yyyy").format(calendar.getTime());
         }
     }
 }
