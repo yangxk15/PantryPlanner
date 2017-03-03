@@ -15,7 +15,8 @@
             <param-name>services</param-name>
             <param-value>edu.dartmouth.cs.pantryplanner.backend.endpoint.RegistrationEndpoint,
                 edu.dartmouth.cs.pantryplanner.backend.endpoint.MessagingEndpoint,
-                edu.dartmouth.cs.pantryplanner.backend.endpoint.UserEndpoint</param-value>
+                edu.dartmouth.cs.pantryplanner.backend.endpoint.UserEndpoint,
+                edu.dartmouth.cs.pantryplanner.backend.entity.RecipeRecordEndpoint</param-value>
         </init-param>
     </servlet>
     <servlet-mapping>

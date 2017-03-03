@@ -28,6 +28,9 @@ dependencies {
     compile 'javax.servlet:servlet-api:2.5'
     compile 'com.googlecode.objectify:objectify:5.1.9'
     compile 'com.google.gcm:gcm-server:1.0.0'
+    compile project(':common')
+    compile 'com.google.appengine:appengine-endpoints:1.9.42'
+    compile 'com.google.appengine:appengine-endpoints-deps:1.9.42'
 }
 
 appengine {

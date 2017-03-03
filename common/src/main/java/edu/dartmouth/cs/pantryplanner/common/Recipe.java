@@ -1,4 +1,4 @@
-package edu.dartmouth.cs.pantryplanner.app.model;
+package edu.dartmouth.cs.pantryplanner.common;
 
 import java.util.Date;
 import java.util.List;
@@ -11,12 +11,10 @@ import lombok.Data;
  * Created by yangxk15 on 2/27/17.
  */
 
-@AllArgsConstructor(suppressConstructorProperties = true)
+@AllArgsConstructor
 @Data
 public class Recipe {
     String name;
-    Date mealDate;
-    MealType mealType;
     Map<Item, Integer> items;
     List<String> steps;
 }
