@@ -20,8 +20,9 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import edu.dartmouth.cs.pantryplanner.app.R;
-import edu.dartmouth.cs.pantryplanner.app.model.MealType;
-import edu.dartmouth.cs.pantryplanner.app.model.Recipe;
+import edu.dartmouth.cs.pantryplanner.backend.entity.recipeRecordApi.model.RecipeRecord;
+import edu.dartmouth.cs.pantryplanner.common.MealType;
+import edu.dartmouth.cs.pantryplanner.common.Recipe;
 
 
 /**
@@ -62,6 +63,8 @@ public class MealPlanFragment extends Fragment {
         /*  ArrayList<ArrayList<ArrayList<Meal>>>
                       Day       Tag       Meal
          */
+        // TODO: 3/3/17 read from server
+        // get List of recipeRecord
         Recipe newrecipe1 = new Recipe("Beacon", new Date(), MealType.BREAKFAST, null, null);
         Recipe newrecipe2 = new Recipe("Milk", new Date(), MealType.LUNCH, null, null);
         Recipe newrecipe3 = new Recipe("Broccoli", new Date(), MealType.LUNCH, null, null);
