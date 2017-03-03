@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -48,7 +49,7 @@ public class PantryFragment extends Fragment implements Button.OnClickListener {
         listView.setAdapter(adapter);
 
         // set buttons listener
-        Button btn = (Button) view.findViewById(R.id.button_pantry_add);
+        ImageButton btn = (ImageButton) view.findViewById(R.id.button_pantry_add);
         btn.setOnClickListener(this);
         return view;
     }

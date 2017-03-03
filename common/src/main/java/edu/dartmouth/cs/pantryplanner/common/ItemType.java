@@ -6,10 +6,10 @@ import lombok.AllArgsConstructor;
 public enum ItemType {
     MEAT("Meat", 7),
     DIARY("Diary", 1),
-    FRUIT("Meat", 3),
-    VEGETABLE("Meat", 5),
-    INGREDIENT("Meat", 30),
-    OTHER("Meat", 15);
+    FRUIT("Fruite", 3),
+    VEGETABLE("Vegetable", 5),
+    INGREDIENT("Ingredient", 30),
+    OTHER("Other", 15);
 
     String text;
     int freshTime;

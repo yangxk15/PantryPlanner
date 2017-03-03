@@ -35,9 +35,9 @@ public class MainActivity extends AppCompatActivity {
 
     final int[] ICONS = new int[]{
             R.drawable.pantry,
-            R.drawable.noodles,
+            R.drawable.calendar,
             R.drawable.shop,
-            R.drawable.icon_receipe_list,
+            R.drawable.kitchen,
             R.drawable.icon_setting_color
 
     };
