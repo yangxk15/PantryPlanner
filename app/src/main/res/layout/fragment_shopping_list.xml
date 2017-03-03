@@ -56,7 +56,7 @@
                     android:layout_height="wrap_content"
                     app:srcCompat="@drawable/plus"
                     android:id="@+id/shop_add_meat"
-                    android:layout_weight="2"
+                    android:layout_weight="1"
                     android:layout_marginRight="15dp"
                     android:layout_alignParentRight="true"/>
 
@@ -99,19 +99,10 @@
                     android:layout_height="wrap_content"
                     app:srcCompat="@drawable/plus"
                     android:id="@+id/shop_add_dairy"
-                    android:layout_weight="2"
+                    android:layout_weight="1"
                     android:layout_marginRight="15dp"
                     android:layout_alignParentRight="true"/>
 
-                <!--<TextView-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:text="+"-->
-                    <!--android:layout_marginRight="15dp"-->
-                    <!--android:layout_alignParentRight="true"-->
-                    <!--android:textStyle="bold"-->
-                    <!--android:textSize="27sp"-->
-                     <!--/>-->
 
             </LinearLayout>
 
@@ -139,7 +130,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:text="Fruit"
+                    android:text="FruitFruit"
                     android:layout_marginTop="3dp"
                     android:textSize="20sp"
                     android:textStyle="bold"
@@ -151,19 +142,10 @@
                     android:layout_height="wrap_content"
                     app:srcCompat="@drawable/plus"
                     android:id="@+id/shop_add_fruit"
-                    android:layout_weight="2"
+                    android:layout_weight="1"
                     android:layout_marginRight="15dp"
                     android:layout_alignParentRight="true"/>
 
-                <!--<TextView-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:text="+"-->
-                    <!--android:layout_marginRight="15dp"-->
-                    <!--android:layout_alignParentRight="true"-->
-                    <!--android:textStyle="bold"-->
-                    <!--android:textSize="27sp"-->
-                    <!--/>-->
             </LinearLayout>
 
             <ListView
@@ -171,6 +153,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/list_shop_fruit">
             </ListView>
+
+
 
 
             <LinearLayout
@@ -182,9 +166,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:srcCompat="@drawable/broccoli"
-                    android:layout_weight="0.1"
                     android:layout_gravity="center"
-                    android:layout_alignParentLeft="true"/>
+                    android:layout_alignParentLeft="true" />
 
                 <TextView
                     android:id="@+id/category_Vegetable"
@@ -203,18 +186,10 @@
                     android:layout_height="wrap_content"
                     app:srcCompat="@drawable/plus"
                     android:id="@+id/shop_add_veggie"
-                    android:layout_weight="2"
+                    android:layout_weight="1"
                     android:layout_marginRight="15dp"
                     android:layout_alignParentRight="true"/>
 
-                <!--<TextView-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:text="+"-->
-                    <!--android:layout_marginRight="15dp"-->
-                    <!--android:layout_alignParentRight="true"-->
-                    <!--android:textStyle="bold"-->
-                    <!--android:textSize="27sp" />-->
             </LinearLayout>
 
             <ListView
@@ -232,7 +207,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:srcCompat="@drawable/salt"
-                    android:layout_weight="0.1"
                     android:layout_gravity="center"
                     android:layout_alignParentLeft="true"/>
 
@@ -253,19 +227,10 @@
                     android:layout_height="wrap_content"
                     app:srcCompat="@drawable/plus"
                     android:id="@+id/shop_add_ingredient"
-                    android:layout_weight="2"
+                    android:layout_weight="1"
                     android:layout_marginRight="15dp"
                     android:layout_alignParentRight="true"/>
 
-                <!--<TextView-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:text="+"-->
-                    <!--android:layout_marginRight="15dp"-->
-                    <!--android:layout_alignParentRight="true"-->
-                    <!--android:textStyle="bold"-->
-                    <!--android:textSize="27sp"-->
-                     <!--/>-->
             </LinearLayout>
 
             <ListView
@@ -304,19 +269,11 @@
                     android:layout_height="wrap_content"
                     app:srcCompat="@drawable/plus"
                     android:id="@+id/shop_add_other"
-                    android:layout_weight="2"
+                    android:layout_weight="1"
                     android:layout_marginRight="15dp"
                     android:layout_alignParentRight="true"/>
 
-                <!--<TextView-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:text="+"-->
-                    <!--android:layout_marginRight="15dp"-->
-                    <!--android:layout_alignParentRight="true"-->
-                    <!--android:textStyle="bold"-->
-                    <!--android:textSize="27sp"-->
-                    <!--/>-->
+
             </LinearLayout>
 
             <ListView
