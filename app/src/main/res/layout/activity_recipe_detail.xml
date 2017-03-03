@@ -16,20 +16,10 @@
         android:layout_height="match_parent">
 
 
-<<<<<<< Updated upstream
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-=======
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Ingredients:"
-        android:textSize="20sp"
-        android:layout_marginTop="10dp"
-        android:id="@+id/textView" />
->>>>>>> Stashed changes
 
             <LinearLayout
                 android:layout_width="match_parent"
