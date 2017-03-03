@@ -64,7 +64,7 @@ public class PantryFragment extends Fragment implements Button.OnClickListener {
 
     private class PantryListAdapter extends ArrayAdapter<Map.Entry<Item, Integer>> {
         public PantryListAdapter(Context context) {
-            super(context, R.layout.pantry_list);
+            super(context, R.layout.pattern_pantry_list);
         }
 
         @Override
@@ -74,7 +74,7 @@ public class PantryFragment extends Fragment implements Button.OnClickListener {
             View listItemView = convertView;
             if (null == convertView) {
                 listItemView = inflater.inflate(
-                        R.layout.pantry_list, parent, false);
+                        R.layout.pattern_pantry_list, parent, false);
             }
 
 //            ((QuantityView) listItemView.findViewById(R.id.pantry_item_countdown_days))

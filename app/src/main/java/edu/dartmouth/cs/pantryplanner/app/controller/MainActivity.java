@@ -1,6 +1,8 @@
 package edu.dartmouth.cs.pantryplanner.app.controller;
 
+import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.design.widget.TabLayout;
 import android.support.v13.app.FragmentPagerAdapter;
 
@@ -8,57 +10,40 @@ import android.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.widget.Toast;
 
+import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.extensions.android.json.AndroidJsonFactory;
+import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
+import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
+
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import edu.dartmouth.cs.pantryplanner.app.R;
 import edu.dartmouth.cs.pantryplanner.app.util.RequestCode;
+import edu.dartmouth.cs.pantryplanner.backend.registration.Registration;
 
 public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Fragment> mFragmentList;
-
     public static final String USERNAME = "Username";
 
     final int[] ICONS = new int[]{
             R.drawable.icon_pantry,
-            R.drawable.icon_meal_plan,
+            R.drawable.noodles,
             R.drawable.icon_shopping_list,
             R.drawable.icon_receipe_list,
             R.drawable.icon_setting_color
 
     };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // TODO: 2/27/17 Login logic
-        String username = this.getSharedPreferences(getString(R.string.app_domain), MODE_PRIVATE)
-                .getString(USERNAME, null);
-        if (username == null) {
-            startActivityForResult(new Intent(this, LoginActivity.class), RequestCode.LOGIN);
-        } else {
-            setup();
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == RequestCode.LOGIN) {
-            switch (resultCode) {
-                case RESULT_OK:
-                    this.getSharedPreferences(getString(R.string.app_domain), MODE_PRIVATE)
-                            .edit().putString(USERNAME, data.getStringExtra(USERNAME)).apply();
-                    setup();
-                    break;
-                case RESULT_CANCELED:
-                    finish();
-            }
-        }
-    }
-
-    private void setup() {
         setContentView(R.layout.activity_main);
 
         mFragmentList = new ArrayList<>();

@@ -21,9 +21,10 @@
             android:paddingTop="@dimen/activity_vertical_margin"
             android:orientation="vertical">
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="50dp"
+                android:orientation="horizontal">
                     <TextView
                         android:id="@+id/category_beef"
                         android:layout_width="wrap_content"
@@ -31,7 +32,9 @@
                         android:layout_alignParentLeft="true"
                         android:text="@string/food_category_meat"
                         android:layout_marginTop="3dp"
-                        android:textSize="20sp"/>
+                        android:textSize="20dp"
+                        android:textStyle="bold"
+                        android:layout_weight="8"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -40,165 +43,62 @@
                         android:layout_marginRight="15dp"
                         android:layout_alignParentRight="true"
                         android:textStyle="bold"
-                        android:textSize="27sp"/>
-            </RelativeLayout>
+                        android:textSize="27sp" />
+            </LinearLayout>
 
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/list_shop_meat">
+            </ListView>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_margin="5dp">
-
-                <CheckBox
-                    android:id="@+id/beef"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-                <TextView
-                    android:id="@+id/example_1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="left"
-                    android:text="Beef"
-                    android:textSize="20sp"
-                    android:layout_weight="12.82" />
-
-                <me.himanshusoni.quantityview.QuantityView
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/quantityView_beaf"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:qv_quantity="2" />
-            </LinearLayout>
-
-            <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:orientation="horizontal">
-
-                <CheckBox
-                    android:id="@+id/ground_pork"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    />
-
-                <TextView
-                    android:id="@+id/example_2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="left"
-                    android:text="Ground Pork"
-                    android:textSize="20sp"
-                    android:layout_weight="12.82" />
-
-                <me.himanshusoni.quantityview.QuantityView
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/quantityView_ground_pork"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:qv_quantity="1" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_height="50dp"
                 android:orientation="horizontal">
-
-                <CheckBox
-                    android:id="@+id/chicken_wings"
+                <TextView
+                    android:id="@+id/category_dairy"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    />
+                    android:layout_alignParentLeft="true"
+                    android:text="Dairy"
+                    android:layout_marginTop="3dp"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    android:layout_weight="8"/>
 
                 <TextView
-                    android:id="@+id/example_3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="left"
-                    android:text="Chicken Wings"
-                    android:textSize="20sp"
-                    android:layout_weight="12.82" />
-
-                <me.himanshusoni.quantityview.QuantityView
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/quantityView_chicken_wings"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    app:qv_quantity="1" />
-
+                    android:text="+"
+                    android:layout_marginRight="15dp"
+                    android:layout_alignParentRight="true"
+                    android:textStyle="bold"
+                    android:textSize="27sp"
+                     />
             </LinearLayout>
 
-            <RelativeLayout
+            <ListView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                    <TextView
-                        android:id="@+id/category_diary"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="20sp"
-                        android:layout_marginTop="3dp"
-                        android:layout_alignParentLeft="true"
-                        android:text="@string/food_category_diary" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="+"
-                        android:layout_marginRight="15dp"
-                        android:layout_alignParentRight="true"
-                        android:textStyle="bold"
-                        android:textSize="27sp"/>
-            </RelativeLayout>
+                android:layout_height="wrap_content"
+                android:id="@+id/list_shop_dairy">
+            </ListView>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_height="50dp"
                 android:orientation="horizontal">
-
-                <CheckBox
-                    android:id="@+id/soy_milk"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    />
-
-                <TextView
-                    android:id="@+id/example_4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="left"
-                    android:text="Soy Milk"
-                    android:textSize="20sp"
-                    android:layout_weight="12.82" />
-
-                <me.himanshusoni.quantityview.QuantityView
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/quantityView_soy_milk"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:qv_quantity="2" />
-
-            </LinearLayout>
-
-            <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
                 <TextView
                     android:id="@+id/category_fruit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/food_category_fruit"
+                    android:layout_alignParentLeft="true"
+                    android:text="Fruit"
                     android:layout_marginTop="3dp"
-                    android:textSize="20sp"/>
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_weight="8"/>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -206,49 +106,32 @@
                     android:layout_marginRight="15dp"
                     android:layout_alignParentRight="true"
                     android:textStyle="bold"
-                    android:textSize="27sp"/>
-            </RelativeLayout>
+                    android:textSize="27sp"
+                    />
+            </LinearLayout>
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/list_shop_fruit">
+            </ListView>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_height="50dp"
                 android:orientation="horizontal">
-
-                <CheckBox
-                    android:id="@+id/stawberry"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
                 <TextView
-                    android:id="@+id/example_5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="left"
-                    android:text="Strawberry"
-                    android:textSize="20sp"
-                    android:layout_weight="12.82" />
-
-                <me.himanshusoni.quantityview.QuantityView
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/quantityView_strawberry"
+                    android:id="@+id/category_Vegetable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:qv_quantity="1" />
-
-            </LinearLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:id="@+id/category_vegetable"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/food_category_vegetable"
+                    android:layout_alignParentLeft="true"
+                    android:text="Vegetable"
                     android:layout_marginTop="3dp"
-                    android:textSize="20sp"/>
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_weight="8"/>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -256,101 +139,30 @@
                     android:layout_marginRight="15dp"
                     android:layout_alignParentRight="true"
                     android:textStyle="bold"
-                    android:textSize="27sp"/>
-            </RelativeLayout>
+                    android:textSize="27sp" />
+            </LinearLayout>
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/list_shop_vegetable">
+            </ListView>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_height="50dp"
                 android:orientation="horizontal">
-
-                <CheckBox
-                    android:id="@+id/green_pepper"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    />
-
-                <TextView
-                    android:id="@+id/example_6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="left"
-                    android:text="Green Pepper"
-                    android:textSize="20sp"
-                    android:layout_weight="12.82" />
-
-                <me.himanshusoni.quantityview.QuantityView
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/quantityView_green_pepper"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:qv_quantity="3" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:orientation="horizontal">
-
-                <CheckBox
-                    android:id="@+id/potato"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    />
-
-                <TextView
-                    android:id="@+id/example_7"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="left"
-                    android:text="Potato"
-                    android:textSize="20sp"
-                    android:layout_weight="12.82" />
-
-                <me.himanshusoni.quantityview.QuantityView
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/quantityView_potato"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:qv_quantity="5" />
-
-            </LinearLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
                 <TextView
                     android:id="@+id/category_ingredient"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/food_category_ingredient"
-                    android:textSize="20sp"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="+"
-                    android:layout_marginRight="15dp"
-                    android:layout_alignParentRight="true"
-                    android:textStyle="bold"
-                    android:textSize="27sp"/>
-            </RelativeLayout>
-
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:id="@+id/category_other"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/food_category_other"
+                    android:layout_alignParentLeft="true"
+                    android:text="Ingredient"
+                    android:layout_marginTop="3dp"
                     android:textSize="20sp"
-                    android:layout_marginTop="3dp"/>
+                    android:textStyle="bold"
+                    android:layout_weight="8"/>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -358,39 +170,47 @@
                     android:layout_marginRight="15dp"
                     android:layout_alignParentRight="true"
                     android:textStyle="bold"
-                    android:textSize="27sp"/>
-            </RelativeLayout>
+                    android:textSize="27sp"
+                     />
+            </LinearLayout>
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/list_shop_ingredient">
+            </ListView>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_height="50dp"
                 android:orientation="horizontal">
-
-                <CheckBox
-                    android:id="@+id/cholocote"
+                <TextView
+                    android:id="@+id/category_Other"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    />
+                    android:layout_alignParentLeft="true"
+                    android:text="@string/food_category_other"
+                    android:layout_marginTop="3dp"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_weight="8"/>
 
                 <TextView
-                    android:id="@+id/example_8"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="left"
-                    android:text="Chocolate"
-                    android:textSize="20sp"
-                    android:layout_weight="12.82" />
-
-                <me.himanshusoni.quantityview.QuantityView
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/quantityView_chocoloate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:qv_quantity="1" />
-
+                    android:text="+"
+                    android:layout_marginRight="15dp"
+                    android:layout_alignParentRight="true"
+                    android:textStyle="bold"
+                    android:textSize="27sp"
+                    />
             </LinearLayout>
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/list_shop_other">
+            </ListView>
 
 
         </LinearLayout>
