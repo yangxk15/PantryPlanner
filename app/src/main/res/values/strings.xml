@@ -14,6 +14,7 @@
     <string name="login_activity_prompt_password">Password</string>
     <string name="login_activity_login">Sign in</string>
     <string name="login_activity_register">Register</string>
+    <string name="create_recipe_activity">Create Recipe</string>
 
     <!-- Register activity -->
     <string name="register_activity_title">Register</string>

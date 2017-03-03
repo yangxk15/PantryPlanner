@@ -56,7 +56,7 @@ public class RecipeListFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(RecipeListFragment.this.getActivity(), DisplayRecipeActivity.class);
+                Intent intent = new Intent(RecipeListFragment.this.getActivity(), RecipeDetailActivity.class);
                 intent.putExtra("RecipeName", (String) adapter.getItem(position));
                 startActivity(intent);
             }

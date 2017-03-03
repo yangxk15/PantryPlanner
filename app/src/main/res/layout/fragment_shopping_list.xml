@@ -21,22 +21,36 @@
             android:paddingTop="@dimen/activity_vertical_margin"
             android:orientation="vertical">
 
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:orientation="horizontal">
-                    <TextView
+
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/steak"
+                    android:layout_weight="0.1"
+                    android:layout_gravity="center"
+                    android:layout_alignParentLeft="true"/>
+
+
+                <TextView
                         android:id="@+id/category_beef"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="10dp"
                         android:text="@string/food_category_meat"
                         android:layout_marginTop="3dp"
                         android:textSize="20dp"
                         android:textStyle="bold"
                         android:layout_weight="8"/>
 
-                    <TextView
+
+
+                <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="+"
@@ -56,11 +70,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/cheese"
+                    android:layout_weight="0.1"
+                    android:layout_gravity="center"
+                    android:layout_alignParentLeft="true"/>
+
+
                 <TextView
                     android:id="@+id/category_dairy"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="10dp"
                     android:text="Dairy"
                     android:layout_marginTop="3dp"
                     android:textSize="20dp"
@@ -88,11 +112,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/strawberry"
+                    android:layout_weight="0.1"
+                    android:layout_gravity="center"
+                    android:layout_alignParentLeft="true"/>
+
                 <TextView
                     android:id="@+id/category_fruit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="10dp"
                     android:text="Fruit"
                     android:layout_marginTop="3dp"
                     android:textSize="20sp"
@@ -121,11 +154,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/broccoli"
+                    android:layout_weight="0.1"
+                    android:layout_gravity="center"
+                    android:layout_alignParentLeft="true"/>
+
                 <TextView
                     android:id="@+id/category_Vegetable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="10dp"
                     android:text="Vegetable"
                     android:layout_marginTop="3dp"
                     android:textSize="20sp"
@@ -152,11 +194,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/salt"
+                    android:layout_weight="0.1"
+                    android:layout_gravity="center"
+                    android:layout_alignParentLeft="true"/>
+
                 <TextView
                     android:id="@+id/category_ingredient"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="10dp"
                     android:text="Ingredient"
                     android:layout_marginTop="3dp"
                     android:textSize="20sp"
@@ -184,11 +235,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/chocolate"
+                    android:layout_weight="0.1"
+                    android:layout_gravity="center"
+                    android:layout_alignParentLeft="true"/>
+
                 <TextView
                     android:id="@+id/category_Other"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="10dp"
                     android:text="@string/food_category_other"
                     android:layout_marginTop="3dp"
                     android:textSize="20sp"
