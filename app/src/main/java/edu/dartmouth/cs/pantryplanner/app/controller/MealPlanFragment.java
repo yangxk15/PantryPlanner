@@ -46,20 +46,10 @@ public class MealPlanFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_meal_plan, container, false);
         ExpandableListView listView = (ExpandableListView) view.findViewById(R.id.expandableListView_meal_plan);
-
         dataProcess();
 
         listView.setAdapter(mMealPlanAdapter);
-        //TODO: click listener
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            // jump to display recipe
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //Intent intent = new Intent(MealPlanFragment.this.getActivity(), DisplayRecipeActivity.class);
-                //intent.putExtra("RecipeName", (Recipe) adapter.getItem(position));
-                //startActivity(intent);
-            }
-        });
+        listView.expandGroup(0);
         return view;
     }
 
@@ -172,7 +162,12 @@ public class MealPlanFragment extends Fragment {
             View view = inflater.inflate(R.layout.list_meal_plan_date, parent, false);
             ImageButton imageButton = (ImageButton) view.findViewById(R.id.imageView_meal_add);
             imageButton.setFocusable(false);
-            Log.d("parent", "date");
+            imageButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d("click", "imageButton");
+                }
+            });
             TextView textView = (TextView) view.findViewById(R.id.textView_meal_plan_date);
             textView.setText(getDate(groupPosition));
             return view;
@@ -185,7 +180,6 @@ public class MealPlanFragment extends Fragment {
             View view = inflater.inflate(R.layout.list_meal_plan_mealtype, parent, false);
 
             ArrayList<RecipeRecord> recipes = (ArrayList<RecipeRecord>) getChild(groupPosition, childPosition);
-            Log.d("child", "" + childPosition);
             String[] recipenames = new String[recipes.size()];
             for (int i = 0; i < recipenames.length; ++i) {
                 recipenames[i] = recipes.get(i).getRecipe().getName();
@@ -199,7 +193,7 @@ public class MealPlanFragment extends Fragment {
             linearLayout.setLayoutParams(params);
 
             TextView mealType = (TextView) view.findViewById(R.id.textView_meal_type);
-            mealType.setText("" + MealType.values()[childPosition]);
+            mealType.setText(recipes.get(0).getMealType());
 
             // ArrayAdapter for each meal type
             ListView listView = (ListView) view.findViewById(R.id.textView_meal_plan_recipe);
