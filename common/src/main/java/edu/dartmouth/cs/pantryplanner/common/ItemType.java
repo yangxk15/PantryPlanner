@@ -35,4 +35,15 @@ public enum ItemType {
         return freshTime;
     }
 
+    public static ItemType fromString(String s) {
+        for (ItemType itemType : ItemType.values()) {
+            if (itemType.toString().equalsIgnoreCase(s)) {
+                return itemType;
+            }
+        }
+
+        return null;
+    }
+
+
 }

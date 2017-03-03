@@ -22,10 +22,10 @@ public class RecipeRecord {
     Long id;
 
     Date date;
-    MealType mealType;
+    String mealType;
     Recipe recipe;
 
-    public RecipeRecord(Date date, MealType mealType, Recipe recipe) {
+    public RecipeRecord(Date date, String mealType, Recipe recipe) {
         this.date = date;
         this.mealType = mealType;
         this.recipe = recipe;
