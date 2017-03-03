@@ -31,8 +31,9 @@
         </activity>
         <activity
             android:name=".controller.RegisterActivity"/>
-        <activity android:name=".controller.RecipeDetailActivity" />
-        <activity android:name="edu.dartmouth.cs.pantryplanner.app.controller.DisplayRecipeActivity"/>
+        <activity android:name=".controller.RecipeDetailActivity"
+            android:exported="true"/>
+
     </application>
 
 </manifest>

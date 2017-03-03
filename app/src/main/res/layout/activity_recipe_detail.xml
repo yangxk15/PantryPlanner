@@ -9,7 +9,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="edu.dartmouth.cs.pantryplanner.app.controller.DisplayRecipeActivity">
+    tools:context="edu.dartmouth.cs.pantryplanner.app.controller.RecipeDetailActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -29,17 +29,16 @@
                 android:weightSum="10">
 
                 <TextView
-                    android:id="@+id/textView_recipe_time"
+                    android:id="@+id/textView_recipe_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="18dp"
                     android:layout_weight="4"
                     android:gravity="center"
-                    android:text="Feb 27 2017"
                     android:textSize="20dp" />
 
                 <TextView
-                    android:id="@+id/textView_recipe_time_tag"
+                    android:id="@+id/textView_recipe_type"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="18dp"
@@ -109,7 +108,7 @@
                 android:text="Finish Cooking"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/button2" />
+                android:id="@+id/finish_button" />
 
         </LinearLayout>
 
