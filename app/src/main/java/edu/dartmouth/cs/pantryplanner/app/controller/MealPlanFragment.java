@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -71,7 +72,7 @@ public class MealPlanFragment extends Fragment {
         RecipeRecord newrecipe1 = new RecipeRecord();
         newrecipe1.setDate(new DateTime(new Date()));
         newrecipe1.setMealType(MealType.BREAKFAST.name());
-        Log.d(MealType.BREAKFAST.name(), "mealtype");
+        //Log.d(MealType.BREAKFAST.name(), "mealtype");
         Recipe reci = new Recipe();
         reci.setName("Bacon");
         newrecipe1.setRecipe(reci);
@@ -96,8 +97,10 @@ public class MealPlanFragment extends Fragment {
         }
 
         //for (RecipeRecord recipe: recipes) {
+        //Log.d("time", formatter.format(Calendar.getInstance().getTime()));
             ArrayList<ArrayList<RecipeRecord>> mealTypeList = dateMap.get(formatter.format(Calendar.getInstance().getTime()));
             mealTypeList.get(0).add(newrecipe1);
+        //Log.d("meal", "" + mealTypeList.get(0).get(0).getRecipe().getName());
         //}
 
         // remove all empty meal type list
@@ -167,7 +170,9 @@ public class MealPlanFragment extends Fragment {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = inflater.inflate(R.layout.list_meal_plan_date, parent, false);
-
+            ImageButton imageButton = (ImageButton) view.findViewById(R.id.imageView_meal_add);
+            imageButton.setFocusable(false);
+            Log.d("parent", "date");
             TextView textView = (TextView) view.findViewById(R.id.textView_meal_plan_date);
             textView.setText(getDate(groupPosition));
             return view;
@@ -180,7 +185,7 @@ public class MealPlanFragment extends Fragment {
             View view = inflater.inflate(R.layout.list_meal_plan_mealtype, parent, false);
 
             ArrayList<RecipeRecord> recipes = (ArrayList<RecipeRecord>) getChild(groupPosition, childPosition);
-
+            Log.d("child", "" + childPosition);
             String[] recipenames = new String[recipes.size()];
             for (int i = 0; i < recipenames.length; ++i) {
                 recipenames[i] = recipes.get(i).getRecipe().getName();
@@ -216,9 +221,6 @@ public class MealPlanFragment extends Fragment {
         }
 
         private String getDate(int groupPosition) {
-            if (groupPosition == 0) {
-                return new SimpleDateFormat("MMM dd yyyy").format(new Date());
-            }
             Calendar calendar = Calendar.getInstance();
             calendar.add(Calendar.DATE, groupPosition);
             return new SimpleDateFormat("MMM dd yyyy").format(calendar.getTime());
