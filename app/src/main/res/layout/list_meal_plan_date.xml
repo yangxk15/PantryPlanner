@@ -28,7 +28,8 @@
             app:srcCompat="@drawable/plus"
             android:layout_weight="1"
             android:layout_marginRight="15dp"
-            android:layout_alignParentRight="true"/>
+            android:layout_alignParentRight="true"
+            android:background="#00000000"/>
 
 
     </LinearLayout>

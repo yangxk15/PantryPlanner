@@ -58,7 +58,8 @@
                     android:id="@+id/shop_add_meat"
                     android:layout_weight="1"
                     android:layout_marginRight="15dp"
-                    android:layout_alignParentRight="true"/>
+                    android:layout_alignParentRight="true"
+                    android:background="#00000000"/>
 
             </LinearLayout>
 
@@ -101,7 +102,8 @@
                     android:id="@+id/shop_add_dairy"
                     android:layout_weight="1"
                     android:layout_marginRight="15dp"
-                    android:layout_alignParentRight="true"/>
+                    android:layout_alignParentRight="true"
+                    android:background="#00000000"/>
 
 
             </LinearLayout>
@@ -144,7 +146,8 @@
                     android:id="@+id/shop_add_fruit"
                     android:layout_weight="1"
                     android:layout_marginRight="15dp"
-                    android:layout_alignParentRight="true"/>
+                    android:layout_alignParentRight="true"
+                    android:background="#00000000"/>
 
             </LinearLayout>
 
@@ -188,7 +191,8 @@
                     android:id="@+id/shop_add_veggie"
                     android:layout_weight="1"
                     android:layout_marginRight="15dp"
-                    android:layout_alignParentRight="true"/>
+                    android:layout_alignParentRight="true"
+                    android:background="#00000000"/>
 
             </LinearLayout>
 
@@ -229,7 +233,8 @@
                     android:id="@+id/shop_add_ingredient"
                     android:layout_weight="1"
                     android:layout_marginRight="15dp"
-                    android:layout_alignParentRight="true"/>
+                    android:layout_alignParentRight="true"
+                    android:background="#00000000"/>
 
             </LinearLayout>
 
@@ -271,7 +276,8 @@
                     android:id="@+id/shop_add_other"
                     android:layout_weight="1"
                     android:layout_marginRight="15dp"
-                    android:layout_alignParentRight="true"/>
+                    android:layout_alignParentRight="true"
+                    android:background="#00000000"/>
 
 
             </LinearLayout>
