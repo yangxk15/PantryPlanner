@@ -1,7 +1,6 @@
 package edu.dartmouth.cs.pantryplanner.common;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 
 @AllArgsConstructor
 public enum ItemType {
@@ -20,7 +19,7 @@ public enum ItemType {
         return text;
     }
 
-    public String[] getItemTypes() {
+    public static String[] getItemTypes() {
         ItemType[] itemTypes = ItemType.values();
         String[] types = new String[itemTypes.length];
 

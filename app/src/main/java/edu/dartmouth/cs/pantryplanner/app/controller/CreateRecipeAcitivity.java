@@ -19,8 +19,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import edu.dartmouth.cs.pantryplanner.app.R;
+import edu.dartmouth.cs.pantryplanner.common.Item;
+import edu.dartmouth.cs.pantryplanner.common.ItemType;
+import edu.dartmouth.cs.pantryplanner.common.Recipe;
 
 
 /**
@@ -35,6 +42,12 @@ public class CreateRecipeAcitivity extends AppCompatActivity{
     private Button mAddButton;
     private Button mSaveButton;
     private Button mCancelButton;
+
+    private String name;
+    private Map<Item, Integer> items = new HashMap<>();
+    private List<String> steps = new ArrayList<>();
+
+
 
     private ArrayList<TextView> mTextViewList = new ArrayList<>();
 
@@ -53,13 +66,8 @@ public class CreateRecipeAcitivity extends AppCompatActivity{
                 /* dynamically add edit text box and spinner */
                 final EditText t1 = new EditText(CreateRecipeAcitivity.this);
                 final EditText t2 = new EditText(CreateRecipeAcitivity.this);
-                ArrayList<String> spinnerArray = new ArrayList<>();
-                spinnerArray.add("MEAT");
-                spinnerArray.add("DIARY");
-                spinnerArray.add("FRUIT");
-                spinnerArray.add("VEGETABLE");
-                spinnerArray.add("INGREDIENT");
-                spinnerArray.add("OTHER");
+                ArrayList<String> spinnerArray = new ArrayList<>(Arrays.asList(ItemType.getItemTypes()));
+
 
                 final Spinner spinner = new Spinner(CreateRecipeAcitivity.this);
                 ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(CreateRecipeAcitivity.this,
@@ -98,23 +106,26 @@ public class CreateRecipeAcitivity extends AppCompatActivity{
                         if (!hasFocus) {
                             Log.d("focus2", "focus loosed");
                            /* get user's input */
-                            String newString1 = t1.getText().toString();
-                            Log.d("String1", newString1);
-                            String newString2 = t2.getText().toString();
-                            Log.d("String2", newString2);
-                            if (!newString1.equals("") && !newString2.equals("")){
+                            String material = t1.getText().toString();
+                            Log.d("material", material);
+                            String quantity = t2.getText().toString();
+                            Log.d("quantity", quantity);
+                            if (!material.equals("") && !quantity.equals("")){
 
                                 TextView newTextView1 = new TextView(CreateRecipeAcitivity.this);
                                 TextView newTextView2 = new TextView(CreateRecipeAcitivity.this);
 
-                                newTextView1.setText(newString1);
-                                newTextView2.setText(newString2);
+                                newTextView1.setText(material);
+                                newTextView2.setText(quantity);
                                 LinearLayout horizontal_text = new LinearLayout(CreateRecipeAcitivity.this);
                                 horizontal_text.setOrientation(LinearLayout.HORIZONTAL);
                                 root.removeView(horizontal);
                                 horizontal_text.addView(newTextView1);
                                 horizontal_text.addView(newTextView2);
                                 root.addView(horizontal_text, 2);
+                                Log.d("spinner position: ", spinner.getSelectedItem().toString());
+                                Item item = new Item(material,ItemType.values()[spinner.getSelectedItemPosition()]);
+                                items.put(item, Integer.parseInt(quantity));
                             } else {
                                 root.removeView(horizontal);
                             }
@@ -129,6 +140,10 @@ public class CreateRecipeAcitivity extends AppCompatActivity{
         mSaveButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
+                name = mRecipeName.getText().toString();
+                Log.d("Recipe Name",name);
+                steps.add(mSteps.getText().toString());
+                Log.d("Steps",steps.get(0));
                 saveBtnSelected(view);
             }
         });
@@ -171,11 +186,19 @@ public class CreateRecipeAcitivity extends AppCompatActivity{
         finish();
     }
 
-    private class AddRecipeAsyncTask extends AsyncTask<Void, Void, Void>{
+    private class AddRecipeAsyncTask extends AsyncTask<Void, Recipe, Recipe>{
 
         @Override
-        protected Void doInBackground(Void... params) {
-            return null;
+        protected Recipe doInBackground(Void... params) {
+            Recipe recipe = new Recipe(name, items, steps);
+
+            return recipe;
+        }
+
+        @Override
+        protected void onPostExecute(Recipe recipe){
+            Toast.makeText(getApplicationContext(), "Recipe saved!", Toast.LENGTH_SHORT).show();
+            return;
         }
     }
 
