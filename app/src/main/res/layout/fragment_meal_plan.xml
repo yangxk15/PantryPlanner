@@ -1,147 +1,15 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context="edu.dartmouth.cs.pantryplanner.app.controller.MealPlanFragment">
 
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-            <RelativeLayout
+        <ExpandableListView
+                android:id="@+id/expandableListView_meal_plan"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/meal_plan_date_1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:text="Monday Feb 27"
-                    android:textColor="#000000"
-                    android:textSize="25dp"/>
+                android:layout_height="match_parent"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="+"
-                    android:layout_marginRight="15dp"
-                    android:layout_alignParentRight="true"
-                    android:textStyle="bold"
-                    android:textSize="27sp"/>
-
-
-            </RelativeLayout>
-
-
-                <TextView
-                    android:id="@+id/meal_plan_brakfast"
-                    android:layout_width="116dp"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:text="Breakfast"
-                    android:textColor="#000000"
-                    android:textSize="20dp"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/meal_plan_breakfast_1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="10dp"
-                            android:text="-Smoked Salmon"
-                            android:textColor="#000000"
-                            android:textSize="15dp"/>
-
-                        <TextView
-                            android:id="@+id/meal_plan_breakfast_2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="10dp"
-                            android:text="-Bagel"
-                            android:textColor="#000000"
-                            android:textSize="15dp"/>
-
-                </LinearLayout>
-
-
-            <TextView
-                android:id="@+id/meal_plan_lunch"
-                android:layout_width="116dp"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:text="Lunch"
-                android:textColor="#000000"
-                android:textSize="20dp"/>
-
-            <LinearLayout
-                    android:layout_width="248dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/meal_plan_lunch_1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="10dp"
-                        android:text="-Pesto Pasta"
-                        android:textColor="#000000"
-                        android:textSize="15dp"/>
-                </LinearLayout>
-
-            <TextView
-                android:id="@+id/meal_plan_dinner"
-                android:layout_width="117dp"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:text="Dinner"
-                android:textColor="#000000"
-                android:textSize="20dp"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/meal_plan_dinner_1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:text="-Fried Rice"
-                    android:textColor="#000000"
-                    android:textSize="15dp"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <ExpandableListView
-                    android:id="@+id/list_ex_meal"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-            </LinearLayout>
-
-
-        </LinearLayout>
-
-
-
-
-    </ScrollView>
-</FrameLayout>
+</LinearLayout>
