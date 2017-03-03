@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -32,6 +33,8 @@ public class CreateRecipeAcitivity extends AppCompatActivity{
     TextView mSteps;
 
     private Button mAddButton;
+    private Button mSaveButton;
+    private Button mCancelButton;
 
     private ArrayList<TextView> mTextViewList = new ArrayList<>();
 
@@ -76,7 +79,7 @@ public class CreateRecipeAcitivity extends AppCompatActivity{
                 horizontal.addView(spinner);
                 horizontal.addView(t1);
                 horizontal.addView(t2);
-                root.addView(horizontal,1);
+                root.addView(horizontal,2);
 
                 t1.setOnFocusChangeListener(new View.OnFocusChangeListener(){
                     @Override
@@ -111,7 +114,7 @@ public class CreateRecipeAcitivity extends AppCompatActivity{
                                 root.removeView(horizontal);
                                 horizontal_text.addView(newTextView1);
                                 horizontal_text.addView(newTextView2);
-                                root.addView(horizontal_text, 1);
+                                root.addView(horizontal_text, 2);
                             } else {
                                 root.removeView(horizontal);
                             }
@@ -121,6 +124,21 @@ public class CreateRecipeAcitivity extends AppCompatActivity{
                     }
                 });
             }
+        });
+        mSaveButton = (Button) findViewById(R.id.create_recipe_save);
+        mSaveButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                saveBtnSelected(view);
+            }
+        });
+        mCancelButton = (Button) findViewById(R.id.create_recipe_cancel);
+        mCancelButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                cancelBtnSelected(v);
+            }
+
         });
 
     }
@@ -143,7 +161,14 @@ public class CreateRecipeAcitivity extends AppCompatActivity{
     }
 
     public void saveBtnSelected(View view){
+        AddRecipeAsyncTask addRecipeAsyncTask = new AddRecipeAsyncTask();
+        addRecipeAsyncTask.execute();
+        finish();
+    }
 
+    public void cancelBtnSelected(View view){
+        Toast.makeText(CreateRecipeAcitivity.this, "Recipe discarded", Toast.LENGTH_SHORT).show();
+        finish();
     }
 
     private class AddRecipeAsyncTask extends AsyncTask<Void, Void, Void>{
