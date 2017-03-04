@@ -13,6 +13,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -59,11 +60,23 @@ public class ShoppingListFragment extends Fragment {
         Item apple = new Item("Apple", ItemType.FRUIT);
         Item orange = new Item("Orange", ItemType.FRUIT);
         Item beef = new Item("Beef", ItemType.MEAT);
+        Item c1 = new Item("Grape", ItemType.FRUIT);
+        Item c2 = new Item("Lemon", ItemType.FRUIT);
+        Item c3 = new Item("Tuna", ItemType.MEAT);
+        Item c4 = new Item("Apple", ItemType.FRUIT);
+        Item c5 = new Item("Chicken", ItemType.MEAT);
+        Item c6 = new Item("Pork", ItemType.MEAT);
 
         ArrayList<Item> items = new ArrayList<>();
         items.add(apple);
         items.add(orange);
         items.add(beef);
+        items.add(c1);
+        items.add(c2);
+        items.add(c3);
+        items.add(c4);
+        items.add(c5);
+        items.add(c6);
 
         ArrayList<ArrayList<Item>> typeList = new ArrayList<>();
         for (int i = 0; i < ItemType.values().length; ++i) {
@@ -127,6 +140,27 @@ public class ShoppingListFragment extends Fragment {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = inflater.inflate(R.layout.list_shoping_list_type, parent, false);
+            ImageView imageView = (ImageView) view.findViewById(R.id.imageView_shop_image);
+            switch (groupPosition) {
+                case 0:
+                    imageView.setImageResource(R.drawable.steak);
+                    break;
+                case 1:
+                    imageView.setImageResource(R.drawable.food_and_wine);
+                    break;
+                case 2:
+                    imageView.setImageResource(R.drawable.strawberry);
+                    break;
+                case 3:
+                    imageView.setImageResource(R.drawable.broccoli);
+                    break;
+                case 4:
+                    imageView.setImageResource(R.drawable.salt);
+                    break;
+                default:
+                    imageView.setImageResource(R.drawable.broccoli);
+                    break;
+            }
             ImageButton imageButton = (ImageButton) view.findViewById(R.id.imageButton_shop_add);
             imageButton.setFocusable(false);
             imageButton.setOnClickListener(new View.OnClickListener() {

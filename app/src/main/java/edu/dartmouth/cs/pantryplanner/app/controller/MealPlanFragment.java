@@ -35,6 +35,8 @@ import edu.dartmouth.cs.pantryplanner.common.Recipe;
  */
 public class MealPlanFragment extends Fragment {
     MealPlanAdapter mMealPlanAdapter;
+    public static int mMealNumber = 7;
+
     public MealPlanFragment() {
         // Required empty public constructor
     }
@@ -75,7 +77,7 @@ public class MealPlanFragment extends Fragment {
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat formatter = new SimpleDateFormat("MMM dd yyyy");
         HashMap<String, ArrayList<ArrayList<MealPlanRecord>>> dateMap = new HashMap<>();
-        for (int i = 0; i < 7; ++i) {
+        for (int i = 0; i < mMealNumber; ++i) {
             ArrayList<ArrayList<MealPlanRecord>> mealTypeList = new ArrayList<>();
             for (int j = 3; j > 0; --j) {
                 mealTypeList.add(new ArrayList<MealPlanRecord>());
