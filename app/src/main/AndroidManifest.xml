@@ -27,9 +27,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".controller.RecipeDetailActivity"
-            android:exported="true"/>
+            />
         <activity android:name=".controller.LoginActivity"/>
         <activity android:name=".controller.RegisterActivity" />
+        <activity android:name=".controller.CreateMealActivity"
+            android:exported="true"/>
     </application>
 
 </manifest>
