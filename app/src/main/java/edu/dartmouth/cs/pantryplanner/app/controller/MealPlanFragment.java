@@ -26,9 +26,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import edu.dartmouth.cs.pantryplanner.app.R;
-import edu.dartmouth.cs.pantryplanner.backend.entity.recipeRecordApi.model.RecipeRecord;
-import edu.dartmouth.cs.pantryplanner.backend.entity.recipeRecordApi.model.Recipe;
+import edu.dartmouth.cs.pantryplanner.backend.entity.mealPlanRecordApi.model.MealPlanRecord;
 import edu.dartmouth.cs.pantryplanner.common.MealType;
+import edu.dartmouth.cs.pantryplanner.common.Recipe;
 
 
 /**
@@ -59,36 +59,35 @@ public class MealPlanFragment extends Fragment {
                     Day       Tag       Meal
          */
 
-        RecipeRecord newrecipe1 = new RecipeRecord();
-        newrecipe1.setDate(new DateTime(new Date()));
-        newrecipe1.setMealType(MealType.BREAKFAST.name());
-        //Log.d(MealType.BREAKFAST.name(), "mealtype");
-        Recipe reci = new Recipe();
-        reci.setName("Bacon");
-        newrecipe1.setRecipe(reci);
-        //RecipeRecord newrecipe2 = new Recipe("Milk", new Date(), MealType.DINNER, null, null);
-        //RecipeRecord newrecipe3 = new Recipe("Broccoli", new Date(), MealType.DINNER, null, null);
+        MealPlanRecord newrecipe1 = new MealPlanRecord();
+        newrecipe1.setMealType(MealType.BREAKFAST.toString());
+        Recipe recipe = new Recipe("Bacon", null, null);
 
-        ArrayList<RecipeRecord> recipes = new ArrayList<>();
+        newrecipe1.setRecipe(recipe.toString());
+        //Log.d(MealType.BREAKFAST.name(), "mealtype");
+        //MealPlanRecord newrecipe2 = new Recipe("Milk", new Date(), MealType.DINNER, null, null);
+        //MealPlanRecord newrecipe3 = new Recipe("Broccoli", new Date(), MealType.DINNER, null, null);
+
+        ArrayList<MealPlanRecord> recipes = new ArrayList<>();
         recipes.add(newrecipe1);
         //recipes.add(newrecipe2);
         //recipes.add(newrecipe3);
 
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat formatter = new SimpleDateFormat("MMM dd yyyy");
-        HashMap<String, ArrayList<ArrayList<RecipeRecord>>> dateMap = new HashMap<>();
+        HashMap<String, ArrayList<ArrayList<MealPlanRecord>>> dateMap = new HashMap<>();
         for (int i = 0; i < 7; ++i) {
-            ArrayList<ArrayList<RecipeRecord>> mealTypeList = new ArrayList<>();
+            ArrayList<ArrayList<MealPlanRecord>> mealTypeList = new ArrayList<>();
             for (int j = 3; j > 0; --j) {
-                mealTypeList.add(new ArrayList<RecipeRecord>());
+                mealTypeList.add(new ArrayList<MealPlanRecord>());
             }
             dateMap.put(formatter.format(calendar.getTime()), mealTypeList);
             calendar.add(Calendar.DATE, 1);
         }
 
-        //for (RecipeRecord recipe: recipes) {
+        //for (MealPlanRecord recipe: recipes) {
         //Log.d("time", formatter.format(Calendar.getInstance().getTime()));
-            ArrayList<ArrayList<RecipeRecord>> mealTypeList = dateMap.get(formatter.format(Calendar.getInstance().getTime()));
+            ArrayList<ArrayList<MealPlanRecord>> mealTypeList = dateMap.get(formatter.format(Calendar.getInstance().getTime()));
             mealTypeList.get(0).add(newrecipe1);
         //Log.d("meal", "" + mealTypeList.get(0).get(0).getRecipe().getName());
         //}
@@ -111,11 +110,11 @@ public class MealPlanFragment extends Fragment {
 
 
     private class MealPlanAdapter extends BaseExpandableListAdapter {
-        HashMap<String, ArrayList<ArrayList<RecipeRecord>>> groupMap;
+        HashMap<String, ArrayList<ArrayList<MealPlanRecord>>> groupMap;
         Context context;
 
         public MealPlanAdapter(Context context,
-                               HashMap<String, ArrayList<ArrayList<RecipeRecord>>> groupMap) {
+                               HashMap<String, ArrayList<ArrayList<MealPlanRecord>>> groupMap) {
             this.context = context;
             this.groupMap = groupMap;
         }
@@ -179,10 +178,10 @@ public class MealPlanFragment extends Fragment {
                         .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = inflater.inflate(R.layout.list_meal_plan_mealtype, parent, false);
 
-            ArrayList<RecipeRecord> recipes = (ArrayList<RecipeRecord>) getChild(groupPosition, childPosition);
+            ArrayList<MealPlanRecord> recipes = (ArrayList<MealPlanRecord>) getChild(groupPosition, childPosition);
             String[] recipenames = new String[recipes.size()];
             for (int i = 0; i < recipenames.length; ++i) {
-                recipenames[i] = recipes.get(i).getRecipe().getName();
+                recipenames[i] = Recipe.fromString(recipes.get(i).getRecipe()).getName();
             }
 
             // set layout height

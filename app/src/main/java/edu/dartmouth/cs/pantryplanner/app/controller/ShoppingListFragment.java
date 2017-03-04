@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.util.Log;
-import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,14 +79,12 @@ public class ShoppingListFragment extends Fragment {
 
     private class ShoppingListAdapter extends BaseExpandableListAdapter {
         ArrayList<ArrayList<Item>> groupList;
-        HashSet<Item> set;
         Context context;
 
         public ShoppingListAdapter(Context context,
                                ArrayList<ArrayList<Item>> groupList) {
             this.context = context;
             this.groupList = groupList;
-            set = new HashSet<>();
         }
 
         @Override
@@ -164,16 +161,13 @@ public class ShoppingListFragment extends Fragment {
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (isChecked) {
                         selectedItems.add(item);
-                        set.add(item);
-                        Log.d("add item", item.getName());
+                        // Log.d("add item", item.getName());
                     } else {
                         selectedItems.remove(item);
-                        Log.d("remove item", item.getName());
-                        set.remove(item);
+                        // Log.d("remove item", item.getName());
                     }
                 }
             }); // set the listener
-            Log.d("size", "" + selectedItems.size());
             return view;
         }
 

@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 public enum ItemType {
     MEAT("Meat", 7),
     DIARY("Diary", 1),
-    FRUIT("Fruite", 3),
+    FRUIT("Fruit", 3),
     VEGETABLE("Vegetable", 5),
     INGREDIENT("Ingredient", 30),
     OTHER("Other", 15);

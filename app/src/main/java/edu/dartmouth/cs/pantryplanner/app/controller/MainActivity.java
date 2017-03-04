@@ -1,8 +1,5 @@
 package edu.dartmouth.cs.pantryplanner.app.controller;
 
-import android.content.Context;
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.support.design.widget.TabLayout;
 import android.support.v13.app.FragmentPagerAdapter;
 
@@ -10,23 +7,10 @@ import android.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.widget.Toast;
 
-import com.google.android.gms.gcm.GoogleCloudMessaging;
-import com.google.api.client.extensions.android.http.AndroidHttp;
-import com.google.api.client.extensions.android.json.AndroidJsonFactory;
-import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
-import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
-
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import edu.dartmouth.cs.pantryplanner.app.R;
-import edu.dartmouth.cs.pantryplanner.app.util.RequestCode;
-import edu.dartmouth.cs.pantryplanner.backend.registration.Registration;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -51,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         mFragmentList.add(new PantryFragment());
         mFragmentList.add(new MealPlanFragment());
         mFragmentList.add(new ShoppingListFragment());
-        mFragmentList.add(new RecipeListFragment());
+        mFragmentList.add(new HistoryListFragment());
         mFragmentList.add(new SettingFragment());
 
         FragmentPagerAdapter fragmentPagerAdapter = new FragmentPagerAdapter(getFragmentManager()) {
@@ -75,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                     case 2:
                         return "Shop";
                     case 3:
-                        return "Recipe";
+                        return "History";
                     case 4:
                         return "Setting";
                 }
