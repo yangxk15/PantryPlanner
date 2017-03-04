@@ -60,6 +60,10 @@ public class MealPlanFragment extends Fragment {
          */
 
         MealPlanRecord newrecipe1 = new MealPlanRecord();
+        newrecipe1.setMealType(MealType.BREAKFAST.toString());
+        Recipe recipe = new Recipe("Bacon", null, null);
+
+        newrecipe1.setRecipe(recipe.toString());
         //Log.d(MealType.BREAKFAST.name(), "mealtype");
         //MealPlanRecord newrecipe2 = new Recipe("Milk", new Date(), MealType.DINNER, null, null);
         //MealPlanRecord newrecipe3 = new Recipe("Broccoli", new Date(), MealType.DINNER, null, null);
@@ -177,7 +181,7 @@ public class MealPlanFragment extends Fragment {
             ArrayList<MealPlanRecord> recipes = (ArrayList<MealPlanRecord>) getChild(groupPosition, childPosition);
             String[] recipenames = new String[recipes.size()];
             for (int i = 0; i < recipenames.length; ++i) {
-                recipenames[i] = recipes.get(i).getRecipe();
+                recipenames[i] = Recipe.fromString(recipes.get(i).getRecipe()).getName();
             }
 
             // set layout height

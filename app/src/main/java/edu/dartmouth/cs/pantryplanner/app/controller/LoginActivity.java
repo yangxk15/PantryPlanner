@@ -223,7 +223,7 @@ public class LoginActivity extends AppCompatActivity {
                 editor.putString("email", mEmail);
                 editor.putString("password", mPassword);
                 editor.apply();
-                startActivity(new Intent(LoginActivity.this, CreateRecipeAcitivity.class));
+                startActivity(new Intent(LoginActivity.this, CreateRecipeActivity.class));
                 finish();
             } else {
                 if (ex instanceof GoogleJsonResponseException) {
