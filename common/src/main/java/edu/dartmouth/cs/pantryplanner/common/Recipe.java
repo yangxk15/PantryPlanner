@@ -1,5 +1,7 @@
 package edu.dartmouth.cs.pantryplanner.common;
 
+import com.google.gson.Gson;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -17,4 +19,14 @@ public class Recipe {
     String name;
     Map<Item, Integer> items;
     List<String> steps;
+
+    @Override
+    public String toString() {
+        return new Gson().toJson(this);
+    }
+
+    public static Recipe fromString(String s) {
+        return new Gson().fromJson(s, Recipe.class);
+    }
+
 }

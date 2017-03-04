@@ -1,4 +1,4 @@
-package edu.dartmouth.cs.pantryplanner.backend.entity;
+package edu.dartmouth.cs.pantryplanner.backend.endpoint;
 
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
@@ -16,6 +16,8 @@ import java.util.logging.Logger;
 
 import javax.annotation.Nullable;
 import javax.inject.Named;
+
+import edu.dartmouth.cs.pantryplanner.backend.entity.RecipeRecord;
 
 import static com.googlecode.objectify.ObjectifyService.ofy;
 

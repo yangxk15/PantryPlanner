@@ -18,6 +18,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.extensions.android.json.AndroidJsonFactory;
+import com.google.api.client.googleapis.json.GoogleJsonError;
+import com.google.api.client.googleapis.json.GoogleJsonResponseException;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -25,6 +31,10 @@ import java.util.List;
 import java.util.Map;
 
 import edu.dartmouth.cs.pantryplanner.app.R;
+import edu.dartmouth.cs.pantryplanner.app.util.ServiceBuilderHelper;
+import edu.dartmouth.cs.pantryplanner.backend.entity.recipeRecordApi.RecipeRecordApi;
+import edu.dartmouth.cs.pantryplanner.backend.entity.recipeRecordApi.model.RecipeRecord;
+import edu.dartmouth.cs.pantryplanner.backend.entity.user.User;
 import edu.dartmouth.cs.pantryplanner.common.Item;
 import edu.dartmouth.cs.pantryplanner.common.ItemType;
 import edu.dartmouth.cs.pantryplanner.common.Recipe;
@@ -34,7 +44,7 @@ import edu.dartmouth.cs.pantryplanner.common.Recipe;
  * Created by litianqi on 3/1/17.
  */
 
-public class CreateRecipeAcitivity extends AppCompatActivity{
+public class CreateRecipeActivity extends AppCompatActivity{
 
     TextView mRecipeName;
     TextView mSteps;
@@ -64,13 +74,13 @@ public class CreateRecipeAcitivity extends AppCompatActivity{
             @Override
             public void onClick(View view){
                 /* dynamically add edit text box and spinner */
-                final EditText t1 = new EditText(CreateRecipeAcitivity.this);
-                final EditText t2 = new EditText(CreateRecipeAcitivity.this);
+                final EditText t1 = new EditText(CreateRecipeActivity.this);
+                final EditText t2 = new EditText(CreateRecipeActivity.this);
                 ArrayList<String> spinnerArray = new ArrayList<>(Arrays.asList(ItemType.getItemTypes()));
 
 
-                final Spinner spinner = new Spinner(CreateRecipeAcitivity.this);
-                ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(CreateRecipeAcitivity.this,
+                final Spinner spinner = new Spinner(CreateRecipeActivity.this);
+                ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(CreateRecipeActivity.this,
                         android.R.layout.simple_spinner_dropdown_item, spinnerArray);
                 spinner.setAdapter(spinnerArrayAdapter);
                 spinner.setLayoutParams(new ActionBar.LayoutParams(400, ActionBar.LayoutParams.WRAP_CONTENT));
@@ -82,7 +92,7 @@ public class CreateRecipeAcitivity extends AppCompatActivity{
                 imm.showSoftInput(t1, InputMethodManager.SHOW_IMPLICIT);
 
                 final LinearLayout root = (LinearLayout) findViewById(R.id.my_create_recipe_layout);
-                final LinearLayout horizontal = new LinearLayout(CreateRecipeAcitivity.this);
+                final LinearLayout horizontal = new LinearLayout(CreateRecipeActivity.this);
                 horizontal.setOrientation(LinearLayout.HORIZONTAL);
                 horizontal.addView(spinner);
                 horizontal.addView(t1);
@@ -112,12 +122,12 @@ public class CreateRecipeAcitivity extends AppCompatActivity{
                             Log.d("quantity", quantity);
                             if (!material.equals("") && !quantity.equals("")){
 
-                                TextView newTextView1 = new TextView(CreateRecipeAcitivity.this);
-                                TextView newTextView2 = new TextView(CreateRecipeAcitivity.this);
+                                TextView newTextView1 = new TextView(CreateRecipeActivity.this);
+                                TextView newTextView2 = new TextView(CreateRecipeActivity.this);
 
                                 newTextView1.setText(material);
                                 newTextView2.setText(quantity);
-                                LinearLayout horizontal_text = new LinearLayout(CreateRecipeAcitivity.this);
+                                LinearLayout horizontal_text = new LinearLayout(CreateRecipeActivity.this);
                                 horizontal_text.setOrientation(LinearLayout.HORIZONTAL);
                                 root.removeView(horizontal);
                                 horizontal_text.addView(newTextView1);
@@ -182,22 +192,59 @@ public class CreateRecipeAcitivity extends AppCompatActivity{
     }
 
     public void cancelBtnSelected(View view){
-        Toast.makeText(CreateRecipeAcitivity.this, "Recipe discarded", Toast.LENGTH_SHORT).show();
+        Toast.makeText(CreateRecipeActivity.this, "Recipe discarded", Toast.LENGTH_SHORT).show();
         finish();
     }
 
-    private class AddRecipeAsyncTask extends AsyncTask<Void, Recipe, Recipe>{
+    private class AddRecipeAsyncTask extends AsyncTask<Void, Void, IOException>{
 
         @Override
-        protected Recipe doInBackground(Void... params) {
+        protected IOException doInBackground(Void... params) {
             Recipe recipe = new Recipe(name, items, steps);
 
-            return recipe;
+            IOException ex = null;
+            try {
+                RecipeRecordApi recipeRecordApi = ServiceBuilderHelper.setup(CreateRecipeActivity.this,
+                        new RecipeRecordApi.Builder(
+                                AndroidHttp.newCompatibleTransport(),
+                                new AndroidJsonFactory(),
+                                null
+                        )
+                ).build();
+
+                RecipeRecord recipeRecord = new RecipeRecord();
+                recipeRecord.setEmail("testEmail");
+                recipeRecord.setRecipe(recipe.toString());
+
+                recipeRecordApi.insert(recipeRecord).execute().getId();
+            } catch (IOException e) {
+                ex = e;
+            }
+
+            return ex;
         }
 
         @Override
-        protected void onPostExecute(Recipe recipe){
-            Toast.makeText(getApplicationContext(), "Recipe saved!", Toast.LENGTH_SHORT).show();
+        protected void onPostExecute(IOException ex) {
+            if (ex == null) {
+                Toast.makeText(getApplicationContext(), "Recipe saved!", Toast.LENGTH_SHORT).show();
+            } else {
+                if (ex instanceof GoogleJsonResponseException) {
+                    GoogleJsonError error = ((GoogleJsonResponseException) ex).getDetails();
+                    Toast.makeText(
+                            CreateRecipeActivity.this,
+                            error.getMessage(),
+                            Toast.LENGTH_LONG
+                    ).show();
+                } else {
+                    Toast.makeText(
+                            CreateRecipeActivity.this,
+                            "Please check your internet connection and restart the app",
+                            Toast.LENGTH_LONG
+                    ).show();
+                }
+                Log.d(this.getClass().getName(), ex.toString());
+            }
             return;
         }
     }

@@ -18,14 +18,14 @@ import java.util.List;
 import java.util.Map;
 
 import edu.dartmouth.cs.pantryplanner.app.R;
-import edu.dartmouth.cs.pantryplanner.backend.entity.recipeRecordApi.model.Recipe;
-import edu.dartmouth.cs.pantryplanner.backend.entity.recipeRecordApi.model.RecipeRecord;
+import edu.dartmouth.cs.pantryplanner.backend.entity.mealPlanRecordApi.model.MealPlanRecord;
 import edu.dartmouth.cs.pantryplanner.common.Item;
 import edu.dartmouth.cs.pantryplanner.common.ItemType;
+import edu.dartmouth.cs.pantryplanner.common.Recipe;
 
 public class RecipeDetailActivity extends AppCompatActivity {
     private Button mFinishButton;
-    private RecipeRecord recipeRecord;
+    private MealPlanRecord mealPlanRecord;
     private TextView mealDateText;
     private TextView mealTypeText;
     private TextView recipeNameText;
@@ -36,11 +36,11 @@ public class RecipeDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_detail);
 
-        String mealType = recipeRecord.getMealType();
-        DateTime mealDate = recipeRecord.getDate();
+        String mealType = mealPlanRecord.getMealType();
+        String mealDate = mealPlanRecord.getDate();
         SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd yyyy");
 
-        Recipe recipe = recipeRecord.getRecipe();
+        Recipe recipe = Recipe.fromString(mealPlanRecord.getRecipe());
         String recipeName = recipe.getName();
         Map<Item, Integer> items = new HashMap<>();
         Item item1 = new Item("beef", ItemType.MEAT);
@@ -98,7 +98,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             TextView text1 = (TextView)(convertView.findViewById(R.id.textView_recipe_ingredient));
-            String curItem = mItems.get(position).getName() + "     " + .get();
+            String curItem = mItems.get(position).getName();
 
             text1.setText(mItems.get(position).getName());
             return convertView;
