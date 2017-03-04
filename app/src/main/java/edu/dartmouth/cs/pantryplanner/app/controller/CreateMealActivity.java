@@ -45,7 +45,7 @@ public class CreateMealActivity extends AppCompatActivity{
         addMealButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), CreateRecipeAcitivity.class);
+                Intent i = new Intent(getApplicationContext(), CreateRecipeActivity.class);
                 Log.d("mealType",mealType);
                 i.putExtra("mealType", mealType);
                 startActivity(i);
