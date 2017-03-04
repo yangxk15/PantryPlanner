@@ -31,6 +31,7 @@
         <activity android:name=".controller.RegisterActivity" />
         <activity android:name=".controller.CreateMealActivity"
             android:exported="true"/>
+        <activity android:name=".controller.CreateRecipeActivity"/>
 
     </application>
 

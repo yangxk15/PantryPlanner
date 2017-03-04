@@ -1,9 +1,10 @@
 package edu.dartmouth.cs.pantryplanner.app.controller;
 
 
-import android.content.Context;
-import android.os.Bundle;
 import android.app.Fragment;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,8 +21,6 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import com.google.api.client.util.DateTime;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -165,6 +164,8 @@ public class MealPlanFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     Log.d("click", "imageButton");
+                    Intent i = new Intent(getActivity(), CreateMealActivity.class);
+                    startActivity(i);
                 }
             });
             TextView textView = (TextView) view.findViewById(R.id.textView_meal_plan_date);
