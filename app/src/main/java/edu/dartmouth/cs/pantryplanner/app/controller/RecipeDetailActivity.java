@@ -1,7 +1,6 @@
 package edu.dartmouth.cs.pantryplanner.app.controller;
 
 import android.content.Context;
-import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -10,38 +9,33 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.api.client.util.DateTime;
-
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import edu.dartmouth.cs.pantryplanner.app.R;
-import edu.dartmouth.cs.pantryplanner.backend.entity.recipeRecordApi.model.Recipe;
-import edu.dartmouth.cs.pantryplanner.backend.entity.recipeRecordApi.model.RecipeRecord;
 import edu.dartmouth.cs.pantryplanner.common.Item;
 import edu.dartmouth.cs.pantryplanner.common.ItemType;
 
 public class RecipeDetailActivity extends AppCompatActivity {
     private Button mFinishButton;
-    private RecipeRecord recipeRecord;
+    //private RecipeRecord recipeRecord;
     private TextView mealDateText;
     private TextView mealTypeText;
     private TextView recipeNameText;
     private TextView ingredientText;
+    private IngredientAdapter ingredientAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_detail);
 
-        String mealType = recipeRecord.getMealType();
-        DateTime mealDate = recipeRecord.getDate();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd yyyy");
-
-        Recipe recipe = recipeRecord.getRecipe();
-        String recipeName = recipe.getName();
+//        String mealType = recipeRecord.getMealType();
+//        DateTime mealDate = recipeRecord.getDate();
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd yyyy");
+//
+//        Recipe recipe = recipeRecord.getRecipe();
+//        String recipeName = recipe.getName();
         Map<Item, Integer> items = new HashMap<>();
         Item item1 = new Item("beef", ItemType.MEAT);
         Item item2 = new Item("tomato", ItemType.VEGETABLE);
@@ -49,14 +43,14 @@ public class RecipeDetailActivity extends AppCompatActivity {
         items.put(item2, 3);
 
 
-        mealDateText = (TextView) findViewById(R.id.textView_recipe_date);
-        mealDateText.setText(dateFormat.format(new Date()));
-        mealTypeText = (TextView) findViewById(R.id.textView_recipe_type);
-        mealTypeText.setText(mealType);
-        recipeNameText = (TextView) findViewById(R.id.textView_recipe_name);
-        recipeNameText.setText(recipeName);
+//        mealDateText = (TextView) findViewById(R.id.textView_recipe_date);
+//        mealDateText.setText(dateFormat.format(new Date()));
+//        mealTypeText = (TextView) findViewById(R.id.textView_recipe_type);
+//        mealTypeText.setText(mealType);
+//        recipeNameText = (TextView) findViewById(R.id.textView_recipe_name);
+//        recipeNameText.setText(recipeName);
         ingredientText = (TextView) findViewById(R.id.textView_recipe_ingredient);
-
+        //ingredientAdapter = new IngredientAdapter(this, items.keySet());
 
 
 
@@ -71,10 +65,10 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
     private class IngredientAdapter extends BaseAdapter {
         private Context mContext;
-        private List<Item> mItems;
+        private HashMap<Item, Integer> mItems;
         private int size;
 
-        public IngredientAdapter(Context context, List<Item> items){
+        public IngredientAdapter(Context context, HashMap<Item, Integer> items){
             this.mContext = context;
             this.mItems = items;
             this.size = items.size();
@@ -98,9 +92,9 @@ public class RecipeDetailActivity extends AppCompatActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             TextView text1 = (TextView)(convertView.findViewById(R.id.textView_recipe_ingredient));
-            String curItem = mItems.get(position).getName() + "     " + .get();
+            //String curItem = mItems.get(position).getName();
 
-            text1.setText(mItems.get(position).getName());
+            //text1.setText(mItems.get(position).getName());
             return convertView;
         }
     }
