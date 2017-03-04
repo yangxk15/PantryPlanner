@@ -13,10 +13,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import edu.dartmouth.cs.pantryplanner.app.R;
-
 import edu.dartmouth.cs.pantryplanner.common.Item;
 import edu.dartmouth.cs.pantryplanner.common.ItemType;
-import edu.dartmouth.cs.pantryplanner.common.Recipe;
 
 public class RecipeDetailActivity extends AppCompatActivity {
     private Button mFinishButton;
@@ -33,7 +31,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_detail);
-
+        String isFromHistory = getIntent().getStringExtra("isFromHistory");
 
 //        String mealType = recipeRecord.getMealType();
 //        DateTime mealDate = recipeRecord.getDate();
@@ -61,12 +59,16 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
 
         mFinishButton = (Button) findViewById(R.id.finish_button);
-        mFinishButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        if (isFromHistory.equals("true")){
+            mFinishButton.setVisibility(View.GONE);
+        } else {
+            mFinishButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-            }
-        });
+                }
+            });
+        }
     }
 
     private class IngredientAdapter extends BaseAdapter {

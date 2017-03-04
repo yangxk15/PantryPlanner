@@ -204,6 +204,9 @@ public class MealPlanFragment extends Fragment {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Log.d("position", "" + position);
+                    Intent i = new Intent(getActivity(), RecipeDetailActivity.class);
+                    i.putExtra("isFromHistory","false");
+                    startActivity(i);
                 }
             });
             return view;
