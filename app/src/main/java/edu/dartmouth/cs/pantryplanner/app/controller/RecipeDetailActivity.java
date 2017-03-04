@@ -1,5 +1,6 @@
 package edu.dartmouth.cs.pantryplanner.app.controller;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -27,6 +28,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
     private TextView ingredientText;
     private IngredientAdapter ingredientAdapter;
 
+    @TargetApi(24)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
