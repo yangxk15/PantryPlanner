@@ -143,22 +143,22 @@ public class ShoppingListFragment extends Fragment {
             ImageView imageView = (ImageView) view.findViewById(R.id.imageView_shop_image);
             switch (groupPosition) {
                 case 0:
-                    imageView.setImageResource(R.drawable.steak);
+                    imageView.setImageResource(R.drawable.meat);
                     break;
                 case 1:
-                    imageView.setImageResource(R.drawable.food_and_wine);
+                    imageView.setImageResource(R.drawable.milk);
                     break;
                 case 2:
-                    imageView.setImageResource(R.drawable.strawberry);
+                    imageView.setImageResource(R.drawable.apple);
                     break;
                 case 3:
-                    imageView.setImageResource(R.drawable.broccoli);
+                    imageView.setImageResource(R.drawable.vegetable);
                     break;
                 case 4:
-                    imageView.setImageResource(R.drawable.salt);
+                    imageView.setImageResource(R.drawable.ingredient);
                     break;
                 default:
-                    imageView.setImageResource(R.drawable.broccoli);
+                    imageView.setImageResource(R.drawable.others);
                     break;
             }
             ImageButton imageButton = (ImageButton) view.findViewById(R.id.imageButton_shop_add);

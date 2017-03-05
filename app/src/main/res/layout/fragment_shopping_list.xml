@@ -4,7 +4,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="edu.dartmouth.cs.pantryplanner.app.controller.ShoppingListFragment">
+    tools:context="edu.dartmouth.cs.pantryplanner.app.controller.ShoppingListFragment"
+    android:layout_marginTop="10dp">
 
 
     <ExpandableListView
@@ -15,7 +16,8 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Checked"
+        android:text="Complete"
+        android:background="@color/button"
         android:layout_alignParentBottom="true"/>
 
 </RelativeLayout>

@@ -5,11 +5,9 @@
     android:orientation="vertical"
     tools:context="edu.dartmouth.cs.pantryplanner.app.controller.MealPlanFragment">
 
-
         <ExpandableListView
                 android:id="@+id/expandableListView_meal_plan"
                 android:layout_width="match_parent"
-
                 android:layout_height="match_parent"/>
 
 </LinearLayout>

@@ -18,11 +18,11 @@ public class MainActivity extends AppCompatActivity {
     public static final String USERNAME = "Username";
 
     final int[] ICONS = new int[]{
-            R.drawable.box,
+            R.drawable.box3,
             R.drawable.calendar3,
-            R.drawable.cart,
-            R.drawable.history,
-            R.drawable.setting2
+            R.drawable.cart3,
+            R.drawable.history3,
+            R.drawable.setting3
 
     };
     @Override
