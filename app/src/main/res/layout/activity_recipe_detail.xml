@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/recipe5"
+    android:background="@drawable/kitchen5"
 
     android:fitsSystemWindows="true"
     tools:context="edu.dartmouth.cs.pantryplanner.app.controller.RecipeDetailActivity">
@@ -38,7 +38,7 @@
         android:id="@+id/textView_recipe_name"
         android:layout_width="230dp"
         android:layout_height="80dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="100dp"
         android:layout_marginLeft="90dp"
         android:gravity="center"
         android:text="Recipe Name"
