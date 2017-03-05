@@ -11,6 +11,7 @@
     android:fitsSystemWindows="true"
     tools:context="edu.dartmouth.cs.pantryplanner.app.controller.RecipeDetailActivity">
 
+<<<<<<< Updated upstream
     <TextView
         android:id="@+id/textView_recipe_name"
         android:layout_width="230dp"
@@ -62,6 +63,41 @@
         android:layout_marginTop="200dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp">
+=======
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <TextView
+                android:id="@+id/textView_recipe_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:layout_weight="4"
+                android:gravity="center"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/textView_recipe_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:layout_weight="4"
+                android:gravity="center"
+                android:text="Breakfast"
+                android:textSize="20dp" />
+
+        </LinearLayout>
+>>>>>>> Stashed changes
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -92,6 +128,7 @@
             android:textSize="20sp"
             android:textStyle="bold"/>
 
+<<<<<<< Updated upstream
             <ListView
                 android:id="@+id/list_display_recipe_steps"
                 android:layout_width="wrap_content"
@@ -112,4 +149,22 @@
 
 </android.support.design.widget.CoordinatorLayout>
 
+=======
+        <ListView
+            android:id="@+id/list_display_recipe_steps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
+
+        <Button
+            android:text="Finish Cooking"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/finish_button" />
+
+    </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>
+>>>>>>> Stashed changes
 

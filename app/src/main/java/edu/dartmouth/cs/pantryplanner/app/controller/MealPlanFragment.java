@@ -227,6 +227,7 @@ public class MealPlanFragment extends Fragment {
                     steps.add("rou fang dao shui li");
                     Recipe temp = new Recipe("fanqiechaodan",items, steps);
                     i.putExtra("mPRRecipe", temp.toString());
+
 //                    i.putExtra("mPRDate",selectedItem.getDate());
 //                    i.putExtra("mPRMealType", selectedItem.getMealType());
 //                    i.putExtra("mPRRecipe", selectedItem.getRecipe());

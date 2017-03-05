@@ -11,11 +11,21 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.extensions.android.json.AndroidJsonFactory;
+import com.google.api.client.googleapis.json.GoogleJsonError;
+import com.google.api.client.googleapis.json.GoogleJsonResponseException;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import edu.dartmouth.cs.pantryplanner.app.R;
-
+import edu.dartmouth.cs.pantryplanner.app.util.ServiceBuilderHelper;
+import edu.dartmouth.cs.pantryplanner.backend.entity.mealPlanRecordApi.model.MealPlanRecord;
+import edu.dartmouth.cs.pantryplanner.backend.entity.recipeRecordApi.RecipeRecordApi;
+import edu.dartmouth.cs.pantryplanner.backend.entity.recipeRecordApi.model.RecipeRecord;
+import edu.dartmouth.cs.pantryplanner.common.Recipe;
 
 
 public class CreateMealActivity extends AppCompatActivity{
@@ -23,6 +33,9 @@ public class CreateMealActivity extends AppCompatActivity{
     private Button addMealButton;
     private Button saveButton;
     private Button cancelButton;
+
+    private Recipe recipe;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,18 +89,65 @@ public class CreateMealActivity extends AppCompatActivity{
         finish();
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != RESULT_OK)
+            return;
+        recipe = Recipe.fromString(getIntent().getStringExtra("recipe"));
+    }
 
-    private class AddMealAsycTask extends AsyncTask<Void, Void, Void>{
+
+    private class AddMealAsycTask extends AsyncTask<Void, Void, IOException >{
 
         @Override
-        protected Void doInBackground(Void... params) {
+        protected IOException doInBackground(Void... params) {
 
-            return null;
+            IOException ex = null;
+            try {
+                RecipeRecordApi mealRecordApi = ServiceBuilderHelper.setup(CreateMealActivity.this,
+                        new MealRecordApi.Builder(
+                                AndroidHttp.newCompatibleTransport(),
+                                new AndroidJsonFactory(),
+                                null
+                        )
+                ).build();
+                MealPlanRecord mealPlanRecord = new MealPlanRecord();
+                mealPlanRecord.setId((long) 123);
+                mealPlanRecord.setDate("07 08 2017");
+                mealPlanRecord.setEmail("test");
+                mealPlanRecord.setMealType("Lunch");
+                mealPlanRecord.setRecipe(recipe.toString());
+
+                mealRecordApi.insert(recipeRecord).execute().getId();
+            } catch (IOException e) {
+                ex = e;
+            }
+
+            return ex;
         }
 
         @Override
-        protected void onPostExecute(Void param){
-
+        protected void onPostExecute(IOException ex) {
+            if (ex == null) {
+                Toast.makeText(getApplicationContext(), "Meal saved!", Toast.LENGTH_SHORT).show();
+            } else {
+                if (ex instanceof GoogleJsonResponseException) {
+                    GoogleJsonError error = ((GoogleJsonResponseException) ex).getDetails();
+                    Toast.makeText(
+                            CreateMealActivity.this,
+                            error.getMessage(),
+                            Toast.LENGTH_LONG
+                    ).show();
+                } else {
+                    Toast.makeText(
+                            CreateMealActivity.this,
+                            "Please check your internet connection and restart the app",
+                            Toast.LENGTH_LONG
+                    ).show();
+                }
+                Log.d(this.getClass().getName(), ex.toString());
+            }
             return;
         }
     }

@@ -1,6 +1,8 @@
 package edu.dartmouth.cs.pantryplanner.app.controller;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -149,13 +151,32 @@ public class CreateRecipeActivity extends AppCompatActivity{
                 Log.d("Recipe Name",name);
                 steps.add(mSteps.getText().toString());
                 Log.d("Steps",steps.get(0));
+
                 saveBtnSelected(view);
+                /* pass the recipe result back to createMealActivity */
+
+                Intent resultIntent = new Intent();
+                Recipe recipe = new Recipe(name, items, steps);
+                resultIntent.putExtra("recipe", recipe.toString());
+                setResult(Activity.RESULT_OK, resultIntent);
+                finish();
+
+//                Intent resultIntent = new Intent();
+//                Recipe recipe = new Recipe(name, items, steps);
+//                resultIntent.putExtra("recipe", recipe.toString());
+//                setResult(CreateRecipeActivity.RESULT_OK, resultIntent);
+//                startActivity(resultIntent);
+//                finish();
+
             }
         });
         mCancelButton = (Button) findViewById(R.id.create_recipe_cancel);
         mCancelButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                Intent resultIntent = new Intent();
+                setResult(Activity.RESULT_CANCELED, resultIntent);
+
                 cancelBtnSelected(v);
             }
 
