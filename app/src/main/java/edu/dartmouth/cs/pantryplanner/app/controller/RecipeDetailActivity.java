@@ -55,7 +55,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
 //        mealTypeText.setText(mealType);
 //        recipeNameText = (TextView) findViewById(R.id.textView_recipe_name);
 //        recipeNameText.setText(recipeName);
-        ingredientText = (TextView) findViewById(R.id.textView_recipe_ingredient);
+      //  ingredientText = (TextView) findViewById(R.id.textView_recipe_ingredient);
         //ingredientAdapter = new IngredientAdapter(this, items.keySet());
 
 
@@ -101,7 +101,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            TextView text1 = (TextView)(convertView.findViewById(R.id.textView_recipe_ingredient));
+            //TextView text1 = (TextView)(convertView.findViewById(R.id.textView_recipe_ingredient));
 
 
             //text1.setText(mItems.get(position).getName());
