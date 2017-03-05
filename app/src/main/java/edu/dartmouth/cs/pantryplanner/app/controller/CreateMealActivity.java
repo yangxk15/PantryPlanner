@@ -40,14 +40,14 @@ public class CreateMealActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_meal);
 
-        spinner = (Spinner) findViewById(R.id.meal_type_select);
+        spinner = (Spinner) findViewById(R.id.spinner_meal_plan_type_select);
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, MealType.getMealTypes());
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(dataAdapter);
 
-        addMealButton = (Button) findViewById(R.id.add_meal_button);
+        addMealButton = (Button) findViewById(R.id.button_meal_plan_add);
         addMealButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,9 +75,10 @@ public class CreateMealActivity extends AppCompatActivity{
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
         if (resultCode == RESULT_OK) {
             if (requestCode == RequestCode.CREATE_RECIPE.ordinal()) {
-                Log.d("CreateMeal", "save recipe " + data.getStringExtra(CreateRecipeActivity.CREATED_RECIPE));
                 mRecipe = Recipe.fromString(data.getStringExtra(CreateRecipeActivity.CREATED_RECIPE));
             }
         }

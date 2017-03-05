@@ -1,62 +1,142 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
     android:orientation="vertical"
     tools:context="edu.dartmouth.cs.pantryplanner.app.controller.SettingFragment">
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Profile "
-            android:layout_alignParentLeft="true"/>
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:layout_marginTop="30dp">
 
         <ImageView
             android:id="@+id/imageview_setting_photo"
             android:layout_width="150dp"
             android:layout_height="150dp"
+            android:layout_marginLeft="130dp"
+            android:gravity="center"
             android:focusable="true"
-            android:layout_alignParentRight="true"
-            android:focusableInTouchMode="true">
+            android:focusableInTouchMode="true"
+            >
             <requestFocus/>
         </ImageView>
-    </RelativeLayout>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="200dp" >
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Welcome :) Foo"/>
+            android:text="Welcome :) Foo"
+            android:gravity="center"
+            android:layout_marginTop="10dp"/>
+
     </LinearLayout>
 
+
     <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="250dp">
+        android:layout_marginTop="30dp"
+        android:orientation="vertical"
+        android:layout_marginLeft="50dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Meal plan dates"
-            android:layout_marginLeft="50dp"/>
+            android:text="Profile Setting"
+            android:textStyle="bold"
+            android:gravity="center_vertical"/>
 
-        <me.himanshusoni.quantityview.QuantityView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/quantityView_plan_dates"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Username, Email, Photo"
+                android:textAlignment="center"
+                android:gravity="center"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="change"
+                android:layout_marginLeft="60dp"
+                android:alpha="0.6"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Password"
+                android:textAlignment="center"
+                android:gravity="center"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="change"
+                android:layout_marginLeft="146dp"
+                android:alpha="0.6"/>
+        </LinearLayout>
+
+
+
+
+
+
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="50dp">
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="100dp"
-            app:qv_quantity="7" />
+            android:text="Meal Plan Setting"
+            android:textAlignment="center"
+            android:gravity="center"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Days"
+                android:layout_weight="19"/>
+
+            <me.himanshusoni.quantityview.QuantityView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/quantityView_plan_dates"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_weight="1"
+                app:qv_quantity="7"/>
+
+        </LinearLayout>
+
+
 
     </LinearLayout>
 
@@ -64,11 +144,11 @@
         android:id="@+id/btn_setting_logout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_marginTop="50dp"
         android:background="@color/button"
         android:text="Log out"
         android:onClick="onChangeClick"/>
 
 
 
-</RelativeLayout>
+</LinearLayout>

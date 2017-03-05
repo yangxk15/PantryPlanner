@@ -158,12 +158,8 @@ public class CreateRecipeActivity extends AppCompatActivity{
         mSaveButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                name = mRecipeName.getText().toString();
-                Log.d("Recipe Name",name);
-                steps.add(mSteps.getText().toString());
-                Log.d("Steps",steps.get(0));
-
                 saveBtnSelected(view);
+<<<<<<< HEAD
                 /* pass the recipe result back to createMealActivity */
 
                 Intent resultIntent = new Intent();
@@ -172,6 +168,8 @@ public class CreateRecipeActivity extends AppCompatActivity{
                 setResult(Activity.RESULT_OK, resultIntent);
                 finish();
 
+=======
+>>>>>>> origin/master
             }
         });
         mCancelButton = (Button) findViewById(R.id.create_recipe_cancel);
@@ -225,8 +223,16 @@ public class CreateRecipeActivity extends AppCompatActivity{
 
     private class AddRecipeAsyncTask extends AsyncTask<Void, Void, IOException>{
 
-        Recipe mRecipe = new Recipe(name, items, steps);
+        Recipe mRecipe;
 
+        @Override
+        protected void onPreExecute() {
+            name = mRecipeName.getText().toString();
+            Log.d("Recipe Name",name);
+            steps.add(mSteps.getText().toString());
+            Log.d("Steps",steps.get(0));
+            mRecipe = new Recipe(name, items, steps);
+        }
         @Override
         protected IOException doInBackground(Void... params) {
 

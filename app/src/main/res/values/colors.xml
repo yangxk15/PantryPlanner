@@ -11,4 +11,6 @@
     <color name="tab">#A8C8DB</color>
     <color name="background">#FFFFFF</color>
     <color name="button">#A8C8D0</color>
+    <color name="White">#FFF</color>
+    <color name="Black">#000</color>
 </resources>
