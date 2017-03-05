@@ -47,7 +47,7 @@ public class HistoryListFragment extends Fragment {
         ListView listView = (ListView) view.findViewById(R.id.listView_history_list);
 
         final ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                (this.getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, values);
+                (this.getActivity(), R.layout.list_recipe, android.R.id.text1, values);
 
         listView.setAdapter(adapter);
 
