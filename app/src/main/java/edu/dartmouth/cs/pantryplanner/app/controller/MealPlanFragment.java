@@ -22,22 +22,15 @@ import android.widget.Toast;
 
 import com.google.api.client.googleapis.json.GoogleJsonError;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
-import com.google.gson.Gson;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
 import edu.dartmouth.cs.pantryplanner.app.R;
-import edu.dartmouth.cs.pantryplanner.app.model.Item;
-import edu.dartmouth.cs.pantryplanner.app.model.ItemType;
 import edu.dartmouth.cs.pantryplanner.app.model.MealPlan;
 import edu.dartmouth.cs.pantryplanner.app.util.ServiceBuilderHelper;
 import edu.dartmouth.cs.pantryplanner.app.util.Session;
@@ -46,12 +39,15 @@ import edu.dartmouth.cs.pantryplanner.backend.entity.mealPlanRecordApi.model.Mea
 import edu.dartmouth.cs.pantryplanner.app.model.MealType;
 import edu.dartmouth.cs.pantryplanner.app.model.Recipe;
 
+import static edu.dartmouth.cs.pantryplanner.app.util.Constants.DATE_FORMAT;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class MealPlanFragment extends Fragment {
     public static final String SELECTED_DATE = "Selected Date";
+    public static final String SELECTED_MEAL_PLAN = "Selected Meal Plan";
 
     private List<MealPlan> mealPlans;
 
@@ -86,20 +82,20 @@ public class MealPlanFragment extends Fragment {
          */
 
         Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat formatter = new SimpleDateFormat("MMM dd yyyy");
+
         HashMap<String, ArrayList<ArrayList<MealPlan>>> dateMap = new HashMap<>();
         for (int i = 0; i < mMealNumber; ++i) {
             ArrayList<ArrayList<MealPlan>> mealTypeList = new ArrayList<>();
             for (int j = 3; j > 0; --j) {
                 mealTypeList.add(new ArrayList<MealPlan>());
             }
-            dateMap.put(formatter.format(calendar.getTime()), mealTypeList);
+            dateMap.put(DATE_FORMAT.format(calendar.getTime()), mealTypeList);
             calendar.add(Calendar.DATE, 1);
         }
 
         for (MealPlan mealPlan: mealPlans) {
 //            Log.d("time", formatter.format(Calendar.getInstance().getTime()));
-            ArrayList<ArrayList<MealPlan>> mealTypeList = dateMap.get(formatter.format(mealPlan.getDate()));
+            ArrayList<ArrayList<MealPlan>> mealTypeList = dateMap.get(DATE_FORMAT.format(mealPlan.getDate()));
             mealTypeList.get(mealPlan.getMealType().ordinal()).add(mealPlan);
 //            Log.d("meal", "" + mealTypeList.get(0).get(0).getRecipe().getName());
         }
@@ -115,6 +111,8 @@ public class MealPlanFragment extends Fragment {
                 }
             }
         }
+
+        Log.d("MealPlanFragment", dateMap.toString());
 
         mExpandableListView.setAdapter(new MealPlanAdapter(this.getActivity(), dateMap));
         mExpandableListView.expandGroup(0);
@@ -195,7 +193,7 @@ public class MealPlanFragment extends Fragment {
                         .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = inflater.inflate(R.layout.list_meal_plan_mealtype, parent, false);
 
-            ArrayList<MealPlan> mealPlans = (ArrayList<MealPlan>) getChild(groupPosition, childPosition);
+            final ArrayList<MealPlan> mealPlans = (ArrayList<MealPlan>) getChild(groupPosition, childPosition);
             String[] recipeNames = new String[mealPlans.size()];
             for (int i = 0; i < recipeNames.length; ++i) {
                 recipeNames[i] = mealPlans.get(i).getRecipe().getName();
@@ -213,35 +211,15 @@ public class MealPlanFragment extends Fragment {
 
             // ArrayAdapter for each meal type
             ListView listView = (ListView) view.findViewById(R.id.textView_meal_plan_recipe);
-            ArrayAdapter<String> adapter = new ArrayAdapter(context,
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(context,
                     R.layout.list_meal_plan_recipe, R.id.textView_meal_plan_recipe_name, recipeNames);
             listView.setAdapter(adapter);
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Log.d("position", "" + position);
-                    Intent i = new Intent(getActivity(), RecipeDetailActivity.class);
-                    //MealPlanRecord selectedItem = recipes.get(position);
-                    i.putExtra("isFromHistory","false");
-                    i.putExtra("mPRDate","08 12 2017");
-                    i.putExtra("mPRMealType", "Lunch");
-                    Map<Item, Integer> items = new HashMap<>();
-                    Item item1 = new Item("beef", ItemType.MEAT);
-                    Item item2 = new Item("tomato", ItemType.VEGETABLE);
-                    items.put(item1, 200);
-                    items.put(item2, 3);
-
-                    List<String> steps = new ArrayList<>();
-                    steps.add("add water");
-                    steps.add("ba rou qie cheng xiao kuai");
-                    steps.add("rou fang dao shui li");
-                    Recipe temp = new Recipe("fanqiechaodan",items, steps);
-                    i.putExtra("mPRRecipe", temp.toString());
-
-//                    i.putExtra("mPRDate",selectedItem.getDate());
-//                    i.putExtra("mPRMealType", selectedItem.getMealType());
-//                    i.putExtra("mPRRecipe", selectedItem.getRecipe());
-                    startActivity(i);
+                    Intent intent = new Intent(getActivity(), RecipeDetailActivity.class);
+                    intent.putExtra(SELECTED_MEAL_PLAN, mealPlans.get(position).toString());
+                    startActivity(intent);
                 }
             });
             return view;
@@ -255,7 +233,7 @@ public class MealPlanFragment extends Fragment {
         private String getDate(int groupPosition) {
             Calendar calendar = Calendar.getInstance();
             calendar.add(Calendar.DATE, groupPosition);
-            return new SimpleDateFormat("MMM dd yyyy", Locale.US).format(calendar.getTime());
+            return DATE_FORMAT.format(calendar.getTime());
         }
     }
 

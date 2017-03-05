@@ -27,8 +27,12 @@ public class MealPlan {
         return new GsonBuilder().enableComplexMapKeySerialization().create().toJson(this);
     }
 
+    public static MealPlan fromString(String s) {
+        return new Gson().fromJson(s, MealPlan.class);
+    }
+
     public static MealPlan fromMealPlanRecord(MealPlanRecord mealPlanRecord) {
-        return new Gson().fromJson(mealPlanRecord.getMealPlan(), MealPlan.class);
+        return fromString(mealPlanRecord.getMealPlan());
     }
 
     public static List<MealPlan> fromMealPlanRecords(List<MealPlanRecord> mealPlanRecords) {

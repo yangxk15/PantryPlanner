@@ -11,12 +11,15 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.DigitsKeyListener;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -47,7 +50,7 @@ public class CreateRecipeActivity extends AppCompatActivity{
     TextView mRecipeName;
     TextView mSteps;
 
-    private Button mAddButton;
+    private ImageButton mAddButton;
     private Button mSaveButton;
     private Button mCancelButton;
 
@@ -67,7 +70,7 @@ public class CreateRecipeActivity extends AppCompatActivity{
         mRecipeName = (EditText) findViewById(R.id.create_recipe_name);
         mSteps = (EditText) findViewById(R.id.create_recipe_steps);
 
-        mAddButton = (Button) findViewById(R.id.add_ingredient);
+        mAddButton = (ImageButton) findViewById(R.id.add_ingredient);
         mAddButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
@@ -95,7 +98,7 @@ public class CreateRecipeActivity extends AppCompatActivity{
                 horizontal.addView(spinner);
                 horizontal.addView(t1);
                 horizontal.addView(t2);
-                root.addView(horizontal,2);
+                root.addView(horizontal,3);
 
                 t1.setOnFocusChangeListener(new View.OnFocusChangeListener(){
                     @Override
@@ -125,13 +128,19 @@ public class CreateRecipeActivity extends AppCompatActivity{
 
                                 newTextView1.setText(material);
                                 newTextView1.setTypeface(Typeface.DEFAULT_BOLD);
+                                newTextView1.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);
+                                newTextView1.setPadding(50, 5, 20, 5);
                                 newTextView2.setText(quantity);
+                                newTextView2.setTypeface(Typeface.DEFAULT_BOLD);
+                                newTextView2.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);
+                                newTextView2.setPadding(50, 5, 20, 5);
+
                                 LinearLayout horizontal_text = new LinearLayout(CreateRecipeActivity.this);
                                 horizontal_text.setOrientation(LinearLayout.HORIZONTAL);
                                 root.removeView(horizontal);
                                 horizontal_text.addView(newTextView1);
                                 horizontal_text.addView(newTextView2);
-                                root.addView(horizontal_text, 2);
+                                root.addView(horizontal_text, 3);
                                 Log.d("spinner position: ", spinner.getSelectedItem().toString());
                                 Item item = new Item(material,ItemType.values()[spinner.getSelectedItemPosition()]);
                                 items.put(item, Integer.parseInt(quantity));
@@ -149,12 +158,8 @@ public class CreateRecipeActivity extends AppCompatActivity{
         mSaveButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                name = mRecipeName.getText().toString();
-                Log.d("Recipe Name",name);
-                steps.add(mSteps.getText().toString());
-                Log.d("Steps",steps.get(0));
-
                 saveBtnSelected(view);
+<<<<<<< HEAD
                 /* pass the recipe result back to createMealActivity */
 
                 Intent resultIntent = new Intent();
@@ -163,13 +168,8 @@ public class CreateRecipeActivity extends AppCompatActivity{
                 setResult(Activity.RESULT_OK, resultIntent);
                 finish();
 
-//                Intent resultIntent = new Intent();
-//                Recipe recipe = new Recipe(name, items, steps);
-//                resultIntent.putExtra("recipe", recipe.toString());
-//                setResult(CreateRecipeActivity.RESULT_OK, resultIntent);
-//                startActivity(resultIntent);
-//                finish();
-
+=======
+>>>>>>> origin/master
             }
         });
         mCancelButton = (Button) findViewById(R.id.create_recipe_cancel);
@@ -184,6 +184,15 @@ public class CreateRecipeActivity extends AppCompatActivity{
 
         });
 
+    }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_ENTER)
+        {
+            //Nothing
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override
@@ -214,8 +223,16 @@ public class CreateRecipeActivity extends AppCompatActivity{
 
     private class AddRecipeAsyncTask extends AsyncTask<Void, Void, IOException>{
 
-        Recipe mRecipe = new Recipe(name, items, steps);
+        Recipe mRecipe;
 
+        @Override
+        protected void onPreExecute() {
+            name = mRecipeName.getText().toString();
+            Log.d("Recipe Name",name);
+            steps.add(mSteps.getText().toString());
+            Log.d("Steps",steps.get(0));
+            mRecipe = new Recipe(name, items, steps);
+        }
         @Override
         protected IOException doInBackground(Void... params) {
 

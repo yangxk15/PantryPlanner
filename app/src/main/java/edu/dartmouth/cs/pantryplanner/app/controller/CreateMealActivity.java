@@ -75,9 +75,10 @@ public class CreateMealActivity extends AppCompatActivity{
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
         if (resultCode == RESULT_OK) {
             if (requestCode == RequestCode.CREATE_RECIPE.ordinal()) {
-                Log.d("CreateMeal", "save recipe " + data.getStringExtra(CreateRecipeActivity.CREATED_RECIPE));
                 mRecipe = Recipe.fromString(data.getStringExtra(CreateRecipeActivity.CREATED_RECIPE));
             }
         }
