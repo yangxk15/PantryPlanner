@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
 
     <Spinner
         android:id="@+id/meal_type_select"
@@ -14,29 +16,35 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="ADD"
-        android:textStyle="bold" />
+        android:text="ADD"/>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
         <Button
             android:id="@+id/create_meal_save"
             style="?android:textAppearanceSmall"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Save"
-            android:textStyle="bold" />
+            android:layout_weight="1"
+            android:background="@color/button"
+            android:text="Save" />
+
+        <TextView
+            android:layout_width="15dp"
+            android:layout_height="wrap_content" />
 
         <Button
             android:id="@+id/create_meal_cancel"
             style="?android:textAppearanceSmall"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Cancel"
-            android:textStyle="bold" />
+            android:layout_weight="1"
+            android:background="@color/button"
+            android:text="Cancel" />
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

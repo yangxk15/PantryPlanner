@@ -214,7 +214,7 @@ public class MealPlanFragment extends Fragment {
             // ArrayAdapter for each meal type
             ListView listView = (ListView) view.findViewById(R.id.textView_meal_plan_recipe);
             ArrayAdapter<String> adapter = new ArrayAdapter(context,
-                    android.R.layout.simple_list_item_1, android.R.id.text1, recipeNames);
+                    R.layout.list_meal_plan_recipe, R.id.textView_meal_plan_recipe_name, recipeNames);
             listView.setAdapter(adapter);
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override

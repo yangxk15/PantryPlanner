@@ -97,8 +97,6 @@ public class RecipeDetailActivity extends AppCompatActivity {
         recipeNameText.setText("hongshaorou");
         ingredientText = (TextView) findViewById(R.id.textView_recipe_ingredient);
 
-
-
         mFinishButton = (Button) findViewById(R.id.finish_button);
 //        if (isFromHistory.equals("true")){
 //            mFinishButton.setVisibility(View.GONE);

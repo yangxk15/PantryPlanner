@@ -17,8 +17,9 @@
         android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:gravity="left"
-        android:textSize="15dp"
-        android:layout_weight="6"/>
+        android:typeface="serif"
+        android:layout_weight="10"
+        android:textSize="15dp"/>
 
     <me.himanshusoni.quantityview.QuantityView
         android:id="@+id/quantityView_shop_beaf"
