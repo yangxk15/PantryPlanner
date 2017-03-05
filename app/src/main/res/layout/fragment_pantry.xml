@@ -35,7 +35,6 @@
             <SearchView
                 android:layout_width="272dp"
                 android:layout_height="wrap_content"
-                android:searchHintIcon="@color/colorPrimary"
                 android:queryBackground="@android:color/white"
                 android:queryHint="item"
                 android:layout_weight="7" />
