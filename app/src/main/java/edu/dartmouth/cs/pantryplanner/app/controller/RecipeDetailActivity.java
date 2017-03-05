@@ -17,11 +17,12 @@ import java.util.List;
 import java.util.Map;
 
 import edu.dartmouth.cs.pantryplanner.app.R;
+
+import edu.dartmouth.cs.pantryplanner.app.model.Item;
+import edu.dartmouth.cs.pantryplanner.app.model.ItemType;
+import edu.dartmouth.cs.pantryplanner.app.model.Recipe;
 import edu.dartmouth.cs.pantryplanner.backend.entity.mealPlanRecordApi.model.MealPlanRecord;
 import edu.dartmouth.cs.pantryplanner.backend.entity.recipeRecordApi.model.RecipeRecord;
-import edu.dartmouth.cs.pantryplanner.common.Item;
-
-import static edu.dartmouth.cs.pantryplanner.common.Recipe.fromString;
 
 public class RecipeDetailActivity extends AppCompatActivity {
     private Button mFinishButton;
@@ -39,7 +40,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
     private String date;
     private String mealType;
     private String recipeString;
-    private edu.dartmouth.cs.pantryplanner.common.Recipe recipe;
+    private Recipe recipe;
 
     @TargetApi(24)
     @Override
@@ -54,12 +55,12 @@ public class RecipeDetailActivity extends AppCompatActivity {
             date = i.getStringExtra("mPRDate");
             mealType = i.getStringExtra("mPRMealType");
             recipeString = i.getStringExtra("mPRRecipe");
-            recipe = fromString(recipeString);
+            recipe = Recipe.fromString(recipeString);
         } else {
             date = i.getStringExtra("rDate");
             mealType = i.getStringExtra("rMealType");
             recipeString = i.getStringExtra("rRecipe");
-            recipe = fromString(recipeString);
+            recipe = Recipe.fromString(recipeString);
         }
 //        Log.d("date: ", date);
 //        Log.d("mealType: ", mealType);
@@ -77,7 +78,6 @@ public class RecipeDetailActivity extends AppCompatActivity {
         ListView listViewIn = (ListView) findViewById(R.id.list_display_recipe_items);
         listViewIn.setAdapter(ingredientAdapter);
 //
-<<<<<<< HEAD
 //        List<String> steps = new ArrayList<>();
 //        steps.add("1.add water");
 //        steps.add("2.ba rou qie cheng xiao kuai");
@@ -98,26 +98,6 @@ public class RecipeDetailActivity extends AppCompatActivity {
         recipeNameText = (TextView) findViewById(R.id.textView_recipe_name);
         recipeNameText.setText("hongshaorou");
         ingredientText = (TextView) findViewById(R.id.textView_recipe_ingredient);
-=======
-//        Recipe recipe = recipeRecord.getRecipe();
-//        String recipeName = recipe.getName();
-
-        Map<Item, Integer> items = new HashMap<>();
-        Item item1 = new Item("beef", ItemType.MEAT);
-        Item item2 = new Item("tomato", ItemType.VEGETABLE);
-        items.put(item1, 200);
-        items.put(item2, 3);
-
-
-//        mealDateText = (TextView) findViewById(R.id.textView_recipe_date);
-//        mealDateText.setText(dateFormat.format(new Date()));
-//        mealTypeText = (TextView) findViewById(R.id.textView_recipe_type);
-//        mealTypeText.setText(mealType);
-//        recipeNameText = (TextView) findViewById(R.id.textView_recipe_name);
-//        recipeNameText.setText(recipeName);
-      //  ingredientText = (TextView) findViewById(R.id.textView_recipe_ingredient);
-        //ingredientAdapter = new IngredientAdapter(this, items.keySet());
->>>>>>> origin/master
 
 
 
@@ -206,7 +186,6 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-<<<<<<< HEAD
             final View result;
 
             result = getLayoutInflater().inflate(R.layout.entry_step, null);
@@ -216,9 +195,6 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
             TextView stepTV = (TextView) result.findViewById(R.id.textView_recipe_step);
             stepTV.setText(step);
-=======
-            //TextView text1 = (TextView)(convertView.findViewById(R.id.textView_recipe_ingredient));
->>>>>>> origin/master
 
             return result;
 

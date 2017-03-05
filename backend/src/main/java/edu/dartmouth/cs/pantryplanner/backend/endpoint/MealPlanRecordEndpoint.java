@@ -151,6 +151,15 @@ public class MealPlanRecordEndpoint {
         return CollectionResponse.<MealPlanRecord>builder().setItems(mealPlanRecordList).setNextPageToken(queryIterator.getCursor().toWebSafeString()).build();
     }
 
+    @ApiMethod(
+            name = "listWith"
+    )
+    public CollectionResponse<MealPlanRecord> listWith(@Named("email") String email) {
+        List<MealPlanRecord> mealPlanRecordList = ofy().load().type(MealPlanRecord.class).filter("email", email).list();
+        logger.info("list with email " + email + "and found " + mealPlanRecordList.size() + " record.");
+        return CollectionResponse.<MealPlanRecord>builder().setItems(mealPlanRecordList).build();
+    }
+
     private void checkExists(Long id) throws NotFoundException {
         try {
             ofy().load().type(MealPlanRecord.class).id(id).safe();

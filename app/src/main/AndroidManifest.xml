@@ -32,7 +32,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".controller.LoginActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait" >
+        </activity>
         <activity
             android:name=".controller.RegisterActivity"
             android:screenOrientation="portrait" />

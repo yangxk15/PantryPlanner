@@ -20,8 +20,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import edu.dartmouth.cs.pantryplanner.app.R;
-import edu.dartmouth.cs.pantryplanner.common.Item;
-import edu.dartmouth.cs.pantryplanner.common.ItemType;
+import edu.dartmouth.cs.pantryplanner.app.model.Item;
+import edu.dartmouth.cs.pantryplanner.app.model.ItemType;
 
 
 /**

@@ -178,12 +178,9 @@ public class RegisterActivity extends AppCompatActivity {
             IOException ex = null;
 
             try {
-                User userService = ServiceBuilderHelper.setup(RegisterActivity.this,
-                        new User.Builder(
-                                AndroidHttp.newCompatibleTransport(),
-                                new AndroidJsonFactory(),
-                                null
-                        )
+                User userService = ServiceBuilderHelper.getBuilder(
+                        RegisterActivity.this,
+                        User.Builder.class
                 ).build();
 
                 userService.register(mEmail, mFirstName, mLastName, mPassword).execute();

@@ -11,42 +11,53 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.google.gson.Gson;
+
+import java.io.IOException;
+import java.util.Date;
 
 import edu.dartmouth.cs.pantryplanner.app.R;
+import edu.dartmouth.cs.pantryplanner.app.model.MealPlan;
+import edu.dartmouth.cs.pantryplanner.app.model.Recipe;
+import edu.dartmouth.cs.pantryplanner.app.util.RequestCode;
+import edu.dartmouth.cs.pantryplanner.app.util.ServiceBuilderHelper;
+import edu.dartmouth.cs.pantryplanner.app.util.Session;
+import edu.dartmouth.cs.pantryplanner.backend.entity.mealPlanRecordApi.MealPlanRecordApi;
+import edu.dartmouth.cs.pantryplanner.backend.entity.mealPlanRecordApi.model.MealPlanRecord;
+import edu.dartmouth.cs.pantryplanner.app.model.MealType;
 
 
 
 public class CreateMealActivity extends AppCompatActivity{
+
     private Spinner spinner;
     private Button addMealButton;
     private Button saveButton;
     private Button cancelButton;
+
+    private MealPlan mMealPlan;
+    private Recipe mRecipe;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_meal);
+
         spinner = (Spinner) findViewById(R.id.meal_type_select);
 
-        List<String> list = new ArrayList<String>();
-        list.add("BREAKFAST");
-        list.add("LUNCH");
-        list.add("DINNER");
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, list);
+                android.R.layout.simple_spinner_item, MealType.getMealTypes());
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(dataAdapter);
-        final String mealType = spinner.getSelectedItem().toString();
 
         addMealButton = (Button) findViewById(R.id.add_meal_button);
         addMealButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), CreateRecipeActivity.class);
-                Log.d("mealType",mealType);
-                i.putExtra("mealType", mealType);
-                startActivity(i);
+                startActivityForResult(
+                        new Intent(getApplicationContext(), CreateRecipeActivity.class),
+                        RequestCode.CREATE_RECIPE.ordinal()
+                );
             }
         });
         saveButton = (Button) findViewById(R.id.create_meal_save);
@@ -63,31 +74,58 @@ public class CreateMealActivity extends AppCompatActivity{
                 cancelBtnSelected(v);
             }
         });
-
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == RequestCode.CREATE_RECIPE.ordinal()) {
+                Log.d("CreateMeal", "save recipe " + data.getStringExtra(CreateRecipeActivity.CREATED_RECIPE));
+                mRecipe = Recipe.fromString(data.getStringExtra(CreateRecipeActivity.CREATED_RECIPE));
+            }
+        }
+    }
+
     public void saveBtnSelected(View view){
-        AddMealAsycTask addMealAsycTask = new AddMealAsycTask();
-        addMealAsycTask.execute();
-        finish();
+        mMealPlan = new MealPlan(
+                (Date) getIntent().getExtras().getSerializable(MealPlanFragment.SELECTED_DATE),
+                MealType.values()[spinner.getSelectedItemPosition()],
+                mRecipe
+        );
+        new AddMealAsyncTask().execute();
     }
 
     public void cancelBtnSelected(View view){
-        Toast.makeText(CreateMealActivity.this, "Recipe discarded", Toast.LENGTH_SHORT).show();
+        Toast.makeText(CreateMealActivity.this, "Meal plan discarded", Toast.LENGTH_SHORT).show();
         finish();
     }
 
 
-    private class AddMealAsycTask extends AsyncTask<Void, Void, Void>{
+    private class AddMealAsyncTask extends AsyncTask<Void, Void, IOException>{
 
         @Override
-        protected Void doInBackground(Void... params) {
+        protected IOException doInBackground(Void... params) {
+            IOException ex = null;
+            try {
+                MealPlanRecord mealPlanRecord = new MealPlanRecord();
+                mealPlanRecord.setEmail(new Session(CreateMealActivity.this).getString("email"));
+                mealPlanRecord.setMealPlan(mMealPlan.toString());
+                MealPlanRecordApi mealPlanRecordApi = ServiceBuilderHelper.getBuilder(
+                        CreateMealActivity.this,
+                        MealPlanRecordApi.Builder.class
+                ).build();
+                mealPlanRecordApi.insert(mealPlanRecord).execute();
+            } catch (IOException e) {
+                ex = e;
+            }
 
-            return null;
+            return ex;
         }
 
         @Override
-        protected void onPostExecute(Void param){
-
+        protected void onPostExecute(IOException ex){
+            Toast.makeText(CreateMealActivity.this, "Meal plan saved", Toast.LENGTH_SHORT).show();
+            finish();
             return;
         }
     }
