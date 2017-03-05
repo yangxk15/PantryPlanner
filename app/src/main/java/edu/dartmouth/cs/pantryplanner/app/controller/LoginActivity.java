@@ -30,6 +30,7 @@ import edu.dartmouth.cs.pantryplanner.app.R;
 import edu.dartmouth.cs.pantryplanner.app.util.EmailValidator;
 import edu.dartmouth.cs.pantryplanner.app.util.RequestCode;
 import edu.dartmouth.cs.pantryplanner.app.util.ServiceBuilderHelper;
+import edu.dartmouth.cs.pantryplanner.app.util.Session;
 import edu.dartmouth.cs.pantryplanner.backend.entity.user.User;
 import edu.dartmouth.cs.pantryplanner.backend.registration.Registration;
 import lombok.AllArgsConstructor;
@@ -79,12 +80,8 @@ public class LoginActivity extends AppCompatActivity {
                 }
         );
 
-        SharedPreferences preferences = getSharedPreferences(
-                getString(R.string.app_domain),
-                MODE_PRIVATE
-        );
-        String email = preferences.getString("email", null);
-        String password = preferences.getString("password", null);
+        String email = new Session(this).getString("email");
+        String password = new Session(this).getString("password");
         if (email != null && password != null) {
             mEmailView.setText(email);
             mPasswordView.setText(password);
@@ -193,12 +190,9 @@ public class LoginActivity extends AppCompatActivity {
             IOException ex = null;
 
             try {
-                User userService = ServiceBuilderHelper.setup(LoginActivity.this,
-                        new User.Builder(
-                                AndroidHttp.newCompatibleTransport(),
-                                new AndroidJsonFactory(),
-                                null
-                        )
+                User userService = ServiceBuilderHelper.getBuilder(
+                        LoginActivity.this,
+                        User.Builder.class
                 ).build();
 
                 userService.login(mEmail, mPassword).execute();
@@ -215,14 +209,8 @@ public class LoginActivity extends AppCompatActivity {
             showProgress(false);
 
             if (ex == null) {
-                SharedPreferences.Editor editor =
-                        LoginActivity.this.getSharedPreferences(
-                                getString(R.string.app_domain),
-                                MODE_PRIVATE
-                        ).edit();
-                editor.putString("email", mEmail);
-                editor.putString("password", mPassword);
-                editor.apply();
+                new Session(LoginActivity.this).putString("email", mEmail);
+                new Session(LoginActivity.this).putString("password", mPassword);
                 startActivity(new Intent(LoginActivity.this, CreateRecipeActivity.class));
                 finish();
             } else {

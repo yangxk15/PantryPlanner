@@ -2,6 +2,7 @@ package edu.dartmouth.cs.pantryplanner.backend.entity;
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Index;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,8 +20,8 @@ public class MealPlanRecord {
     @Id
     Long id;
 
+    @Index
     String email;
-    String date;
-    String mealType;
-    String recipe;
+
+    String mealPlan;
 }

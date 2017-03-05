@@ -20,8 +20,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.api.client.extensions.android.http.AndroidHttp;
-import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.api.client.googleapis.json.GoogleJsonError;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 
@@ -33,15 +31,17 @@ import java.util.List;
 import java.util.Map;
 
 import edu.dartmouth.cs.pantryplanner.app.R;
+import edu.dartmouth.cs.pantryplanner.app.util.RequestCode;
 import edu.dartmouth.cs.pantryplanner.app.util.ServiceBuilderHelper;
 import edu.dartmouth.cs.pantryplanner.backend.entity.recipeRecordApi.RecipeRecordApi;
 import edu.dartmouth.cs.pantryplanner.backend.entity.recipeRecordApi.model.RecipeRecord;
-import edu.dartmouth.cs.pantryplanner.common.Item;
-import edu.dartmouth.cs.pantryplanner.common.ItemType;
-import edu.dartmouth.cs.pantryplanner.common.Recipe;
+import edu.dartmouth.cs.pantryplanner.app.model.Item;
+import edu.dartmouth.cs.pantryplanner.app.model.ItemType;
+import edu.dartmouth.cs.pantryplanner.app.model.Recipe;
 
 
 public class CreateRecipeActivity extends AppCompatActivity{
+    public static final String CREATED_RECIPE = "Create_Recipe";
 
     TextView mRecipeName;
     TextView mSteps;
@@ -202,9 +202,7 @@ public class CreateRecipeActivity extends AppCompatActivity{
     }
 
     public void saveBtnSelected(View view){
-        AddRecipeAsyncTask addRecipeAsyncTask = new AddRecipeAsyncTask();
-        addRecipeAsyncTask.execute();
-        finish();
+        new AddRecipeAsyncTask().execute();
     }
 
     public void cancelBtnSelected(View view){
@@ -214,25 +212,23 @@ public class CreateRecipeActivity extends AppCompatActivity{
 
     private class AddRecipeAsyncTask extends AsyncTask<Void, Void, IOException>{
 
+        Recipe mRecipe = new Recipe(name, items, steps);
+
         @Override
         protected IOException doInBackground(Void... params) {
-            Recipe recipe = new Recipe(name, items, steps);
 
             IOException ex = null;
             try {
-                RecipeRecordApi recipeRecordApi = ServiceBuilderHelper.setup(CreateRecipeActivity.this,
-                        new RecipeRecordApi.Builder(
-                                AndroidHttp.newCompatibleTransport(),
-                                new AndroidJsonFactory(),
-                                null
-                        )
+                RecipeRecordApi recipeRecordApi = ServiceBuilderHelper.getBuilder(
+                        CreateRecipeActivity.this,
+                        RecipeRecordApi.Builder.class
                 ).build();
 
                 RecipeRecord recipeRecord = new RecipeRecord();
                 recipeRecord.setEmail("testEmail");
-                recipeRecord.setRecipe(recipe.toString());
+                recipeRecord.setRecipe(mRecipe.toString());
 
-                recipeRecordApi.insert(recipeRecord).execute().getId();
+                recipeRecordApi.insert(recipeRecord).execute();
             } catch (IOException e) {
                 ex = e;
             }
@@ -243,7 +239,12 @@ public class CreateRecipeActivity extends AppCompatActivity{
         @Override
         protected void onPostExecute(IOException ex) {
             if (ex == null) {
-                Toast.makeText(getApplicationContext(), "Recipe saved!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Recipe saved", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent();
+                Log.d("return recipe ", mRecipe.toString());
+                intent.putExtra(CREATED_RECIPE, mRecipe.toString());
+                setResult(RESULT_OK, intent);
+                finish();
             } else {
                 if (ex instanceof GoogleJsonResponseException) {
                     GoogleJsonError error = ((GoogleJsonResponseException) ex).getDetails();

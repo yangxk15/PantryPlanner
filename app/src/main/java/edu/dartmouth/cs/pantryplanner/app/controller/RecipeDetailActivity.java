@@ -17,11 +17,12 @@ import java.util.List;
 import java.util.Map;
 
 import edu.dartmouth.cs.pantryplanner.app.R;
+
+import edu.dartmouth.cs.pantryplanner.app.model.Item;
+import edu.dartmouth.cs.pantryplanner.app.model.ItemType;
+import edu.dartmouth.cs.pantryplanner.app.model.Recipe;
 import edu.dartmouth.cs.pantryplanner.backend.entity.mealPlanRecordApi.model.MealPlanRecord;
 import edu.dartmouth.cs.pantryplanner.backend.entity.recipeRecordApi.model.RecipeRecord;
-import edu.dartmouth.cs.pantryplanner.common.Item;
-
-import static edu.dartmouth.cs.pantryplanner.common.Recipe.fromString;
 
 public class RecipeDetailActivity extends AppCompatActivity {
     private Button mFinishButton;
@@ -39,7 +40,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
     private String date;
     private String mealType;
     private String recipeString;
-    private edu.dartmouth.cs.pantryplanner.common.Recipe recipe;
+    private Recipe recipe;
 
     @TargetApi(24)
     @Override
@@ -54,12 +55,12 @@ public class RecipeDetailActivity extends AppCompatActivity {
             date = i.getStringExtra("mPRDate");
             mealType = i.getStringExtra("mPRMealType");
             recipeString = i.getStringExtra("mPRRecipe");
-            recipe = fromString(recipeString);
+            recipe = Recipe.fromString(recipeString);
         } else {
             date = i.getStringExtra("rDate");
             mealType = i.getStringExtra("rMealType");
             recipeString = i.getStringExtra("rRecipe");
-            recipe = fromString(recipeString);
+            recipe = Recipe.fromString(recipeString);
         }
 //        Log.d("date: ", date);
 //        Log.d("mealType: ", mealType);
@@ -77,7 +78,10 @@ public class RecipeDetailActivity extends AppCompatActivity {
         ListView listViewIn = (ListView) findViewById(R.id.list_display_recipe_items);
         listViewIn.setAdapter(ingredientAdapter);
 //
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
 //        List<String> steps = new ArrayList<>();
 //        steps.add("1.add water");
 //        steps.add("2.ba rou qie cheng xiao kuai");
@@ -186,7 +190,10 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
             final View result;
 
             result = getLayoutInflater().inflate(R.layout.entry_step, null);
