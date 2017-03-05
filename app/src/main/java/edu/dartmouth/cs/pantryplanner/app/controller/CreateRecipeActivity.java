@@ -159,17 +159,6 @@ public class CreateRecipeActivity extends AppCompatActivity{
             @Override
             public void onClick(View view){
                 saveBtnSelected(view);
-<<<<<<< HEAD
-                /* pass the recipe result back to createMealActivity */
-
-                Intent resultIntent = new Intent();
-                Recipe recipe = new Recipe(name, items, steps);
-                resultIntent.putExtra("recipe", recipe.toString());
-                setResult(Activity.RESULT_OK, resultIntent);
-                finish();
-
-=======
->>>>>>> origin/master
             }
         });
         mCancelButton = (Button) findViewById(R.id.create_recipe_cancel);
