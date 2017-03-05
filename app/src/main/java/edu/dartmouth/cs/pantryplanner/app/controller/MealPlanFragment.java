@@ -33,8 +33,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import edu.dartmouth.cs.pantryplanner.app.R;
+import edu.dartmouth.cs.pantryplanner.app.model.Item;
+import edu.dartmouth.cs.pantryplanner.app.model.ItemType;
 import edu.dartmouth.cs.pantryplanner.app.model.MealPlan;
 import edu.dartmouth.cs.pantryplanner.app.util.ServiceBuilderHelper;
 import edu.dartmouth.cs.pantryplanner.app.util.Session;
@@ -54,6 +57,8 @@ public class MealPlanFragment extends Fragment {
 
     // UI Reference
     private ExpandableListView mExpandableListView;
+    MealPlanAdapter mMealPlanAdapter;
+    public static int mMealNumber = 7;
 
     public MealPlanFragment() {
         // Required empty public constructor
@@ -81,9 +86,9 @@ public class MealPlanFragment extends Fragment {
          */
 
         Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat formatter = new SimpleDateFormat("MMM dd yyyy", Locale.US);
+        SimpleDateFormat formatter = new SimpleDateFormat("MMM dd yyyy");
         HashMap<String, ArrayList<ArrayList<MealPlan>>> dateMap = new HashMap<>();
-        for (int i = 0; i < 7; ++i) {
+        for (int i = 0; i < mMealNumber; ++i) {
             ArrayList<ArrayList<MealPlan>> mealTypeList = new ArrayList<>();
             for (int j = 3; j > 0; --j) {
                 mealTypeList.add(new ArrayList<MealPlan>());
@@ -215,6 +220,27 @@ public class MealPlanFragment extends Fragment {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Log.d("position", "" + position);
+                    Intent i = new Intent(getActivity(), RecipeDetailActivity.class);
+                    //MealPlanRecord selectedItem = recipes.get(position);
+                    i.putExtra("isFromHistory","false");
+                    i.putExtra("mPRDate","08 12 2017");
+                    i.putExtra("mPRMealType", "Lunch");
+                    Map<Item, Integer> items = new HashMap<>();
+                    Item item1 = new Item("beef", ItemType.MEAT);
+                    Item item2 = new Item("tomato", ItemType.VEGETABLE);
+                    items.put(item1, 200);
+                    items.put(item2, 3);
+
+                    List<String> steps = new ArrayList<>();
+                    steps.add("add water");
+                    steps.add("ba rou qie cheng xiao kuai");
+                    steps.add("rou fang dao shui li");
+                    Recipe temp = new Recipe("fanqiechaodan",items, steps);
+                    i.putExtra("mPRRecipe", temp.toString());
+//                    i.putExtra("mPRDate",selectedItem.getDate());
+//                    i.putExtra("mPRMealType", selectedItem.getMealType());
+//                    i.putExtra("mPRRecipe", selectedItem.getRecipe());
+                    startActivity(i);
                 }
             });
             return view;

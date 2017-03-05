@@ -15,6 +15,7 @@
 
         <TextView
             android:id="@+id/pantry_item_name"
+            android:typeface="serif"
             android:text="Apple"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
@@ -22,7 +23,6 @@
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="15dp"
             android:gravity="center_vertical"
-            android:textStyle="bold"
             android:textSize="20dp"/>
 
     </LinearLayout>

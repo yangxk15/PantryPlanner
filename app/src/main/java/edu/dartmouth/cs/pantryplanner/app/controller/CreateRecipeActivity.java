@@ -39,10 +39,6 @@ import edu.dartmouth.cs.pantryplanner.app.model.ItemType;
 import edu.dartmouth.cs.pantryplanner.app.model.Recipe;
 
 
-/**
- * Created by litianqi on 3/1/17.
- */
-
 public class CreateRecipeActivity extends AppCompatActivity{
     public static final String CREATED_RECIPE = "Create_Recipe";
 

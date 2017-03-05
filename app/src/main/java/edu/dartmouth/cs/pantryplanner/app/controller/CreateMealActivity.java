@@ -26,9 +26,7 @@ import edu.dartmouth.cs.pantryplanner.backend.entity.mealPlanRecordApi.MealPlanR
 import edu.dartmouth.cs.pantryplanner.backend.entity.mealPlanRecordApi.model.MealPlanRecord;
 import edu.dartmouth.cs.pantryplanner.app.model.MealType;
 
-/**
- * Created by litianqi on 3/3/17.
- */
+
 
 public class CreateMealActivity extends AppCompatActivity{
 
