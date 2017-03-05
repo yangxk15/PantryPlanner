@@ -34,6 +34,7 @@ import edu.dartmouth.cs.pantryplanner.app.util.Session;
 import edu.dartmouth.cs.pantryplanner.backend.entity.user.User;
 import edu.dartmouth.cs.pantryplanner.backend.registration.Registration;
 import lombok.AllArgsConstructor;
+import lombok.core.Main;
 
 /**
  * A login screen that offers login via email/password.

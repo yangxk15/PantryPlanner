@@ -11,21 +11,18 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-
 import java.io.IOException;
 import java.util.Date;
 
 import edu.dartmouth.cs.pantryplanner.app.R;
 import edu.dartmouth.cs.pantryplanner.app.model.MealPlan;
+import edu.dartmouth.cs.pantryplanner.app.model.MealType;
 import edu.dartmouth.cs.pantryplanner.app.model.Recipe;
 import edu.dartmouth.cs.pantryplanner.app.util.RequestCode;
 import edu.dartmouth.cs.pantryplanner.app.util.ServiceBuilderHelper;
 import edu.dartmouth.cs.pantryplanner.app.util.Session;
 import edu.dartmouth.cs.pantryplanner.backend.entity.mealPlanRecordApi.MealPlanRecordApi;
 import edu.dartmouth.cs.pantryplanner.backend.entity.mealPlanRecordApi.model.MealPlanRecord;
-import edu.dartmouth.cs.pantryplanner.app.model.MealType;
-
 
 
 public class CreateMealActivity extends AppCompatActivity{
@@ -78,9 +75,10 @@ public class CreateMealActivity extends AppCompatActivity{
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
         if (resultCode == RESULT_OK) {
             if (requestCode == RequestCode.CREATE_RECIPE.ordinal()) {
-                Log.d("CreateMeal", "save recipe " + data.getStringExtra(CreateRecipeActivity.CREATED_RECIPE));
                 mRecipe = Recipe.fromString(data.getStringExtra(CreateRecipeActivity.CREATED_RECIPE));
             }
         }
@@ -99,6 +97,7 @@ public class CreateMealActivity extends AppCompatActivity{
         Toast.makeText(CreateMealActivity.this, "Meal plan discarded", Toast.LENGTH_SHORT).show();
         finish();
     }
+
 
 
     private class AddMealAsyncTask extends AsyncTask<Void, Void, IOException>{

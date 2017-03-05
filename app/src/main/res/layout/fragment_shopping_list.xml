@@ -1,17 +1,19 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="edu.dartmouth.cs.pantryplanner.app.controller.ShoppingListFragment"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="edu.dartmouth.cs.pantryplanner.app.controller.ShoppingListFragment"
-    android:layout_marginTop="10dp">
+    android:paddingTop="5dp">
 
 
     <ExpandableListView
         android:id="@+id/expandableListView_shopping_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"/>
 
     <Button
         android:layout_width="match_parent"

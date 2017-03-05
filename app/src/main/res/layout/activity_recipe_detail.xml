@@ -11,6 +11,7 @@
     android:fitsSystemWindows="true"
     tools:context="edu.dartmouth.cs.pantryplanner.app.controller.RecipeDetailActivity">
 
+
     <TextView
         android:id="@+id/textView_recipe_name"
         android:layout_width="230dp"
@@ -30,9 +31,6 @@
         android:layout_marginTop="65dp"
         android:gravity="center"
         >
-
-
-
         <TextView
             android:id="@+id/textView_recipe_date"
             android:layout_width="wrap_content"
@@ -56,12 +54,12 @@
 
     </LinearLayout>
 
-    <ScrollView
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:layout_marginTop="200dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="200dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -81,7 +79,7 @@
             <ListView
                 android:id="@+id/list_display_recipe_items"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="150dp"/>
 
 
             <TextView
@@ -90,7 +88,9 @@
                 android:layout_marginTop="10dp"
                 android:text="Steps:"
                 android:textSize="20sp"
+                android:gravity="center"
                 android:textStyle="bold"/>
+
 
             <ListView
                 android:id="@+id/list_display_recipe_steps"
@@ -98,8 +98,7 @@
                 android:layout_height="wrap_content"/>
 
         </LinearLayout>
-
-    </ScrollView>
+    </LinearLayout>
 
     <Button
         android:text="Finish Cooking"
