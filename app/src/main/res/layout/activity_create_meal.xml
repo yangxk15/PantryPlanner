@@ -3,20 +3,55 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@color/White">
 
-    <Spinner
-        android:id="@+id/meal_type_select"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <ImageButton
+        android:src="@drawable/addmorerecipe"
+        android:layout_marginTop="117dp"
+        android:scaleType="fitXY"
+        android:layout_width="360dp"
+        android:layout_height="360dp"
+        android:layout_marginLeft="7dp"
+        android:background="@color/White"/>
 
-    <Button
-        android:id="@+id/add_meal_button"
-        style="?android:textAppearanceSmall"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="ADD"/>
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView_meal_plan_showing_date"
+            android:textSize="20sp"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mar 2 2017" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textSize="16sp"
+            android:text="Meal Type: "/>
+
+        <Spinner
+            android:id="@+id/spinner_meal_plan_type_select"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"/>
+
+        <Button
+            android:id="@+id/button_meal_plan_add"
+            style="?android:textAppearanceSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="170dp"
+            android:background="#707070"
+            android:textColor="@color/White"
+            android:layout_gravity="center"
+            android:text="    Add Recipe    "/>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
