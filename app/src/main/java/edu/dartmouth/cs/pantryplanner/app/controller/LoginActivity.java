@@ -211,7 +211,7 @@ public class LoginActivity extends AppCompatActivity {
             if (ex == null) {
                 new Session(LoginActivity.this).putString("email", mEmail);
                 new Session(LoginActivity.this).putString("password", mPassword);
-                startActivity(new Intent(LoginActivity.this, CreateRecipeActivity.class));
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 finish();
             } else {
                 if (ex instanceof GoogleJsonResponseException) {

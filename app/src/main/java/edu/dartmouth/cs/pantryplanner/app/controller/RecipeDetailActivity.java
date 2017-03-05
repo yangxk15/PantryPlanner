@@ -20,9 +20,12 @@ import edu.dartmouth.cs.pantryplanner.app.R;
 
 import edu.dartmouth.cs.pantryplanner.app.model.Item;
 import edu.dartmouth.cs.pantryplanner.app.model.ItemType;
+import edu.dartmouth.cs.pantryplanner.app.model.MealPlan;
 import edu.dartmouth.cs.pantryplanner.app.model.Recipe;
 import edu.dartmouth.cs.pantryplanner.backend.entity.mealPlanRecordApi.model.MealPlanRecord;
 import edu.dartmouth.cs.pantryplanner.backend.entity.recipeRecordApi.model.RecipeRecord;
+
+import static edu.dartmouth.cs.pantryplanner.app.util.Constants.DATE_FORMAT;
 
 public class RecipeDetailActivity extends AppCompatActivity {
     private Button mFinishButton;
@@ -37,43 +40,20 @@ public class RecipeDetailActivity extends AppCompatActivity {
     private IngredientAdapter ingredientAdapter;
     private StepsAdapter stepsAdapter;
 
-    private String date;
-    private String mealType;
-    private String recipeString;
-    private Recipe recipe;
+    private MealPlan mealPlan;
 
     @TargetApi(24)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_detail);
-        Intent i = getIntent();
-        String isFromHistory = i.getStringExtra("isFromHistory");
+
+        boolean isFromHistory = getIntent().getBooleanExtra("isFromHistory", false);
+
+        mealPlan = MealPlan.fromString(getIntent().getStringExtra(MealPlanFragment.SELECTED_MEAL_PLAN));
 
 
-        if (isFromHistory.equals("false")){ // coming from meal plan fragment
-            date = i.getStringExtra("mPRDate");
-            mealType = i.getStringExtra("mPRMealType");
-            recipeString = i.getStringExtra("mPRRecipe");
-            recipe = Recipe.fromString(recipeString);
-        } else {
-            date = i.getStringExtra("rDate");
-            mealType = i.getStringExtra("rMealType");
-            recipeString = i.getStringExtra("rRecipe");
-            recipe = Recipe.fromString(recipeString);
-        }
-//        Log.d("date: ", date);
-//        Log.d("mealType: ", mealType);
-//        Log.d("recipeS", recipeString);
-
-
-//        Map<Item, Integer> items = new HashMap<>();
-//        Item item1 = new Item("beef", ItemType.MEAT);
-//        Item item2 = new Item("tomato", ItemType.VEGETABLE);
-//        items.put(item1, 200);
-//        items.put(item2, 3);
-
-        Map<Item, Integer> items = recipe.getItems();
+        Map<Item, Integer> items = mealPlan.getRecipe().getItems();
         ingredientAdapter = new IngredientAdapter(items);
         ListView listViewIn = (ListView) findViewById(R.id.list_display_recipe_items);
         listViewIn.setAdapter(ingredientAdapter);
@@ -83,35 +63,34 @@ public class RecipeDetailActivity extends AppCompatActivity {
 //        steps.add("2.ba rou qie cheng xiao kuai");
 //        steps.add("3.rou fang dao shui li");
 
-        List<String> steps = recipe.getSteps();
+        List<String> steps = mealPlan.getRecipe().getSteps();
         stepsAdapter = new StepsAdapter(steps);
         ListView listViewS = (ListView) findViewById(R.id.list_display_recipe_steps);
         listViewS.setAdapter(stepsAdapter);
 
-
-
         mealDateText = (TextView) findViewById(R.id.textView_recipe_date);
-        mealDateText.setText("07 10 2017");
+        mealDateText.setText(DATE_FORMAT.format(mealPlan.getDate()));
         //mealDateText.setText(date);
         mealTypeText = (TextView) findViewById(R.id.textView_recipe_type);
-        mealTypeText.setText("Lunch");
-        recipeNameText = (TextView) findViewById(R.id.textView_recipe_name);
-        recipeNameText.setText("hongshaorou");
+        mealTypeText.setText(mealPlan.getMealType().toString());
+        recipeNameText = (TextView) findViewById(R. id.textView_recipe_name);
+        recipeNameText.setText(mealPlan.getRecipe().getName());
         ingredientText = (TextView) findViewById(R.id.textView_recipe_ingredient);
 
 
 
         mFinishButton = (Button) findViewById(R.id.finish_button);
-//        if (isFromHistory.equals("true")){
-//            mFinishButton.setVisibility(View.GONE);
-//        } else {
-//            mFinishButton.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//
-//                }
-//            });
-//        }
+        if (isFromHistory){
+            mFinishButton.setVisibility(View.GONE);
+        } else {
+            mFinishButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // TODO: 3/5/17
+                    // Finish cooking and update pantry list action
+                }
+            });
+        }
     }
 
     private class IngredientAdapter extends BaseAdapter {
