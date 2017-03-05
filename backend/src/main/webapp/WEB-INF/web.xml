@@ -17,7 +17,8 @@
                 edu.dartmouth.cs.pantryplanner.backend.endpoint.MessagingEndpoint,
                 edu.dartmouth.cs.pantryplanner.backend.endpoint.UserEndpoint,
                 edu.dartmouth.cs.pantryplanner.backend.endpoint.RecipeRecordEndpoint,
-                edu.dartmouth.cs.pantryplanner.backend.endpoint.MealPlanRecordEndpoint</param-value>
+                edu.dartmouth.cs.pantryplanner.backend.endpoint.MealPlanRecordEndpoint,
+                edu.dartmouth.cs.pantryplanner.backend.endpoint.ShoppingListRecordEndpoint</param-value>
         </init-param>
     </servlet>
     <servlet-mapping>

@@ -4,10 +4,7 @@ import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyFactory;
 import com.googlecode.objectify.ObjectifyService;
 
-import edu.dartmouth.cs.pantryplanner.backend.entity.MealPlanRecord;
-import edu.dartmouth.cs.pantryplanner.backend.entity.RecipeRecord;
-import edu.dartmouth.cs.pantryplanner.backend.entity.RegistrationRecord;
-import edu.dartmouth.cs.pantryplanner.backend.entity.UserRecord;
+import edu.dartmouth.cs.pantryplanner.backend.entity.*;
 
 /**
  * Objectify service wrapper so we can statically register our persistence classes
@@ -20,6 +17,7 @@ public class OfyService {
         ObjectifyService.register(UserRecord.class);
         ObjectifyService.register(MealPlanRecord.class);
         ObjectifyService.register(RecipeRecord.class);
+        ObjectifyService.register(ShoppingListRecord.class);
     }
 
     public static Objectify ofy() {
