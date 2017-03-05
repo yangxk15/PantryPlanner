@@ -193,21 +193,6 @@ public class LoginActivity extends AppCompatActivity {
             IOException ex = null;
 
             try {
-                // Connect to the server
-                Registration regService = ServiceBuilderHelper.setup(
-                        LoginActivity.this,
-                        new Registration.Builder(
-                                AndroidHttp.newCompatibleTransport(),
-                                new AndroidJsonFactory(),
-                                null
-                        )
-                ).build();
-
-                String regId = GoogleCloudMessaging.getInstance(LoginActivity.this)
-                        .register(LoginActivity.this.getString(R.string.project_number));
-
-                regService.register(regId).execute();
-
                 User userService = ServiceBuilderHelper.setup(LoginActivity.this,
                         new User.Builder(
                                 AndroidHttp.newCompatibleTransport(),
@@ -238,7 +223,7 @@ public class LoginActivity extends AppCompatActivity {
                 editor.putString("email", mEmail);
                 editor.putString("password", mPassword);
                 editor.apply();
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                startActivity(new Intent(LoginActivity.this, CreateRecipeActivity.class));
                 finish();
             } else {
                 if (ex instanceof GoogleJsonResponseException) {

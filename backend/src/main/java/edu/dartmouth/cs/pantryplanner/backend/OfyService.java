@@ -4,6 +4,8 @@ import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyFactory;
 import com.googlecode.objectify.ObjectifyService;
 
+import edu.dartmouth.cs.pantryplanner.backend.entity.MealPlanRecord;
+import edu.dartmouth.cs.pantryplanner.backend.entity.RecipeRecord;
 import edu.dartmouth.cs.pantryplanner.backend.entity.RegistrationRecord;
 import edu.dartmouth.cs.pantryplanner.backend.entity.UserRecord;
 
@@ -16,6 +18,8 @@ public class OfyService {
     static {
         ObjectifyService.register(RegistrationRecord.class);
         ObjectifyService.register(UserRecord.class);
+        ObjectifyService.register(MealPlanRecord.class);
+        ObjectifyService.register(RecipeRecord.class);
     }
 
     public static Objectify ofy() {

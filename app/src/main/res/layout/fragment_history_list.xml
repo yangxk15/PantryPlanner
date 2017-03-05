@@ -2,12 +2,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="edu.dartmouth.cs.pantryplanner.app.controller.RecipeListFragment">
+    tools:context="edu.dartmouth.cs.pantryplanner.app.controller.HistoryListFragment">
 
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/listView_recipe_list" />
+        android:id="@+id/listView_history_list" />
 
 </FrameLayout>

@@ -178,21 +178,6 @@ public class RegisterActivity extends AppCompatActivity {
             IOException ex = null;
 
             try {
-                // Connect to the server
-                Registration regService = ServiceBuilderHelper.setup(
-                        RegisterActivity.this,
-                        new Registration.Builder(
-                                AndroidHttp.newCompatibleTransport(),
-                                new AndroidJsonFactory(),
-                                null
-                        )
-                ).build();
-
-                String regId = GoogleCloudMessaging.getInstance(RegisterActivity.this)
-                        .register(RegisterActivity.this.getString(R.string.project_number));
-
-                regService.register(regId).execute();
-
                 User userService = ServiceBuilderHelper.setup(RegisterActivity.this,
                         new User.Builder(
                                 AndroidHttp.newCompatibleTransport(),

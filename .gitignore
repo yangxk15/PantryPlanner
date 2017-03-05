@@ -7,3 +7,7 @@
 /build
 /captures
 .externalNativeBuild
+
+app/src/main/AndroidManifest.xml
+
+.idea/misc.xml

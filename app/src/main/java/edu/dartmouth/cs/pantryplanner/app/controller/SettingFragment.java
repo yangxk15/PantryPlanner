@@ -9,13 +9,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import edu.dartmouth.cs.pantryplanner.app.R;
+import me.himanshusoni.quantityview.QuantityView;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class SettingFragment extends Fragment {
-
 
     public SettingFragment() {
         // Required empty public constructor
@@ -33,5 +33,7 @@ public class SettingFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         ImageView imageView = (ImageView) getActivity().findViewById(R.id.imageview_setting_photo);
         imageView.setImageResource(R.drawable.default_photo);
+        QuantityView quantityView = (QuantityView) view.findViewById(R.id.quantityView_plan_dates);
+        MealPlanFragment.mMealNumber = quantityView.getQuantity();
     }
 }

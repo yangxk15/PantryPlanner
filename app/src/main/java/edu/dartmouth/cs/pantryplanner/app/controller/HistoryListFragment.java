@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TabHost;
 
 import java.util.ArrayList;
 
@@ -20,9 +19,7 @@ import edu.dartmouth.cs.pantryplanner.app.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class RecipeListFragment extends Fragment {
-
-    TabHost tabHost;
+public class HistoryListFragment extends Fragment {
 
     private ArrayList<Fragment> mRecipeFragmentList;
     String[] values = new String[]{"Banana Oatmeal Muffin",
@@ -36,7 +33,7 @@ public class RecipeListFragment extends Fragment {
     };
 
 
-    public RecipeListFragment() {
+    public HistoryListFragment() {
         // Required empty public constructor
     }
 
@@ -46,8 +43,9 @@ public class RecipeListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_recipe_list, container, false);
-        ListView listView = (ListView) view.findViewById(R.id.listView_recipe_list);
+        View view = inflater.inflate(R.layout.fragment_history_list, container, false);
+        ListView listView = (ListView) view.findViewById(R.id.listView_history_list);
+
         final ArrayAdapter<String> adapter = new ArrayAdapter<String>
                 (this.getActivity(), R.layout.list_recipe, android.R.id.text1, values);
 
@@ -56,24 +54,12 @@ public class RecipeListFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(RecipeListFragment.this.getActivity(), RecipeDetailActivity.class);
+                Intent intent = new Intent(HistoryListFragment.this.getActivity(), RecipeDetailActivity.class);
                 intent.putExtra("RecipeName", (String) adapter.getItem(position));
+                intent.putExtra("isFromHistory", "true");
                 startActivity(intent);
             }
         });
         return view;
-
     }
-
-//    private class RecipeListAdapter extends ArrayAdapter<String> {
-//
-//
-//        public RecipeListAdapter(Context context) {
-//
-//            super(context, R.layout.);
-//
-//        }
-
-//
-
 }

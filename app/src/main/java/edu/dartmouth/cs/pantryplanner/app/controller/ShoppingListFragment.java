@@ -9,11 +9,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import edu.dartmouth.cs.pantryplanner.app.R;
 import edu.dartmouth.cs.pantryplanner.common.Item;
@@ -25,20 +29,24 @@ import edu.dartmouth.cs.pantryplanner.common.ItemType;
  */
 public class ShoppingListFragment extends Fragment {
     ShoppingListAdapter mShoppingListAdapter;
+    static HashSet<Item> selectedItems;
 
     public ShoppingListFragment() {
-        // Required empty public constructor
+        selectedItems = new HashSet<>();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_shopping_list, container, false);
         ExpandableListView listView = (ExpandableListView) view.findViewById(R.id.expandableListView_shopping_list);
 
         dataProcess();
+
         listView.setAdapter(mShoppingListAdapter);
+
         listView.expandGroup(0);
         return view;
     }
@@ -50,9 +58,25 @@ public class ShoppingListFragment extends Fragment {
          */
 
         Item apple = new Item("Apple", ItemType.FRUIT);
+        Item orange = new Item("Orange", ItemType.FRUIT);
+        Item beef = new Item("Beef", ItemType.MEAT);
+        Item c1 = new Item("Grape", ItemType.FRUIT);
+        Item c2 = new Item("Lemon", ItemType.FRUIT);
+        Item c3 = new Item("Tuna", ItemType.MEAT);
+        Item c4 = new Item("Apple", ItemType.FRUIT);
+        Item c5 = new Item("Chicken", ItemType.MEAT);
+        Item c6 = new Item("Pork", ItemType.MEAT);
 
         ArrayList<Item> items = new ArrayList<>();
         items.add(apple);
+        items.add(orange);
+        items.add(beef);
+        items.add(c1);
+        items.add(c2);
+        items.add(c3);
+        items.add(c4);
+        items.add(c5);
+        items.add(c6);
 
         ArrayList<ArrayList<Item>> typeList = new ArrayList<>();
         for (int i = 0; i < ItemType.values().length; ++i) {
@@ -116,6 +140,27 @@ public class ShoppingListFragment extends Fragment {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = inflater.inflate(R.layout.list_shoping_list_type, parent, false);
+            ImageView imageView = (ImageView) view.findViewById(R.id.imageView_shop_image);
+            switch (groupPosition) {
+                case 0:
+                    imageView.setImageResource(R.drawable.steak);
+                    break;
+                case 1:
+                    imageView.setImageResource(R.drawable.food_and_wine);
+                    break;
+                case 2:
+                    imageView.setImageResource(R.drawable.strawberry);
+                    break;
+                case 3:
+                    imageView.setImageResource(R.drawable.broccoli);
+                    break;
+                case 4:
+                    imageView.setImageResource(R.drawable.salt);
+                    break;
+                default:
+                    imageView.setImageResource(R.drawable.broccoli);
+                    break;
+            }
             ImageButton imageButton = (ImageButton) view.findViewById(R.id.imageButton_shop_add);
             imageButton.setFocusable(false);
             imageButton.setOnClickListener(new View.OnClickListener() {
@@ -135,10 +180,28 @@ public class ShoppingListFragment extends Fragment {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = inflater.inflate(R.layout.list_shoping_list_item, parent, false);
 
-            Item item = (Item) getChild(groupPosition, childPosition);
+            final Item item = (Item) getChild(groupPosition, childPosition);
 
             TextView itemName = (TextView) view.findViewById(R.id.textView_shop_item);
             itemName.setText("" + item.getName());
+
+            CheckBox cBox = (CheckBox) view.findViewById(R.id.checkBox_shop_item_check);
+            if (selectedItems.contains(item)) {
+                cBox.setChecked(true);
+            }
+            cBox.setTag(Integer.valueOf(groupPosition * ItemType.values().length + childPosition)); // set the tag so we can identify the correct row in the listener
+            cBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        selectedItems.add(item);
+                        // Log.d("add item", item.getName());
+                    } else {
+                        selectedItems.remove(item);
+                        // Log.d("remove item", item.getName());
+                    }
+                }
+            }); // set the listener
             return view;
         }
 
