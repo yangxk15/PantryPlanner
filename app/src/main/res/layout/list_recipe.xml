@@ -10,7 +10,6 @@
     android:id="@android:id/text1"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:typeface="serif"
     android:textSize="20dp"
     android:typeface="serif"
     android:layout_marginLeft="15dp"
