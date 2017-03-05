@@ -30,16 +30,12 @@
         <activity
             android:name=".controller.LoginActivity"
             android:screenOrientation="portrait" >
-<<<<<<< HEAD
-        </activity>
-=======
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
->>>>>>> origin/master
         <activity
             android:name=".controller.RegisterActivity"
             android:screenOrientation="portrait" />
@@ -49,11 +45,6 @@
             android:screenOrientation="portrait" />
         <activity android:name=".controller.CreateRecipeActivity"
             android:exported="true"/>
-<<<<<<< HEAD
-=======
-
-        <activity android:name=".controller.CreateRecipeActivity"/>
->>>>>>> origin/master
 
     </application>
 
