@@ -78,10 +78,6 @@ public class RecipeDetailActivity extends AppCompatActivity {
         ListView listViewIn = (ListView) findViewById(R.id.list_display_recipe_items);
         listViewIn.setAdapter(ingredientAdapter);
 //
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/master
 //        List<String> steps = new ArrayList<>();
 //        steps.add("1.add water");
 //        steps.add("2.ba rou qie cheng xiao kuai");
@@ -102,8 +98,6 @@ public class RecipeDetailActivity extends AppCompatActivity {
         recipeNameText = (TextView) findViewById(R.id.textView_recipe_name);
         recipeNameText.setText("hongshaorou");
         ingredientText = (TextView) findViewById(R.id.textView_recipe_ingredient);
-
-
 
         mFinishButton = (Button) findViewById(R.id.finish_button);
 //        if (isFromHistory.equals("true")){
@@ -190,10 +184,6 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/master
             final View result;
 
             result = getLayoutInflater().inflate(R.layout.entry_step, null);
