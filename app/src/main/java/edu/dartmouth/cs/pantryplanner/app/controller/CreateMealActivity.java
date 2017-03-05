@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-<<<<<<< HEAD
+
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.api.client.googleapis.json.GoogleJsonError;
@@ -24,10 +24,6 @@ import java.util.List;
 import edu.dartmouth.cs.pantryplanner.app.R;
 import edu.dartmouth.cs.pantryplanner.app.util.ServiceBuilderHelper;
 import edu.dartmouth.cs.pantryplanner.backend.entity.mealPlanRecordApi.model.MealPlanRecord;
-import edu.dartmouth.cs.pantryplanner.backend.entity.recipeRecordApi.RecipeRecordApi;
-import edu.dartmouth.cs.pantryplanner.backend.entity.recipeRecordApi.model.RecipeRecord;
-import edu.dartmouth.cs.pantryplanner.common.Recipe;
-=======
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -43,8 +39,6 @@ import edu.dartmouth.cs.pantryplanner.backend.entity.mealPlanRecordApi.MealPlanR
 import edu.dartmouth.cs.pantryplanner.backend.entity.mealPlanRecordApi.model.MealPlanRecord;
 import edu.dartmouth.cs.pantryplanner.app.model.MealType;
 
->>>>>>> origin/master
-
 
 public class CreateMealActivity extends AppCompatActivity{
 
@@ -53,12 +47,8 @@ public class CreateMealActivity extends AppCompatActivity{
     private Button saveButton;
     private Button cancelButton;
 
-<<<<<<< HEAD
-    private Recipe recipe;
-=======
     private MealPlan mMealPlan;
     private Recipe mRecipe;
->>>>>>> origin/master
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,39 +112,8 @@ public class CreateMealActivity extends AppCompatActivity{
         finish();
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode != RESULT_OK)
-            return;
-        recipe = Recipe.fromString(getIntent().getStringExtra("recipe"));
-    }
 
 
-<<<<<<< HEAD
-    private class AddMealAsycTask extends AsyncTask<Void, Void, IOException >{
-
-        @Override
-        protected IOException doInBackground(Void... params) {
-
-            IOException ex = null;
-            try {
-                RecipeRecordApi mealRecordApi = ServiceBuilderHelper.setup(CreateMealActivity.this,
-                        new MealRecordApi.Builder(
-                                AndroidHttp.newCompatibleTransport(),
-                                new AndroidJsonFactory(),
-                                null
-                        )
-                ).build();
-                MealPlanRecord mealPlanRecord = new MealPlanRecord();
-                mealPlanRecord.setId((long) 123);
-                mealPlanRecord.setDate("07 08 2017");
-                mealPlanRecord.setEmail("test");
-                mealPlanRecord.setMealType("Lunch");
-                mealPlanRecord.setRecipe(recipe.toString());
-
-                mealRecordApi.insert(recipeRecord).execute().getId();
-=======
     private class AddMealAsyncTask extends AsyncTask<Void, Void, IOException>{
 
         @Override
@@ -169,7 +128,6 @@ public class CreateMealActivity extends AppCompatActivity{
                         MealPlanRecordApi.Builder.class
                 ).build();
                 mealPlanRecordApi.insert(mealPlanRecord).execute();
->>>>>>> origin/master
             } catch (IOException e) {
                 ex = e;
             }
@@ -178,32 +136,9 @@ public class CreateMealActivity extends AppCompatActivity{
         }
 
         @Override
-<<<<<<< HEAD
-        protected void onPostExecute(IOException ex) {
-            if (ex == null) {
-                Toast.makeText(getApplicationContext(), "Meal saved!", Toast.LENGTH_SHORT).show();
-            } else {
-                if (ex instanceof GoogleJsonResponseException) {
-                    GoogleJsonError error = ((GoogleJsonResponseException) ex).getDetails();
-                    Toast.makeText(
-                            CreateMealActivity.this,
-                            error.getMessage(),
-                            Toast.LENGTH_LONG
-                    ).show();
-                } else {
-                    Toast.makeText(
-                            CreateMealActivity.this,
-                            "Please check your internet connection and restart the app",
-                            Toast.LENGTH_LONG
-                    ).show();
-                }
-                Log.d(this.getClass().getName(), ex.toString());
-            }
-=======
         protected void onPostExecute(IOException ex){
             Toast.makeText(CreateMealActivity.this, "Meal plan saved", Toast.LENGTH_SHORT).show();
             finish();
->>>>>>> origin/master
             return;
         }
     }
