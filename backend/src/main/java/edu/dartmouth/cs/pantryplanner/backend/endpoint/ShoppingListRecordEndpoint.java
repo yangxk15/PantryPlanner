@@ -149,9 +149,9 @@ public class ShoppingListRecordEndpoint {
             name = "listWith"
     )
     public CollectionResponse<ShoppingListRecord> listWith(@Named("email") String email) {
-        List<ShoppingListRecord> mealPlanRecordList = ofy().load().type(ShoppingListRecord.class).filter("email", email).list();
-        logger.info("list with email " + email + "and found " + mealPlanRecordList.size() + " record.");
-        return CollectionResponse.<ShoppingListRecord>builder().setItems(mealPlanRecordList).build();
+        List<ShoppingListRecord> shoppingListRecords = ofy().load().type(ShoppingListRecord.class).filter("email", email).list();
+        logger.info("list with email " + email + "and found " + shoppingListRecords.size() + " record.");
+        return CollectionResponse.<ShoppingListRecord>builder().setItems(shoppingListRecords).build();
     }
 
     private void checkExists(Long id) throws NotFoundException {
