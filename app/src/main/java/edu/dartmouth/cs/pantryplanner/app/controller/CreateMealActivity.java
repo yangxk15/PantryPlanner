@@ -40,14 +40,14 @@ public class CreateMealActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_meal);
 
-        spinner = (Spinner) findViewById(R.id.meal_type_select);
+        spinner = (Spinner) findViewById(R.id.spinner_meal_plan_type_select);
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, MealType.getMealTypes());
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(dataAdapter);
 
-        addMealButton = (Button) findViewById(R.id.add_meal_button);
+        addMealButton = (Button) findViewById(R.id.button_meal_plan_add);
         addMealButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

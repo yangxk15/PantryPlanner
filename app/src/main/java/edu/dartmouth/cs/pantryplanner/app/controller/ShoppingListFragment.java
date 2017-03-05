@@ -1,22 +1,33 @@
 package edu.dartmouth.cs.pantryplanner.app.controller;
 
 
+import android.app.Activity;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.v7.app.ActionBar;
+import android.text.method.DigitsKeyListener;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 
 import edu.dartmouth.cs.pantryplanner.app.R;
@@ -27,7 +38,7 @@ import edu.dartmouth.cs.pantryplanner.app.model.ItemType;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ShoppingListFragment extends Fragment {
+public class ShoppingListFragment extends Fragment implements ImageButton.OnClickListener {
     ShoppingListAdapter mShoppingListAdapter;
     static HashSet<Item> selectedItems;
 
@@ -38,7 +49,6 @@ public class ShoppingListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_shopping_list, container, false);
         ExpandableListView listView = (ExpandableListView) view.findViewById(R.id.expandableListView_shopping_list);
@@ -47,7 +57,9 @@ public class ShoppingListFragment extends Fragment {
 
         listView.setAdapter(mShoppingListAdapter);
 
-        listView.expandGroup(0);
+        for (int i = ItemType.values().length - 1; i >= 0; --i) {
+            listView.expandGroup(i);
+        }
         return view;
     }
 
@@ -67,6 +79,7 @@ public class ShoppingListFragment extends Fragment {
         Item c5 = new Item("Chicken", ItemType.MEAT);
         Item c6 = new Item("Pork", ItemType.MEAT);
 
+        // get a list of items from server
         ArrayList<Item> items = new ArrayList<>();
         items.add(apple);
         items.add(orange);
@@ -88,6 +101,15 @@ public class ShoppingListFragment extends Fragment {
         }
 
         mShoppingListAdapter = new ShoppingListAdapter(this.getActivity(), typeList);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.imageButton_shop_add:
+                Log.d("Click", "imageButton");
+                //TODO: add shopping entry
+        }
     }
 
     private class ShoppingListAdapter extends BaseExpandableListAdapter {
@@ -136,7 +158,8 @@ public class ShoppingListFragment extends Fragment {
         }
 
         @Override
-        public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+        public View getGroupView(int groupPosition, boolean isExpanded,
+                                 View convertView, ViewGroup parent) {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = inflater.inflate(R.layout.list_shoping_list_type, parent, false);
@@ -167,6 +190,7 @@ public class ShoppingListFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     Log.d("click", "imageButton");
+
                 }
             });
             TextView textView = (TextView) view.findViewById(R.id.textView_shop_type);
@@ -175,7 +199,8 @@ public class ShoppingListFragment extends Fragment {
         }
 
         @Override
-        public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+        public View getChildView(int groupPosition, int childPosition, boolean isLastChild,
+                                 View convertView, ViewGroup parent) {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = inflater.inflate(R.layout.list_shoping_list_item, parent, false);
@@ -189,6 +214,8 @@ public class ShoppingListFragment extends Fragment {
             if (selectedItems.contains(item)) {
                 cBox.setChecked(true);
             }
+
+            // TODO: click complete button, reduce pantry storage
             cBox.setTag(Integer.valueOf(groupPosition * ItemType.values().length + childPosition)); // set the tag so we can identify the correct row in the listener
             cBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
