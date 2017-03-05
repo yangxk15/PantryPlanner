@@ -32,15 +32,16 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".controller.LoginActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait" >
+        </activity>
         <activity
             android:name=".controller.RegisterActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".controller.CreateMealActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="portrait" />
+        <activity android:name=".controller.CreateRecipeActivity"
             android:exported="true"/>
-        <activity android:name=".controller.CreateRecipeActivity"/>
 
     </application>
 

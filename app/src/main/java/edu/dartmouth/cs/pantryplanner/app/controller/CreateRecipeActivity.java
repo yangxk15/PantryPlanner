@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.text.method.DigitsKeyListener;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -31,13 +33,12 @@ import java.util.List;
 import java.util.Map;
 
 import edu.dartmouth.cs.pantryplanner.app.R;
-import edu.dartmouth.cs.pantryplanner.app.util.RequestCode;
-import edu.dartmouth.cs.pantryplanner.app.util.ServiceBuilderHelper;
-import edu.dartmouth.cs.pantryplanner.backend.entity.recipeRecordApi.RecipeRecordApi;
-import edu.dartmouth.cs.pantryplanner.backend.entity.recipeRecordApi.model.RecipeRecord;
 import edu.dartmouth.cs.pantryplanner.app.model.Item;
 import edu.dartmouth.cs.pantryplanner.app.model.ItemType;
 import edu.dartmouth.cs.pantryplanner.app.model.Recipe;
+import edu.dartmouth.cs.pantryplanner.app.util.ServiceBuilderHelper;
+import edu.dartmouth.cs.pantryplanner.backend.entity.recipeRecordApi.RecipeRecordApi;
+import edu.dartmouth.cs.pantryplanner.backend.entity.recipeRecordApi.model.RecipeRecord;
 
 
 public class CreateRecipeActivity extends AppCompatActivity{
@@ -106,7 +107,7 @@ public class CreateRecipeActivity extends AppCompatActivity{
                        }
                     }
                 });
-
+                t2.setKeyListener(new DigitsKeyListener());
                 t2.setOnFocusChangeListener(new View.OnFocusChangeListener(){
                     @Override
                     public void onFocusChange(View v, boolean hasFocus) {
@@ -123,6 +124,7 @@ public class CreateRecipeActivity extends AppCompatActivity{
                                 TextView newTextView2 = new TextView(CreateRecipeActivity.this);
 
                                 newTextView1.setText(material);
+                                newTextView1.setTypeface(Typeface.DEFAULT_BOLD);
                                 newTextView2.setText(quantity);
                                 LinearLayout horizontal_text = new LinearLayout(CreateRecipeActivity.this);
                                 horizontal_text.setOrientation(LinearLayout.HORIZONTAL);

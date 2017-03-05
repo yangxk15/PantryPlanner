@@ -11,33 +11,18 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-
-import com.google.api.client.extensions.android.http.AndroidHttp;
-import com.google.api.client.extensions.android.json.AndroidJsonFactory;
-import com.google.api.client.googleapis.json.GoogleJsonError;
-import com.google.api.client.googleapis.json.GoogleJsonResponseException;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import edu.dartmouth.cs.pantryplanner.app.R;
-import edu.dartmouth.cs.pantryplanner.app.util.ServiceBuilderHelper;
-import edu.dartmouth.cs.pantryplanner.backend.entity.mealPlanRecordApi.model.MealPlanRecord;
-import com.google.gson.Gson;
-
 import java.io.IOException;
 import java.util.Date;
 
 import edu.dartmouth.cs.pantryplanner.app.R;
 import edu.dartmouth.cs.pantryplanner.app.model.MealPlan;
+import edu.dartmouth.cs.pantryplanner.app.model.MealType;
 import edu.dartmouth.cs.pantryplanner.app.model.Recipe;
 import edu.dartmouth.cs.pantryplanner.app.util.RequestCode;
 import edu.dartmouth.cs.pantryplanner.app.util.ServiceBuilderHelper;
 import edu.dartmouth.cs.pantryplanner.app.util.Session;
 import edu.dartmouth.cs.pantryplanner.backend.entity.mealPlanRecordApi.MealPlanRecordApi;
 import edu.dartmouth.cs.pantryplanner.backend.entity.mealPlanRecordApi.model.MealPlanRecord;
-import edu.dartmouth.cs.pantryplanner.app.model.MealType;
 
 
 public class CreateMealActivity extends AppCompatActivity{

@@ -17,9 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 import edu.dartmouth.cs.pantryplanner.app.R;
-
 import edu.dartmouth.cs.pantryplanner.app.model.Item;
-import edu.dartmouth.cs.pantryplanner.app.model.ItemType;
 import edu.dartmouth.cs.pantryplanner.app.model.Recipe;
 import edu.dartmouth.cs.pantryplanner.backend.entity.mealPlanRecordApi.model.MealPlanRecord;
 import edu.dartmouth.cs.pantryplanner.backend.entity.recipeRecordApi.model.RecipeRecord;
@@ -78,10 +76,6 @@ public class RecipeDetailActivity extends AppCompatActivity {
         ListView listViewIn = (ListView) findViewById(R.id.list_display_recipe_items);
         listViewIn.setAdapter(ingredientAdapter);
 //
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/master
 //        List<String> steps = new ArrayList<>();
 //        steps.add("1.add water");
 //        steps.add("2.ba rou qie cheng xiao kuai");
@@ -190,10 +184,6 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/master
             final View result;
 
             result = getLayoutInflater().inflate(R.layout.entry_step, null);
