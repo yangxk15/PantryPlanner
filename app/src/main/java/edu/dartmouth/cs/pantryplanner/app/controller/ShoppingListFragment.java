@@ -40,7 +40,7 @@ import edu.dartmouth.cs.pantryplanner.app.model.ItemType;
  */
 public class ShoppingListFragment extends Fragment implements ImageButton.OnClickListener {
     ShoppingListAdapter mShoppingListAdapter;
-    static HashSet<Item> selectedItems;
+    HashSet<Item> selectedItems;
 
     public ShoppingListFragment() {
         selectedItems = new HashSet<>();
@@ -90,6 +90,10 @@ public class ShoppingListFragment extends Fragment implements ImageButton.OnClic
         items.add(c4);
         items.add(c5);
         items.add(c6);
+
+
+
+
 
         ArrayList<ArrayList<Item>> typeList = new ArrayList<>();
         for (int i = 0; i < ItemType.values().length; ++i) {

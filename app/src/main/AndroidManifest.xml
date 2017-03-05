@@ -43,9 +43,13 @@
         <activity
             android:name=".controller.CreateMealActivity"
             android:screenOrientation="portrait" />
+<<<<<<< HEAD
 
         <activity android:name=".controller.CreateRecipeActivity"/>
 
+=======
+        <activity android:name=".controller.CreateRecipeActivity"/>
+>>>>>>> origin/master
 
     </application>
 

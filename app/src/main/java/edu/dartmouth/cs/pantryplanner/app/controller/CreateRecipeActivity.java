@@ -58,8 +58,6 @@ public class CreateRecipeActivity extends AppCompatActivity{
     private Map<Item, Integer> items = new HashMap<>();
     private List<String> steps = new ArrayList<>();
 
-
-
     private ArrayList<TextView> mTextViewList = new ArrayList<>();
 
     @Override
