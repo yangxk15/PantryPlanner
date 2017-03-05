@@ -23,9 +23,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import edu.dartmouth.cs.pantryplanner.app.R;
 import edu.dartmouth.cs.pantryplanner.backend.entity.mealPlanRecordApi.model.MealPlanRecord;
+import edu.dartmouth.cs.pantryplanner.common.Item;
+import edu.dartmouth.cs.pantryplanner.common.ItemType;
 import edu.dartmouth.cs.pantryplanner.common.MealType;
 import edu.dartmouth.cs.pantryplanner.common.Recipe;
 
@@ -181,7 +185,7 @@ public class MealPlanFragment extends Fragment {
                         .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = inflater.inflate(R.layout.list_meal_plan_mealtype, parent, false);
 
-            ArrayList<MealPlanRecord> recipes = (ArrayList<MealPlanRecord>) getChild(groupPosition, childPosition);
+            final ArrayList<MealPlanRecord> recipes = (ArrayList<MealPlanRecord>) getChild(groupPosition, childPosition);
             String[] recipenames = new String[recipes.size()];
             for (int i = 0; i < recipenames.length; ++i) {
                 recipenames[i] = Recipe.fromString(recipes.get(i).getRecipe()).getName();
@@ -207,7 +211,25 @@ public class MealPlanFragment extends Fragment {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Log.d("position", "" + position);
                     Intent i = new Intent(getActivity(), RecipeDetailActivity.class);
+                    //MealPlanRecord selectedItem = recipes.get(position);
                     i.putExtra("isFromHistory","false");
+                    i.putExtra("mPRDate","08 12 2017");
+                    i.putExtra("mPRMealType", "Lunch");
+                    Map<Item, Integer> items = new HashMap<>();
+                    Item item1 = new Item("beef", ItemType.MEAT);
+                    Item item2 = new Item("tomato", ItemType.VEGETABLE);
+                    items.put(item1, 200);
+                    items.put(item2, 3);
+
+                    List<String> steps = new ArrayList<>();
+                    steps.add("add water");
+                    steps.add("ba rou qie cheng xiao kuai");
+                    steps.add("rou fang dao shui li");
+                    Recipe temp = new Recipe("fanqiechaodan",items, steps);
+                    i.putExtra("mPRRecipe", temp.toString());
+//                    i.putExtra("mPRDate",selectedItem.getDate());
+//                    i.putExtra("mPRMealType", selectedItem.getMealType());
+//                    i.putExtra("mPRRecipe", selectedItem.getRecipe());
                     startActivity(i);
                 }
             });

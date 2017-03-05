@@ -16,9 +16,7 @@ import java.util.List;
 
 import edu.dartmouth.cs.pantryplanner.app.R;
 
-/**
- * Created by litianqi on 3/3/17.
- */
+
 
 public class CreateMealActivity extends AppCompatActivity{
     private Spinner spinner;

@@ -34,15 +34,10 @@ import edu.dartmouth.cs.pantryplanner.app.R;
 import edu.dartmouth.cs.pantryplanner.app.util.ServiceBuilderHelper;
 import edu.dartmouth.cs.pantryplanner.backend.entity.recipeRecordApi.RecipeRecordApi;
 import edu.dartmouth.cs.pantryplanner.backend.entity.recipeRecordApi.model.RecipeRecord;
-import edu.dartmouth.cs.pantryplanner.backend.entity.user.User;
 import edu.dartmouth.cs.pantryplanner.common.Item;
 import edu.dartmouth.cs.pantryplanner.common.ItemType;
 import edu.dartmouth.cs.pantryplanner.common.Recipe;
 
-
-/**
- * Created by litianqi on 3/1/17.
- */
 
 public class CreateRecipeActivity extends AppCompatActivity{
 
