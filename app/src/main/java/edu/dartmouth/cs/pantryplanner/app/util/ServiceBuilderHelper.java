@@ -1,14 +1,22 @@
 package edu.dartmouth.cs.pantryplanner.app.util;
 
 import android.content.Context;
+import android.util.Log;
 
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
 import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
 import com.google.api.client.googleapis.services.json.AbstractGoogleJsonClient.Builder;
+import com.google.api.client.http.HttpRequestInitializer;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.json.JsonFactory;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 
 import edu.dartmouth.cs.pantryplanner.app.R;
+import edu.dartmouth.cs.pantryplanner.backend.entity.recipeRecordApi.RecipeRecordApi;
 import edu.dartmouth.cs.pantryplanner.backend.entity.user.User;
 import lombok.AllArgsConstructor;
 
@@ -18,7 +26,31 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor(suppressConstructorProperties = true)
 public class ServiceBuilderHelper {
-    public static <T extends Builder> T setup(Context context, T builder) {
+    public static <T extends Builder> T getBuilder(Context context, Class<T> cls) {
+        T builder;
+
+        try {
+            builder = setup(
+                    context,
+                    cls.getConstructor(
+                            HttpTransport.class,
+                            JsonFactory.class,
+                            HttpRequestInitializer.class
+                    ).newInstance(
+                            AndroidHttp.newCompatibleTransport(),
+                            new AndroidJsonFactory(),
+                            null
+                    )
+            );
+        } catch (Exception e) {
+            builder = null;
+            Log.d("ServiceBuilderHelper", e.toString());
+        }
+
+        return builder;
+    }
+
+    private static <T extends Builder> T setup(Context context, T builder) {
         if (Constants.localMode) {
             builder.setRootUrl(
                     "http://" + Constants.LOCAL_SERVER_IP + ":8080/_ah/api/"

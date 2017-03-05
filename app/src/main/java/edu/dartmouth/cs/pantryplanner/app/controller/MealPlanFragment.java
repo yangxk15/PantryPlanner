@@ -4,6 +4,7 @@ package edu.dartmouth.cs.pantryplanner.app.controller;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,24 +18,43 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.api.client.googleapis.json.GoogleJsonError;
+import com.google.api.client.googleapis.json.GoogleJsonResponseException;
+import com.google.gson.Gson;
+
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
 
 import edu.dartmouth.cs.pantryplanner.app.R;
+import edu.dartmouth.cs.pantryplanner.app.model.MealPlan;
+import edu.dartmouth.cs.pantryplanner.app.util.ServiceBuilderHelper;
+import edu.dartmouth.cs.pantryplanner.app.util.Session;
+import edu.dartmouth.cs.pantryplanner.backend.entity.mealPlanRecordApi.MealPlanRecordApi;
 import edu.dartmouth.cs.pantryplanner.backend.entity.mealPlanRecordApi.model.MealPlanRecord;
-import edu.dartmouth.cs.pantryplanner.common.MealType;
-import edu.dartmouth.cs.pantryplanner.common.Recipe;
+import edu.dartmouth.cs.pantryplanner.app.model.MealType;
+import edu.dartmouth.cs.pantryplanner.app.model.Recipe;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class MealPlanFragment extends Fragment {
-    MealPlanAdapter mMealPlanAdapter;
+    public static final String SELECTED_DATE = "Selected Date";
+
+    private List<MealPlan> mealPlans;
+
+    // UI Reference
+    private ExpandableListView mExpandableListView;
+
     public MealPlanFragment() {
         // Required empty public constructor
     }
@@ -44,12 +64,14 @@ public class MealPlanFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_meal_plan, container, false);
-        ExpandableListView listView = (ExpandableListView) view.findViewById(R.id.expandableListView_meal_plan);
-        dataProcess();
-
-        listView.setAdapter(mMealPlanAdapter);
-        listView.expandGroup(0);
+        mExpandableListView = (ExpandableListView) view.findViewById(R.id.expandableListView_meal_plan);
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        new ReadMealPlanListTask().execute();
     }
 
     // TODO:
@@ -58,38 +80,24 @@ public class MealPlanFragment extends Fragment {
                     Day       Tag       Meal
          */
 
-        MealPlanRecord newrecipe1 = new MealPlanRecord();
-        newrecipe1.setMealType(MealType.BREAKFAST.toString());
-        Recipe recipe = new Recipe("Bacon", null, null);
-
-        newrecipe1.setRecipe(recipe.toString());
-        //Log.d(MealType.BREAKFAST.name(), "mealtype");
-        //MealPlanRecord newrecipe2 = new Recipe("Milk", new Date(), MealType.DINNER, null, null);
-        //MealPlanRecord newrecipe3 = new Recipe("Broccoli", new Date(), MealType.DINNER, null, null);
-
-        ArrayList<MealPlanRecord> recipes = new ArrayList<>();
-        recipes.add(newrecipe1);
-        //recipes.add(newrecipe2);
-        //recipes.add(newrecipe3);
-
         Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat formatter = new SimpleDateFormat("MMM dd yyyy");
-        HashMap<String, ArrayList<ArrayList<MealPlanRecord>>> dateMap = new HashMap<>();
+        SimpleDateFormat formatter = new SimpleDateFormat("MMM dd yyyy", Locale.US);
+        HashMap<String, ArrayList<ArrayList<MealPlan>>> dateMap = new HashMap<>();
         for (int i = 0; i < 7; ++i) {
-            ArrayList<ArrayList<MealPlanRecord>> mealTypeList = new ArrayList<>();
+            ArrayList<ArrayList<MealPlan>> mealTypeList = new ArrayList<>();
             for (int j = 3; j > 0; --j) {
-                mealTypeList.add(new ArrayList<MealPlanRecord>());
+                mealTypeList.add(new ArrayList<MealPlan>());
             }
             dateMap.put(formatter.format(calendar.getTime()), mealTypeList);
             calendar.add(Calendar.DATE, 1);
         }
 
-        //for (MealPlanRecord recipe: recipes) {
-        //Log.d("time", formatter.format(Calendar.getInstance().getTime()));
-            ArrayList<ArrayList<MealPlanRecord>> mealTypeList = dateMap.get(formatter.format(Calendar.getInstance().getTime()));
-            mealTypeList.get(0).add(newrecipe1);
-        //Log.d("meal", "" + mealTypeList.get(0).get(0).getRecipe().getName());
-        //}
+        for (MealPlan mealPlan: mealPlans) {
+//            Log.d("time", formatter.format(Calendar.getInstance().getTime()));
+            ArrayList<ArrayList<MealPlan>> mealTypeList = dateMap.get(formatter.format(mealPlan.getDate()));
+            mealTypeList.get(mealPlan.getMealType().ordinal()).add(mealPlan);
+//            Log.d("meal", "" + mealTypeList.get(0).get(0).getRecipe().getName());
+        }
 
         // remove all empty meal type list
         Iterator it = dateMap.entrySet().iterator();
@@ -103,17 +111,18 @@ public class MealPlanFragment extends Fragment {
             }
         }
 
-        mMealPlanAdapter = new MealPlanAdapter(this.getActivity(), dateMap);
+        mExpandableListView.setAdapter(new MealPlanAdapter(this.getActivity(), dateMap));
+        mExpandableListView.expandGroup(0);
     }
 
 
 
     private class MealPlanAdapter extends BaseExpandableListAdapter {
-        HashMap<String, ArrayList<ArrayList<MealPlanRecord>>> groupMap;
+        HashMap<String, ArrayList<ArrayList<MealPlan>>> groupMap;
         Context context;
 
         public MealPlanAdapter(Context context,
-                               HashMap<String, ArrayList<ArrayList<MealPlanRecord>>> groupMap) {
+                               HashMap<String, ArrayList<ArrayList<MealPlan>>> groupMap) {
             this.context = context;
             this.groupMap = groupMap;
         }
@@ -154,7 +163,7 @@ public class MealPlanFragment extends Fragment {
         }
 
         @Override
-        public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+        public View getGroupView(final int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = inflater.inflate(R.layout.list_meal_plan_date, parent, false);
@@ -163,8 +172,10 @@ public class MealPlanFragment extends Fragment {
             imageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.d("click", "imageButton");
                     Intent i = new Intent(getActivity(), CreateMealActivity.class);
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.add(Calendar.DATE, groupPosition);
+                    i.putExtra(SELECTED_DATE, calendar.getTime());
                     startActivity(i);
                 }
             });
@@ -179,26 +190,26 @@ public class MealPlanFragment extends Fragment {
                         .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = inflater.inflate(R.layout.list_meal_plan_mealtype, parent, false);
 
-            ArrayList<MealPlanRecord> recipes = (ArrayList<MealPlanRecord>) getChild(groupPosition, childPosition);
-            String[] recipenames = new String[recipes.size()];
-            for (int i = 0; i < recipenames.length; ++i) {
-                recipenames[i] = Recipe.fromString(recipes.get(i).getRecipe()).getName();
+            ArrayList<MealPlan> mealPlans = (ArrayList<MealPlan>) getChild(groupPosition, childPosition);
+            String[] recipeNames = new String[mealPlans.size()];
+            for (int i = 0; i < recipeNames.length; ++i) {
+                recipeNames[i] = mealPlans.get(i).getRecipe().getName();
             }
 
             // set layout height
             LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.layout_meal_mealtype);
             ViewGroup.LayoutParams params = linearLayout.getLayoutParams();
             //TODO: set height suitably
-            params.height = recipenames.length * 200 + 15;
+            params.height = recipeNames.length * 200 + 15;
             linearLayout.setLayoutParams(params);
 
             TextView mealType = (TextView) view.findViewById(R.id.textView_meal_type);
-            mealType.setText(recipes.get(0).getMealType());
+            mealType.setText(mealPlans.get(0).getMealType().toString());
 
             // ArrayAdapter for each meal type
             ListView listView = (ListView) view.findViewById(R.id.textView_meal_plan_recipe);
             ArrayAdapter<String> adapter = new ArrayAdapter(context,
-                    android.R.layout.simple_list_item_1, android.R.id.text1, recipenames);
+                    android.R.layout.simple_list_item_1, android.R.id.text1, recipeNames);
             listView.setAdapter(adapter);
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -217,7 +228,58 @@ public class MealPlanFragment extends Fragment {
         private String getDate(int groupPosition) {
             Calendar calendar = Calendar.getInstance();
             calendar.add(Calendar.DATE, groupPosition);
-            return new SimpleDateFormat("MMM dd yyyy").format(calendar.getTime());
+            return new SimpleDateFormat("MMM dd yyyy", Locale.US).format(calendar.getTime());
         }
+    }
+
+    private class ReadMealPlanListTask extends AsyncTask<Void, Void, IOException> {
+        @Override
+        protected IOException doInBackground(Void... arg0) {
+            IOException ex = null;
+            try {
+                MealPlanRecordApi mealPlanRecordApi = ServiceBuilderHelper.getBuilder(
+                        MealPlanFragment.this.getActivity(),
+                        MealPlanRecordApi.Builder.class
+                ).build();
+
+                List<MealPlanRecord> mealPlanRecords = mealPlanRecordApi.listWith(
+                        new Session(MealPlanFragment.this.getActivity()).getString("email")
+                ).execute().getItems();
+
+                if (mealPlanRecords == null) {
+                    mealPlans = new ArrayList<>();
+                } else {
+                    mealPlans = MealPlan.fromMealPlanRecords(mealPlanRecords);
+                }
+            } catch (IOException e) {
+                ex = e;
+            }
+
+            return ex;
+        }
+
+        @Override
+        protected void onPostExecute(IOException ex) {
+            if (ex == null) {
+                dataProcess();
+            } else {
+                if (ex instanceof GoogleJsonResponseException) {
+                    GoogleJsonError error = ((GoogleJsonResponseException) ex).getDetails();
+                    Toast.makeText(
+                            MealPlanFragment.this.getActivity(),
+                            error.getMessage(),
+                            Toast.LENGTH_LONG
+                    ).show();
+                } else {
+                    Toast.makeText(
+                            MealPlanFragment.this.getActivity(),
+                            "Please check your internet connection and restart the app",
+                            Toast.LENGTH_LONG
+                    ).show();
+                }
+                Log.d(this.getClass().getName(), ex.toString());
+            }
+        }
+
     }
 }

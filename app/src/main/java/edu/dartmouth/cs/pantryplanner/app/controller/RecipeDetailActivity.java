@@ -14,9 +14,8 @@ import java.util.Map;
 
 import edu.dartmouth.cs.pantryplanner.app.R;
 
-import edu.dartmouth.cs.pantryplanner.common.Item;
-import edu.dartmouth.cs.pantryplanner.common.ItemType;
-import edu.dartmouth.cs.pantryplanner.common.Recipe;
+import edu.dartmouth.cs.pantryplanner.app.model.Item;
+import edu.dartmouth.cs.pantryplanner.app.model.ItemType;
 
 public class RecipeDetailActivity extends AppCompatActivity {
     private Button mFinishButton;
