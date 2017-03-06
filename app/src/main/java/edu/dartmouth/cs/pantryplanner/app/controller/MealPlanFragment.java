@@ -106,7 +106,6 @@ public class MealPlanFragment extends Fragment implements FragmentUtil {
             if (!dateMap.containsKey(DATE_FORMAT.format(mealPlan.getDate()))) continue;
             ArrayList<ArrayList<MealPlan>> mealTypeList = dateMap.get(DATE_FORMAT.format(mealPlan.getDate()));
             mealTypeList.get(mealPlan.getMealType().ordinal()).add(mealPlan);
-//            Log.d("meal", "" + mealTypeList.get(0).get(0).getRecipe().getName());
         }
 
         // remove all empty meal type list
@@ -120,8 +119,6 @@ public class MealPlanFragment extends Fragment implements FragmentUtil {
                 }
             }
         }
-
-        Log.d("MealPlanFragment", dateMap.toString());
 
         mExpandableListView.setAdapter(new MealPlanAdapter(this.getActivity(), dateMap));
         mExpandableListView.expandGroup(0);

@@ -79,6 +79,8 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
         );
+
+        viewPager.setOffscreenPageLimit(mFragmentList.size() - 1);
     }
 
     private void loadSetting() {

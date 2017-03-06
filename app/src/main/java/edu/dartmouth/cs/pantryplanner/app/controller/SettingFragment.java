@@ -1,6 +1,7 @@
 package edu.dartmouth.cs.pantryplanner.app.controller;
 
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import edu.dartmouth.cs.pantryplanner.app.R;
 import edu.dartmouth.cs.pantryplanner.app.model.MealPlan;
 import edu.dartmouth.cs.pantryplanner.app.util.FragmentUtil;
+import edu.dartmouth.cs.pantryplanner.app.util.Session;
 import me.himanshusoni.quantityview.QuantityView;
 
 
@@ -34,8 +36,19 @@ public class SettingFragment extends Fragment implements QuantityView.OnQuantity
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         super.onCreateView(inflater, container, savedInstanceState);
+        View view = inflater.inflate(R.layout.fragment_setting, container, false);
+        view.findViewById(R.id.btn_setting_logout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Session(getActivity()).clear();
+                startActivity(new Intent(getActivity(), LoginActivity.class));
+                getActivity().finish();
+            }
+        });
+
         updateFragment();
-        return inflater.inflate(R.layout.fragment_setting, container, false);
+
+        return view;
     }
 
     @Override
@@ -51,7 +64,7 @@ public class SettingFragment extends Fragment implements QuantityView.OnQuantity
         quantityView.setQuantity(MealPlanFragment.mMealNumber);
 
         TextView textView = (TextView) view.findViewById(R.id.textView_setting_username);
-        textView.setText("Welcome :) " + "Foo!");
+        textView.setText("Username");
     }
 
     @Override
