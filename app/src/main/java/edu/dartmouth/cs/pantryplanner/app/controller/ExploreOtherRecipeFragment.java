@@ -56,11 +56,11 @@ public class ExploreOtherRecipeFragment extends Fragment {
     }
 
     private void dataProcess() {
+        Log.d("size", "" + recipes.size());
         if (recipes == null || recipes.size() == 0) return;
         String[] values = new String[recipes.size()];
-        int i = 0;
-        for (Recipe recipe : recipes) {
-            values[i] = recipe.getName();
+        for (int i = 0; i < values.length; ++i) {
+            values[i] = recipes.get(i).getName();
         }
 
         final ArrayAdapter<String> adapter = new ArrayAdapter<>
@@ -72,7 +72,7 @@ public class ExploreOtherRecipeFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getActivity(), RecipeDetailActivity.class);
-                intent.putExtra("RecipeName", recipes.get(position).toString()); // send recipe.toString();
+                intent.putExtra(ExploreRecipeActivity.RECIPE_KEY, recipes.get(position).toString());
                 intent.putExtra("isFromExplore", true);
                 startActivity(intent);
             }

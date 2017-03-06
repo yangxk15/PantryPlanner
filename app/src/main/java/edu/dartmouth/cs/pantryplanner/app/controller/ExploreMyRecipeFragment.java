@@ -55,9 +55,8 @@ public class ExploreMyRecipeFragment extends Fragment {
 
     private void dataProcess() {
         String[] values = new String[recipes.size()];
-        int i = 0;
-        for (Recipe recipe : recipes) {
-            values[i] = recipe.getName();
+        for (int i = 0; i < values.length; ++i) {
+            values[i] = recipes.get(i).getName();
         }
 
         // adapter to display recipe names
