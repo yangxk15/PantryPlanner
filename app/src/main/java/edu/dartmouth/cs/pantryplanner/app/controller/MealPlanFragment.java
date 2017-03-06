@@ -121,8 +121,6 @@ public class MealPlanFragment extends Fragment implements FragmentUtil {
             }
         }
 
-        Log.d("MealPlanFragment", dateMap.toString());
-
         mExpandableListView.setAdapter(new MealPlanAdapter(this.getActivity(), dateMap));
         mExpandableListView.expandGroup(0);
     }

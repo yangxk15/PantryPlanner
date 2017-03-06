@@ -25,6 +25,9 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -101,8 +104,14 @@ public class PantryFragment extends Fragment implements Button.OnClickListener, 
                     .setText(entry.getKey().getItem().getName());
             ((QuantityView) listItemView.findViewById(R.id.pantry_item_quantity))
                     .setQuantity(entry.getValue());
-            ((TextView) listItemView.findViewById(R.id.pantry_item_left_days))
-                    .setText(String.valueOf(entry.getKey().getLeftDays()));
+
+            if (entry.getKey().getLeftDays() > 0) {
+                ((TextView) listItemView.findViewById(R.id.pantry_item_left_days))
+                        .setText(String.valueOf(entry.getKey().getLeftDays()));
+            } else {
+                ((TextView) listItemView.findViewById(R.id.pantry_item_left_days))
+                        .setText("0");
+            }
 
             return listItemView;
         }
@@ -140,7 +149,14 @@ public class PantryFragment extends Fragment implements Button.OnClickListener, 
         protected void onPostExecute(IOException ex) {
             if (ex == null) {
                 PantryListAdapter pantryListAdapter = new PantryListAdapter(PantryFragment.this.getActivity());
-                pantryListAdapter.addAll(pantryItems.entrySet());
+                List<Map.Entry<PantryItem, Integer>> pantryList = new ArrayList<>(pantryItems.entrySet());
+                Collections.sort(pantryList, new Comparator<Map.Entry<PantryItem, Integer>>() {
+                    @Override
+                    public int compare(Map.Entry<PantryItem, Integer> o1, Map.Entry<PantryItem, Integer> o2) {
+                        return o1.getKey().getLeftDays() - o2.getKey().getLeftDays();
+                    }
+                });
+                pantryListAdapter.addAll(pantryList);
                 mListView.setAdapter(pantryListAdapter);
             } else {
                 if (ex instanceof GoogleJsonResponseException) {
