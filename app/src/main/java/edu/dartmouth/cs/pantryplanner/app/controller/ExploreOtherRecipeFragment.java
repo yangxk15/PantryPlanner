@@ -5,12 +5,15 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -19,13 +22,13 @@ import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import edu.dartmouth.cs.pantryplanner.app.R;
 import edu.dartmouth.cs.pantryplanner.app.model.Recipe;
 import edu.dartmouth.cs.pantryplanner.app.util.RequestCode;
 import edu.dartmouth.cs.pantryplanner.app.util.ServiceBuilderHelper;
-import edu.dartmouth.cs.pantryplanner.app.util.Session;
 import edu.dartmouth.cs.pantryplanner.backend.entity.recipeRecordApi.RecipeRecordApi;
 import edu.dartmouth.cs.pantryplanner.backend.entity.recipeRecordApi.model.RecipeRecord;
 
@@ -37,6 +40,9 @@ public class ExploreOtherRecipeFragment extends Fragment {
     private List<Recipe> recipes;
     // UI Reference
     private ListView mListView;
+    private EditText inputSearch;
+    private HashMap<String, Integer> map = new HashMap<>();
+    private ArrayAdapter<String> adapter;
 
     public ExploreOtherRecipeFragment() {
         // Required empty public constructor
@@ -62,6 +68,7 @@ public class ExploreOtherRecipeFragment extends Fragment {
         String[] values = new String[recipes.size()];
         for (int i = 0; i < values.length; ++i) {
             values[i] = recipes.get(i).getName();
+            map.put(values[i], i);
         }
 
         final ArrayAdapter<String> adapter = new ArrayAdapter<>
@@ -78,7 +85,46 @@ public class ExploreOtherRecipeFragment extends Fragment {
                 startActivityForResult(intent, RequestCode.IMPORT_RECIPE.ordinal());
             }
         });
+
+        inputSearch = (EditText) getView().findViewById(R.id.inputSearch);
+        inputSearch.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
+                // When user changed the Text
+                adapter.getFilter().filter(cs);
+                adapter.notifyDataSetChanged();
+
+                mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Integer origin = map.get(adapter.getItem(position));
+                        Intent intent = new Intent(getActivity(), RecipeDetailActivity.class);
+                        intent.putExtra(ExploreRecipeActivity.RECIPE_KEY, recipes.get(origin).toString());
+                        intent.putExtra("isFromExplore", true);
+                        startActivityForResult(intent, RequestCode.IMPORT_RECIPE.ordinal());
+                    }
+                });
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
+                                          int arg3) {
+                // TODO Auto-generated method stub
+
+            }
+
+        });
+
+
     }
+
+
 
     private class ReadOtherRecipeListTask extends AsyncTask<Void, Void, IOException> {
         @Override
