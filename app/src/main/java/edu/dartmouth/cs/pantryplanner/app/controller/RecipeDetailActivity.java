@@ -21,6 +21,9 @@ import edu.dartmouth.cs.pantryplanner.app.R;
 import edu.dartmouth.cs.pantryplanner.app.model.Item;
 import edu.dartmouth.cs.pantryplanner.app.model.MealPlan;
 import edu.dartmouth.cs.pantryplanner.app.util.ServiceBuilderHelper;
+import edu.dartmouth.cs.pantryplanner.app.util.Session;
+import edu.dartmouth.cs.pantryplanner.backend.entity.historyRecordApi.HistoryRecordApi;
+import edu.dartmouth.cs.pantryplanner.backend.entity.historyRecordApi.model.HistoryRecord;
 import edu.dartmouth.cs.pantryplanner.backend.entity.mealPlanRecordApi.MealPlanRecordApi;
 
 import static edu.dartmouth.cs.pantryplanner.app.util.Constants.DATE_FORMAT;
@@ -35,6 +38,8 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
         boolean isFromHistory = getIntent().getBooleanExtra("isFromHistory", false);
 
+        String temp = getIntent().getStringExtra(MealPlanFragment.SELECTED_MEAL_PLAN);
+        Log.d("selected",temp);
         mealPlan = MealPlan.fromString(getIntent().getStringExtra(MealPlanFragment.SELECTED_MEAL_PLAN));
 
         Map<Item, Integer> items = mealPlan.getRecipe().getItems();
@@ -60,9 +65,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     // TODO: 3/5/17
                     // Finish cooking and update pantry list action
-                new RemoveMealPlanAsyncTask().execute();
-
-
+                    new RemoveMealPlanAsyncTask().execute();
                 }
             });
         }
@@ -78,14 +81,22 @@ public class RecipeDetailActivity extends AppCompatActivity {
                         RecipeDetailActivity.this,
                         MealPlanRecordApi.Builder.class
                 ).build();
-                mealPlanRecordApi.remove(mealPlan.getId());
-
+                Log.d("id", mealPlan.getId().toString());
+                mealPlanRecordApi.remove(mealPlan.getId()).execute();
+                HistoryRecordApi historyRecordApi = ServiceBuilderHelper.getBuilder(RecipeDetailActivity.this,
+                        HistoryRecordApi.Builder.class).build();
+                HistoryRecord insert = new HistoryRecord();
+                insert.setEmail(new Session(RecipeDetailActivity.this).getString("email"));
+                insert.setHistory(mealPlan.toString());
+                historyRecordApi.insert(insert).execute();
+                finish();
 
             } catch (IOException e) {
                 ex = e;
             }
             return ex;
         }
+
 
     }
 

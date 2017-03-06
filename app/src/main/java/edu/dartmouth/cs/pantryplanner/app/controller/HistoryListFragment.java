@@ -72,7 +72,7 @@ public class HistoryListFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getActivity(), RecipeDetailActivity.class);
                 intent.putExtra(SELECTED_MEAL_PLAN, mealPlans.get(position).toString());
-                intent.putExtra("isFromHistory", "true");
+                intent.putExtra("isFromHistory", true);
                 startActivity(intent);
             }
         });
