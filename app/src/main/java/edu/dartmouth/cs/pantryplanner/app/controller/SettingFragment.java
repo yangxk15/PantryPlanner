@@ -13,13 +13,14 @@ import android.widget.TextView;
 
 import edu.dartmouth.cs.pantryplanner.app.R;
 import edu.dartmouth.cs.pantryplanner.app.model.MealPlan;
+import edu.dartmouth.cs.pantryplanner.app.util.FragmentUtil;
 import me.himanshusoni.quantityview.QuantityView;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SettingFragment extends Fragment implements QuantityView.OnQuantityChangeListener {
+public class SettingFragment extends Fragment implements QuantityView.OnQuantityChangeListener, FragmentUtil {
     public static final String MEAL_DAY_KEY = "get_meal_plan_day";
     public static final String PREFER_KEY = "my_prefer";
     public static final int MODE_PRIVATE = 0;
@@ -33,6 +34,7 @@ public class SettingFragment extends Fragment implements QuantityView.OnQuantity
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         super.onCreateView(inflater, container, savedInstanceState);
+        updateFragment();
         return inflater.inflate(R.layout.fragment_setting, container, false);
     }
 
@@ -60,9 +62,19 @@ public class SettingFragment extends Fragment implements QuantityView.OnQuantity
         editor.clear();
 
         editor.putInt(MEAL_DAY_KEY, newQuantity);
-        editor.commit();
+        editor.apply();
     }
 
     @Override
     public void onLimitReached() {}
+
+    @Override
+    public String getFragmentName() {
+        return "Setting";
+    }
+
+    @Override
+    public void updateFragment() {
+
+    }
 }

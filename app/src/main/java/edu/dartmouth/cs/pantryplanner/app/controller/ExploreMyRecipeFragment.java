@@ -22,6 +22,7 @@ import java.util.List;
 
 import edu.dartmouth.cs.pantryplanner.app.R;
 import edu.dartmouth.cs.pantryplanner.app.model.Recipe;
+import edu.dartmouth.cs.pantryplanner.app.util.RequestCode;
 import edu.dartmouth.cs.pantryplanner.app.util.ServiceBuilderHelper;
 import edu.dartmouth.cs.pantryplanner.app.util.Session;
 import edu.dartmouth.cs.pantryplanner.backend.entity.recipeRecordApi.RecipeRecordApi;
@@ -71,7 +72,7 @@ public class ExploreMyRecipeFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), RecipeDetailActivity.class);
                 intent.putExtra(ExploreRecipeActivity.RECIPE_KEY, recipes.get(position).toString());
                 intent.putExtra("isFromExplore", true);
-                startActivity(intent);
+                startActivityForResult(intent, RequestCode.IMPORT_RECIPE.ordinal());
             }
         });
     }
@@ -126,5 +127,19 @@ public class ExploreMyRecipeFragment extends Fragment {
             }
         }
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == ExploreRecipeActivity.RESULT_OK) {
+            if (requestCode == RequestCode.IMPORT_RECIPE.ordinal()) {
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra(ExploreRecipeActivity.IMPORT_RECIPE,
+                        data.getStringExtra(ExploreRecipeActivity.IMPORT_RECIPE));
+                getActivity().setResult(ExploreRecipeActivity.RESULT_OK, resultIntent);
+                getActivity().finish();
+            }
+        }
     }
 }

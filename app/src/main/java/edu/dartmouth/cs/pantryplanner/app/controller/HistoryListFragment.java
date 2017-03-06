@@ -23,6 +23,7 @@ import java.util.List;
 
 import edu.dartmouth.cs.pantryplanner.app.R;
 import edu.dartmouth.cs.pantryplanner.app.model.MealPlan;
+import edu.dartmouth.cs.pantryplanner.app.util.FragmentUtil;
 import edu.dartmouth.cs.pantryplanner.app.util.ServiceBuilderHelper;
 import edu.dartmouth.cs.pantryplanner.app.util.Session;
 import edu.dartmouth.cs.pantryplanner.backend.entity.historyRecordApi.HistoryRecordApi;
@@ -34,7 +35,7 @@ import static edu.dartmouth.cs.pantryplanner.app.controller.MealPlanFragment.SEL
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HistoryListFragment extends Fragment {
+public class HistoryListFragment extends Fragment implements FragmentUtil {
 
     private List<MealPlan> mealPlans;
     private String[] recipeStrings;
@@ -56,7 +57,6 @@ public class HistoryListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_history_list, container, false);
         listView = (ListView) view.findViewById(R.id.listView_history_list);
 
-        new ReadHistoryListTask().execute();
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -66,6 +66,7 @@ public class HistoryListFragment extends Fragment {
                 startActivity(intent);
             }
         });
+        updateFragment();
         return view;
     }
 
@@ -129,6 +130,15 @@ public class HistoryListFragment extends Fragment {
                 Log.d(this.getClass().getName(), ex.toString());
             }
         }
+    }
 
+    @Override
+    public String getFragmentName() {
+        return "History";
+    }
+
+    @Override
+    public void updateFragment() {
+        new ReadHistoryListTask().execute();
     }
 }

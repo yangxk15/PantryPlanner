@@ -4,12 +4,12 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public enum ItemType {
-    MEAT("Meat", 7),
-    DIARY("Diary", 1),
-    FRUIT("Fruit", 3),
-    VEGETABLE("Vegetable", 5),
-    INGREDIENT("Ingredient", 30),
-    OTHER("Other", 15);
+    MEAT("Meat", 60),
+    DIARY("Diary", 20),
+    FRUIT("Fruit", 30),
+    VEGETABLE("Vegetable", 40),
+    INGREDIENT("Ingredient", 90),
+    OTHER("Other", 70);
 
     String text;
     int freshTime;

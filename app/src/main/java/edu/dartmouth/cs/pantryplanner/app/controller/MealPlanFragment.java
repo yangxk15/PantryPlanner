@@ -32,6 +32,8 @@ import java.util.List;
 
 import edu.dartmouth.cs.pantryplanner.app.R;
 import edu.dartmouth.cs.pantryplanner.app.model.MealPlan;
+import edu.dartmouth.cs.pantryplanner.app.util.FragmentUtil;
+import edu.dartmouth.cs.pantryplanner.app.util.RequestCode;
 import edu.dartmouth.cs.pantryplanner.app.util.ServiceBuilderHelper;
 import edu.dartmouth.cs.pantryplanner.app.util.Session;
 import edu.dartmouth.cs.pantryplanner.backend.entity.mealPlanRecordApi.MealPlanRecordApi;
@@ -39,13 +41,14 @@ import edu.dartmouth.cs.pantryplanner.backend.entity.mealPlanRecordApi.model.Mea
 import edu.dartmouth.cs.pantryplanner.app.model.MealType;
 import edu.dartmouth.cs.pantryplanner.app.model.Recipe;
 
+import static android.app.Activity.RESULT_OK;
 import static edu.dartmouth.cs.pantryplanner.app.util.Constants.DATE_FORMAT;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MealPlanFragment extends Fragment {
+public class MealPlanFragment extends Fragment implements FragmentUtil {
     public static final String SELECTED_DATE = "Selected Date";
     public static final String SELECTED_MEAL_PLAN = "Selected Meal Plan";
 
@@ -66,13 +69,19 @@ public class MealPlanFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_meal_plan, container, false);
         mExpandableListView = (ExpandableListView) view.findViewById(R.id.expandableListView_meal_plan);
+        updateFragment();
         return view;
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        new ReadMealPlanListTask().execute();
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == RequestCode.VIEW_MEAL_PLAN.ordinal()) {
+                updateFragment();
+            } else if (requestCode == RequestCode.CREATE_MEAL.ordinal()) {
+                updateFragment();
+            }
+        }
     }
 
     // TODO:
@@ -179,7 +188,7 @@ public class MealPlanFragment extends Fragment {
                     Calendar calendar = Calendar.getInstance();
                     calendar.add(Calendar.DATE, groupPosition);
                     i.putExtra(SELECTED_DATE, calendar.getTime());
-                    startActivity(i);
+                    startActivityForResult(i, RequestCode.CREATE_MEAL.ordinal());
                 }
             });
             TextView textView = (TextView) view.findViewById(R.id.textView_meal_plan_date);
@@ -203,7 +212,7 @@ public class MealPlanFragment extends Fragment {
             LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.layout_meal_mealtype);
             ViewGroup.LayoutParams params = linearLayout.getLayoutParams();
             //TODO: set height suitably
-            params.height = recipeNames.length * 115+90;
+            params.height = recipeNames.length * 180;
             linearLayout.setLayoutParams(params);
 
             TextView mealType = (TextView) view.findViewById(R.id.textView_meal_type);
@@ -219,7 +228,7 @@ public class MealPlanFragment extends Fragment {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Intent intent = new Intent(getActivity(), RecipeDetailActivity.class);
                     intent.putExtra(SELECTED_MEAL_PLAN, mealPlans.get(position).toString());
-                    startActivity(intent);
+                    startActivityForResult(intent, RequestCode.VIEW_MEAL_PLAN.ordinal());
                 }
             });
             return view;
@@ -285,6 +294,15 @@ public class MealPlanFragment extends Fragment {
                 Log.d(this.getClass().getName(), ex.toString());
             }
         }
+    }
 
+    @Override
+    public String getFragmentName() {
+        return "Meal";
+    }
+
+    @Override
+    public void updateFragment() {
+        new ReadMealPlanListTask().execute();
     }
 }

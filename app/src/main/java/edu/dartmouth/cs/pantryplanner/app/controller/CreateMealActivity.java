@@ -39,7 +39,6 @@ import edu.dartmouth.cs.pantryplanner.backend.entity.shoppingListRecordApi.model
 
 
 public class CreateMealActivity extends AppCompatActivity {
-
     private Spinner spinner;
     private Button addMealButton;
     private Button saveButton;
@@ -47,7 +46,6 @@ public class CreateMealActivity extends AppCompatActivity {
 
     private MealPlan mMealPlan;
     private Recipe mRecipe;
-    private final int REQUEST_DIALOG = 7;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +89,8 @@ public class CreateMealActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK) {
             if (requestCode == RequestCode.CREATE_RECIPE.ordinal()) {
                 mRecipe = Recipe.fromString(data.getStringExtra(CreateRecipeActivity.CREATED_RECIPE));
+            } else if (requestCode == RequestCode.IMPORT_RECIPE.ordinal()) {
+                mRecipe = Recipe.fromString(data.getStringExtra(ExploreRecipeActivity.IMPORT_RECIPE));
             }
         }
     }
@@ -178,6 +178,7 @@ public class CreateMealActivity extends AppCompatActivity {
         protected void onPostExecute(IOException ex){
             if (ex == null) {
                 Toast.makeText(CreateMealActivity.this, "Meal plan saved", Toast.LENGTH_SHORT).show();
+                setResult(RESULT_OK, new Intent());
                 finish();
             } else {
                 if (ex instanceof GoogleJsonResponseException) {
