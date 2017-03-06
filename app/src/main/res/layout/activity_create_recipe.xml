@@ -10,15 +10,23 @@
         android:orientation="vertical"
         android:id="@+id/my_create_recipe_layout">
 
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/hat"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center_horizontal"/>
+
         <TextView
             android:id="@+id/create_recipe_name_text"
             android:layout_width="230dp"
             android:layout_height="40dp"
-            android:layout_marginTop="20dp"
             android:layout_marginLeft="90dp"
-            android:gravity="center"
+            android:gravity="center_horizontal"
             android:text="Recipe Name:"
+            android:textColor="#000000"
             android:textSize="25dp"
+            android:typeface="serif"
             android:textStyle="bold"/>
 
         <EditText
@@ -37,7 +45,9 @@
                 android:gravity="center"
                 android:text="Ingredient:"
                 android:textSize="25dp"
-                android:textStyle="bold"/>
+                android:textColor="#000000"
+                android:textStyle="bold"
+                android:typeface="serif"/>
 
 
             <ImageButton
@@ -60,7 +70,9 @@
             android:layout_marginLeft="90dp"
             android:gravity="center"
             android:text="Steps:"
+            android:typeface="serif"
             android:textSize="25dp"
+            android:textColor="#000000"
             android:textStyle="bold"/>
 
         <EditText

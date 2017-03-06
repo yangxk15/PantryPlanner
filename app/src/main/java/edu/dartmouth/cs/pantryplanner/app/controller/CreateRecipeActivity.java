@@ -41,6 +41,7 @@ import edu.dartmouth.cs.pantryplanner.app.model.Item;
 import edu.dartmouth.cs.pantryplanner.app.model.ItemType;
 import edu.dartmouth.cs.pantryplanner.app.model.Recipe;
 import edu.dartmouth.cs.pantryplanner.app.util.ServiceBuilderHelper;
+import edu.dartmouth.cs.pantryplanner.app.util.Session;
 import edu.dartmouth.cs.pantryplanner.backend.entity.recipeRecordApi.RecipeRecordApi;
 import edu.dartmouth.cs.pantryplanner.backend.entity.recipeRecordApi.model.RecipeRecord;
 
@@ -228,7 +229,7 @@ public class CreateRecipeActivity extends AppCompatActivity{
                 ).build();
 
                 RecipeRecord recipeRecord = new RecipeRecord();
-                recipeRecord.setEmail("testEmail");
+                recipeRecord.setEmail(new Session(CreateRecipeActivity.this).getString("email"));
                 recipeRecord.setRecipe(mRecipe.toString());
 
                 recipeRecordApi.insert(recipeRecord).execute();
