@@ -221,7 +221,8 @@ public class ShoppingListFragment extends Fragment implements ImageButton.OnClic
             final Map.Entry<Item, Integer> item = (Map.Entry<Item, Integer>) getChild(groupPosition, childPosition);
 
             ((TextView) view.findViewById(R.id.textView_shop_item)).setText(item.getKey().getName());
-            ((QuantityView) view.findViewById(R.id.quantityView_shop_beaf)).setQuantity(item.getValue());
+            //((QuantityView) view.findViewById(R.id.quantityView_shop_beaf)).setQuantity(item.getValue());
+            ((TextView) view.findViewById(R.id.textView_shop_num)).setText(item.getValue().toString());
 
             CheckBox cBox = (CheckBox) view.findViewById(R.id.checkBox_shop_item_check);
             if (selectedItems.containsKey(item.getKey())) {
