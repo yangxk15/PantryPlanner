@@ -203,7 +203,7 @@ public class MealPlanFragment extends Fragment {
             LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.layout_meal_mealtype);
             ViewGroup.LayoutParams params = linearLayout.getLayoutParams();
             //TODO: set height suitably
-            params.height = recipeNames.length * 200 + 15;
+            params.height = recipeNames.length * 115+90;
             linearLayout.setLayoutParams(params);
 
             TextView mealType = (TextView) view.findViewById(R.id.textView_meal_type);
