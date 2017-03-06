@@ -47,7 +47,7 @@ public class CreateMealActivity extends AppCompatActivity {
     private Button cancelButton;
 
     private MealPlan mMealPlan;
-    public static Recipe mRecipe;
+    private Recipe mRecipe;
     private final int REQUEST_DIALOG = 7;
 
     @Override
@@ -89,8 +89,6 @@ public class CreateMealActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        Log.d("result", "checked");
         if (resultCode == RESULT_OK) {
             if (requestCode == RequestCode.CREATE_RECIPE.ordinal()) {
                 mRecipe = Recipe.fromString(data.getStringExtra(CreateRecipeActivity.CREATED_RECIPE));
