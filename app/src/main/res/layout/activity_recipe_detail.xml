@@ -119,4 +119,35 @@
         android:layout_marginBottom="0dp"
         android:alpha="0.7"/>
 
+    <LinearLayout
+        android:id="@+id/layout_activity_detail_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="horizontal"
+        android:layout_marginBottom="0dp"
+        android:padding="16dp">
+        <Button
+            android:id="@+id/button_recipe_detail_save"
+            android:text="Save"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/button"
+            android:layout_weight="9"
+            android:alpha="0.7"/>
+        
+        <TextView
+            android:layout_width="15dp"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/button_recipe_detail_cancel"
+            android:text="Cancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/button"
+            android:layout_weight="9"
+            android:alpha="0.7"/>
+    </LinearLayout>
+
 </android.support.design.widget.CoordinatorLayout>

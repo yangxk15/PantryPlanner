@@ -7,6 +7,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -15,6 +16,8 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 import edu.dartmouth.cs.pantryplanner.app.R;
+import edu.dartmouth.cs.pantryplanner.app.model.Recipe;
+import edu.dartmouth.cs.pantryplanner.app.util.RequestCode;
 
 /**
  * Created by Lucidity on 17/3/3.
@@ -22,6 +25,7 @@ import edu.dartmouth.cs.pantryplanner.app.R;
 
 public class ExploreRecipeActivity extends AppCompatActivity {
     public static final String USERNAME = "Username";
+    public static final String IMPORT_RECIPE = "import_recipe";
     public static final String RECIPE_KEY = "RecipeName";
 
     private ArrayList<Fragment> mFragmentList;
@@ -55,8 +59,8 @@ public class ExploreRecipeActivity extends AppCompatActivity {
                 switch (position) {
                     case 0:
                         return "My Recipe";
-                    //case 1:
-                     //   return "Other Recipe";
+                    case 1:
+                        return "Other Recipe";
                 }
                 return null;
             }
