@@ -11,13 +11,14 @@ import edu.dartmouth.cs.pantryplanner.backend.entity.mealPlanRecordApi.model.Mea
 import edu.dartmouth.cs.pantryplanner.backend.entity.recipeRecordApi.model.RecipeRecord;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 
 /**
  * Created by yangxk15 on 2/27/17.
  */
 
 @AllArgsConstructor(suppressConstructorProperties = true)
-@Data
+@Getter
 public class Recipe {
     String name;
     Map<Item, Integer> items;

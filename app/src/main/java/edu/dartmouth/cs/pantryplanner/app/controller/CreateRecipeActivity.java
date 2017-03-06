@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.text.method.DigitsKeyListener;
 import android.util.Log;
 import android.util.TypedValue;
@@ -17,9 +18,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -27,6 +26,8 @@ import android.widget.Toast;
 
 import com.google.api.client.googleapis.json.GoogleJsonError;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
+
+import org.apache.commons.lang3.text.WordUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -50,15 +51,9 @@ public class CreateRecipeActivity extends AppCompatActivity{
     TextView mRecipeName;
     TextView mSteps;
 
-    private ImageButton mAddButton;
-    private Button mSaveButton;
-    private Button mCancelButton;
-
     private String name;
     private Map<Item, Integer> items = new HashMap<>();
     private List<String> steps = new ArrayList<>();
-
-    private ArrayList<TextView> mTextViewList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,8 +63,7 @@ public class CreateRecipeActivity extends AppCompatActivity{
         mRecipeName = (EditText) findViewById(R.id.create_recipe_name);
         mSteps = (EditText) findViewById(R.id.create_recipe_steps);
 
-        mAddButton = (ImageButton) findViewById(R.id.add_ingredient);
-        mAddButton.setOnClickListener(new View.OnClickListener(){
+        findViewById(R.id.add_ingredient).setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
                 /* dynamically add edit text box and spinner */
@@ -79,7 +73,7 @@ public class CreateRecipeActivity extends AppCompatActivity{
 
 
                 final Spinner spinner = new Spinner(CreateRecipeActivity.this);
-                ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(CreateRecipeActivity.this,
+                ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(CreateRecipeActivity.this,
                         android.R.layout.simple_spinner_dropdown_item, spinnerArray);
                 spinner.setAdapter(spinnerArrayAdapter);
                 spinner.setLayoutParams(new ActionBar.LayoutParams(400, ActionBar.LayoutParams.WRAP_CONTENT));
@@ -121,6 +115,8 @@ public class CreateRecipeActivity extends AppCompatActivity{
                             Log.d("quantity", quantity);
                             if (!material.equals("") && !quantity.equals("")){
 
+                                material = WordUtils.capitalizeFully(material);
+
                                 TextView newTextView1 = new TextView(CreateRecipeActivity.this);
                                 TextView newTextView2 = new TextView(CreateRecipeActivity.this);
 
@@ -140,7 +136,7 @@ public class CreateRecipeActivity extends AppCompatActivity{
                                 horizontal_text.addView(newTextView2);
                                 root.addView(horizontal_text, 3);
                                 Log.d("spinner position: ", spinner.getSelectedItem().toString());
-                                Item item = new Item(material,ItemType.values()[spinner.getSelectedItemPosition()]);
+                                Item item = new Item(material, ItemType.values()[spinner.getSelectedItemPosition()]);
                                 items.put(item, Integer.parseInt(quantity));
                             } else {
                                 root.removeView(horizontal);
@@ -152,15 +148,13 @@ public class CreateRecipeActivity extends AppCompatActivity{
                 });
             }
         });
-        mSaveButton = (Button) findViewById(R.id.create_recipe_save);
-        mSaveButton.setOnClickListener(new View.OnClickListener(){
+        findViewById(R.id.create_recipe_save).setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
                 saveBtnSelected(view);
             }
         });
-        mCancelButton = (Button) findViewById(R.id.create_recipe_cancel);
-        mCancelButton.setOnClickListener(new View.OnClickListener(){
+        findViewById(R.id.create_recipe_cancel).setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 Intent resultIntent = new Intent();
@@ -174,12 +168,7 @@ public class CreateRecipeActivity extends AppCompatActivity{
     }
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_ENTER)
-        {
-            //Nothing
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
+        return keyCode == KeyEvent.KEYCODE_ENTER || super.onKeyDown(keyCode, event);
     }
 
     @Override
@@ -200,12 +189,24 @@ public class CreateRecipeActivity extends AppCompatActivity{
     }
 
     public void saveBtnSelected(View view){
-        new AddRecipeAsyncTask().execute();
+        attemptSaveRecipe();
     }
 
     public void cancelBtnSelected(View view){
         Toast.makeText(CreateRecipeActivity.this, "Recipe discarded", Toast.LENGTH_SHORT).show();
         finish();
+    }
+
+    private void attemptSaveRecipe() {
+        name = mRecipeName.getText().toString();
+        steps.add(mSteps.getText().toString());
+
+        if (TextUtils.isEmpty(name)) {
+            mRecipeName.setError("Recipe cannot be empty");
+            mRecipeName.requestFocus();
+        } else {
+            new AddRecipeAsyncTask().execute();
+        }
     }
 
     private class AddRecipeAsyncTask extends AsyncTask<Void, Void, IOException>{
@@ -214,10 +215,6 @@ public class CreateRecipeActivity extends AppCompatActivity{
 
         @Override
         protected void onPreExecute() {
-            name = mRecipeName.getText().toString();
-            Log.d("Recipe Name",name);
-            steps.add(mSteps.getText().toString());
-            Log.d("Steps",steps.get(0));
             mRecipe = new Recipe(name, items, steps);
         }
         @Override
@@ -268,7 +265,6 @@ public class CreateRecipeActivity extends AppCompatActivity{
                 }
                 Log.d(this.getClass().getName(), ex.toString());
             }
-            return;
         }
     }
 

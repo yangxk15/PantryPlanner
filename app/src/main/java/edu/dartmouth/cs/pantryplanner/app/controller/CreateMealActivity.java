@@ -11,10 +11,20 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.api.client.googleapis.json.GoogleJsonError;
+import com.google.api.client.googleapis.json.GoogleJsonResponseException;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import edu.dartmouth.cs.pantryplanner.app.R;
+import edu.dartmouth.cs.pantryplanner.app.model.Item;
 import edu.dartmouth.cs.pantryplanner.app.model.MealPlan;
 import edu.dartmouth.cs.pantryplanner.app.model.MealType;
 import edu.dartmouth.cs.pantryplanner.app.model.Recipe;
@@ -23,6 +33,8 @@ import edu.dartmouth.cs.pantryplanner.app.util.ServiceBuilderHelper;
 import edu.dartmouth.cs.pantryplanner.app.util.Session;
 import edu.dartmouth.cs.pantryplanner.backend.entity.mealPlanRecordApi.MealPlanRecordApi;
 import edu.dartmouth.cs.pantryplanner.backend.entity.mealPlanRecordApi.model.MealPlanRecord;
+import edu.dartmouth.cs.pantryplanner.backend.entity.shoppingListRecordApi.ShoppingListRecordApi;
+import edu.dartmouth.cs.pantryplanner.backend.entity.shoppingListRecordApi.model.ShoppingListRecord;
 
 
 public class CreateMealActivity extends AppCompatActivity{
@@ -85,6 +97,10 @@ public class CreateMealActivity extends AppCompatActivity{
     }
 
     public void saveBtnSelected(View view){
+        if (mRecipe == null) {
+            Toast.makeText(this, "Please add a recipe", Toast.LENGTH_SHORT).show();
+            return;
+        }
         mMealPlan = new MealPlan(
                 (Date) getIntent().getExtras().getSerializable(MealPlanFragment.SELECTED_DATE),
                 MealType.values()[spinner.getSelectedItemPosition()],
@@ -114,6 +130,45 @@ public class CreateMealActivity extends AppCompatActivity{
                         MealPlanRecordApi.Builder.class
                 ).build();
                 mealPlanRecordApi.insert(mealPlanRecord).execute();
+
+                ShoppingListRecordApi shoppingListRecordApi = ServiceBuilderHelper.getBuilder(
+                        CreateMealActivity.this,
+                        ShoppingListRecordApi.Builder.class
+                ).build();
+                List<ShoppingListRecord> shoppingListRecords = shoppingListRecordApi.listWith(
+                        new Session(CreateMealActivity.this).getString("email")
+                ).execute().getItems();
+
+                if (shoppingListRecords != null) {
+                    ShoppingListRecord shoppingListRecord = shoppingListRecords.get(0);
+                    Map<Item, Integer> oldList = new Gson().fromJson(
+                            shoppingListRecord.getShoppingList(),
+                            new TypeToken<Map<Item, Integer>>(){}.getType()
+                    );
+                    for (Map.Entry<Item, Integer> entry : mMealPlan.getRecipe().getItems().entrySet()) {
+                        if (!oldList.containsKey(entry.getKey())) {
+                            oldList.put(entry.getKey(), entry.getValue());
+                        } else {
+                            oldList.put(entry.getKey(), entry.getValue() + oldList.get(entry.getKey()));
+                        }
+                    }
+                    shoppingListRecord.setShoppingList(
+                            new GsonBuilder().enableComplexMapKeySerialization()
+                            .create().toJson(oldList)
+                    );
+                    shoppingListRecordApi.update(shoppingListRecord.getId(), shoppingListRecord).execute();
+                } else {
+                    ShoppingListRecord shoppingListRecord = new ShoppingListRecord();
+                    shoppingListRecord.setEmail(
+                            new Session(CreateMealActivity.this).getString("email")
+                    );
+                    shoppingListRecord.setShoppingList(
+                            new GsonBuilder().enableComplexMapKeySerialization()
+                                    .create().toJson(mMealPlan.getRecipe().getItems())
+                    );
+                    shoppingListRecordApi.insert(shoppingListRecord).execute();
+                }
+
             } catch (IOException e) {
                 ex = e;
             }
@@ -123,9 +178,26 @@ public class CreateMealActivity extends AppCompatActivity{
 
         @Override
         protected void onPostExecute(IOException ex){
-            Toast.makeText(CreateMealActivity.this, "Meal plan saved", Toast.LENGTH_SHORT).show();
-            finish();
-            return;
+            if (ex == null) {
+                Toast.makeText(CreateMealActivity.this, "Meal plan saved", Toast.LENGTH_SHORT).show();
+                finish();
+            } else {
+                if (ex instanceof GoogleJsonResponseException) {
+                    GoogleJsonError error = ((GoogleJsonResponseException) ex).getDetails();
+                    Toast.makeText(
+                            CreateMealActivity.this,
+                            error.getMessage(),
+                            Toast.LENGTH_LONG
+                    ).show();
+                } else {
+                    Toast.makeText(
+                            CreateMealActivity.this,
+                            "Please check your internet connection and restart the app",
+                            Toast.LENGTH_LONG
+                    ).show();
+                }
+                Log.d(this.getClass().getName(), ex.toString());
+            }
         }
     }
 
