@@ -19,6 +19,7 @@ import lombok.Data;
 @AllArgsConstructor(suppressConstructorProperties = true)
 @Data
 public class MealPlan {
+    Long id;
     Date date;
     MealType mealType;
     Recipe recipe;

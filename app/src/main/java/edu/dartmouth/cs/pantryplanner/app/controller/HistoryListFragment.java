@@ -25,8 +25,10 @@ import edu.dartmouth.cs.pantryplanner.app.R;
 import edu.dartmouth.cs.pantryplanner.app.model.MealPlan;
 import edu.dartmouth.cs.pantryplanner.app.util.ServiceBuilderHelper;
 import edu.dartmouth.cs.pantryplanner.app.util.Session;
-import edu.dartmouth.cs.pantryplanner.backend.entity.mealPlanRecordApi.MealPlanRecordApi;
-import edu.dartmouth.cs.pantryplanner.backend.entity.mealPlanRecordApi.model.MealPlanRecord;
+import edu.dartmouth.cs.pantryplanner.backend.entity.historyRecordApi.HistoryRecordApi;
+import edu.dartmouth.cs.pantryplanner.backend.entity.historyRecordApi.model.HistoryRecord;
+
+import static edu.dartmouth.cs.pantryplanner.app.controller.MealPlanFragment.SELECTED_MEAL_PLAN;
 
 
 /**
@@ -34,7 +36,7 @@ import edu.dartmouth.cs.pantryplanner.backend.entity.mealPlanRecordApi.model.Mea
  */
 public class HistoryListFragment extends Fragment {
 
-    private ArrayList<MealPlanRecord> mealPlanRecords;
+    private List<MealPlan> mealPlans;
 
 //    String[] values = new String[]{"Banana Oatmeal Muffin",
 //            "Shrimp Pesto Pasta",
@@ -45,7 +47,10 @@ public class HistoryListFragment extends Fragment {
 //            "Chocolate Strawberry Cream Puffs ",
 //            "Fluffy Japanese Cheesecake "
 //    };
-    private String[] recipeStrings = new String[mealPlanRecords.size()];
+    private String[] recipeStrings;
+    private ListView listView;
+    private ArrayAdapter<String> adapter;
+
 
 
     public HistoryListFragment() {
@@ -59,20 +64,14 @@ public class HistoryListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_history_list, container, false);
-        ListView listView = (ListView) view.findViewById(R.id.listView_history_list);
-        for (int i = 0; i < mealPlanRecords.size(); i++){
-            recipeStrings[i] = mealPlanRecords.get(i).getMealPlan()
-        }
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                (this.getActivity(), R.layout.list_recipe, android.R.id.text1, recipeStrings);
+        listView = (ListView) view.findViewById(R.id.listView_history_list);
 
-        listView.setAdapter(adapter);
-
+        new ReadHistoryListTask().execute();
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(HistoryListFragment.this.getActivity(), RecipeDetailActivity.class);
-                intent.putExtra("RecipeName", (String) adapter.getItem(position));
+                Intent intent = new Intent(getActivity(), RecipeDetailActivity.class);
+                intent.putExtra(SELECTED_MEAL_PLAN, mealPlans.get(position).toString());
                 intent.putExtra("isFromHistory", "true");
                 startActivity(intent);
             }
@@ -80,4 +79,66 @@ public class HistoryListFragment extends Fragment {
         return view;
     }
 
+
+
+
+    private class ReadHistoryListTask extends AsyncTask<Void, Void, IOException> {
+        @Override
+        protected IOException doInBackground(Void... arg0) {
+            IOException ex = null;
+            try {
+                HistoryRecordApi historyRecordApi = ServiceBuilderHelper.getBuilder(
+                        HistoryListFragment.this.getActivity(),
+                        HistoryRecordApi.Builder.class
+                ).build();
+
+                List<HistoryRecord> historyRecords = historyRecordApi.listWith(
+                        new Session(HistoryListFragment.this.getActivity()).getString("email")
+                ).execute().getItems();
+
+                if (historyRecords == null) {
+                    Log.d("HISTORYRECORDS","empty");
+                    mealPlans = new ArrayList<>();
+
+                } else {
+                    mealPlans = MealPlan.fromHistoryRecords(historyRecords);
+                }
+                recipeStrings = new String[mealPlans.size()];
+                for (int i = 0; i < mealPlans.size(); i++){
+                    recipeStrings[i] = mealPlans.get(i).getRecipe().getName();
+                }
+
+            } catch (IOException e) {
+                ex = e;
+            }
+
+            return ex;
+        }
+
+        @Override
+        protected void onPostExecute(IOException ex) {
+            if (ex == null) {
+                adapter = new ArrayAdapter<>
+                        (getActivity(), R.layout.list_recipe, android.R.id.text1, recipeStrings);
+                listView.setAdapter(adapter);
+            } else {
+                if (ex instanceof GoogleJsonResponseException) {
+                    GoogleJsonError error = ((GoogleJsonResponseException) ex).getDetails();
+                    Toast.makeText(
+                            HistoryListFragment.this.getActivity(),
+                            error.getMessage(),
+                            Toast.LENGTH_LONG
+                    ).show();
+                } else {
+                    Toast.makeText(
+                            HistoryListFragment.this.getActivity(),
+                            "Please check your internet connection and restart the app",
+                            Toast.LENGTH_LONG
+                    ).show();
+                }
+                Log.d(this.getClass().getName(), ex.toString());
+            }
+        }
+
+    }
 }

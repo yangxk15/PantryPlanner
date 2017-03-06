@@ -1,6 +1,7 @@
 package edu.dartmouth.cs.pantryplanner.app.controller;
 
 import android.annotation.TargetApi;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -18,13 +20,13 @@ import java.util.Map;
 import edu.dartmouth.cs.pantryplanner.app.R;
 import edu.dartmouth.cs.pantryplanner.app.model.Item;
 import edu.dartmouth.cs.pantryplanner.app.model.MealPlan;
-import edu.dartmouth.cs.pantryplanner.backend.entity.mealPlanRecordApi.model.MealPlanRecord;
-import edu.dartmouth.cs.pantryplanner.backend.entity.recipeRecordApi.model.RecipeRecord;
+import edu.dartmouth.cs.pantryplanner.app.util.ServiceBuilderHelper;
+import edu.dartmouth.cs.pantryplanner.backend.entity.mealPlanRecordApi.MealPlanRecordApi;
 
 import static edu.dartmouth.cs.pantryplanner.app.util.Constants.DATE_FORMAT;
 
 public class RecipeDetailActivity extends AppCompatActivity {
-
+    private MealPlan mealPlan;
     @TargetApi(24)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +35,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
         boolean isFromHistory = getIntent().getBooleanExtra("isFromHistory", false);
 
-        MealPlan mealPlan = MealPlan.fromString(getIntent().getStringExtra(MealPlanFragment.SELECTED_MEAL_PLAN));
+        mealPlan = MealPlan.fromString(getIntent().getStringExtra(MealPlanFragment.SELECTED_MEAL_PLAN));
 
         Map<Item, Integer> items = mealPlan.getRecipe().getItems();
         IngredientAdapter ingredientAdapter = new IngredientAdapter(items);
@@ -58,9 +60,33 @@ public class RecipeDetailActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     // TODO: 3/5/17
                     // Finish cooking and update pantry list action
+                new RemoveMealPlanAsyncTask().execute();
+
+
                 }
             });
         }
+    }
+
+    private class RemoveMealPlanAsyncTask extends AsyncTask<Void, Void, IOException>{
+
+        @Override
+        protected IOException doInBackground(Void... params) {
+            IOException ex = null;
+            try {
+                MealPlanRecordApi mealPlanRecordApi = ServiceBuilderHelper.getBuilder(
+                        RecipeDetailActivity.this,
+                        MealPlanRecordApi.Builder.class
+                ).build();
+                mealPlanRecordApi.remove(mealPlan.getId());
+
+
+            } catch (IOException e) {
+                ex = e;
+            }
+            return ex;
+        }
+
     }
 
     private class IngredientAdapter extends BaseAdapter {
@@ -109,6 +135,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
         }
     }
+
 
     private class StepsAdapter extends BaseAdapter {
         //private Context mContext;
