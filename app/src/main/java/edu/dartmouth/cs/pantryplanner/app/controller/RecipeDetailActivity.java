@@ -5,15 +5,16 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.api.client.googleapis.json.GoogleJsonError;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.gson.Gson;
@@ -43,8 +44,10 @@ import edu.dartmouth.cs.pantryplanner.backend.entity.recipeRecordApi.model.Recip
 
 import static edu.dartmouth.cs.pantryplanner.app.util.Constants.DATE_FORMAT;
 
-public class RecipeDetailActivity extends AppCompatActivity {
-    private MealPlan mealPlan;
+public class RecipeDetailActivity extends AppCompatActivity implements Button.OnClickListener {
+    private MealPlan mMealPlan;
+    private Recipe mRecipe;
+
     @TargetApi(24)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,22 +57,21 @@ public class RecipeDetailActivity extends AppCompatActivity {
         boolean isFromHistory = getIntent().getBooleanExtra("isFromHistory", false);
         boolean isFromExplore = getIntent().getBooleanExtra("isFromExplore", false);
 
-        Recipe recipe;
         Map<Item, Integer> items;
         List<String> steps;
 
         if (isFromExplore) {
-            recipe = Recipe.fromString(getIntent().getStringExtra(ExploreRecipeActivity.RECIPE_KEY));
-            items = recipe.getItems();
-            steps = recipe.getSteps();((TextView) findViewById(R. id.textView_recipe_name)).setText(recipe.getName());
+            mRecipe = Recipe.fromString(getIntent().getStringExtra(ExploreRecipeActivity.RECIPE_KEY));
+            items = mRecipe.getItems();
+            steps = mRecipe.getSteps();((TextView) findViewById(R. id.textView_recipe_name)).setText(mRecipe.getName());
         } else {
             String temp = getIntent().getStringExtra(MealPlanFragment.SELECTED_MEAL_PLAN);
-            mealPlan = MealPlan.fromString(getIntent().getStringExtra(MealPlanFragment.SELECTED_MEAL_PLAN));
-            items = mealPlan.getRecipe().getItems();
-            steps = mealPlan.getRecipe().getSteps();
-            ((TextView) findViewById(R.id.textView_recipe_date)).setText(DATE_FORMAT.format(mealPlan.getDate()));
-            ((TextView) findViewById(R.id.textView_recipe_type)).setText(mealPlan.getMealType().toString());
-            ((TextView) findViewById(R. id.textView_recipe_name)).setText(mealPlan.getRecipe().getName());
+            mMealPlan = MealPlan.fromString(getIntent().getStringExtra(MealPlanFragment.SELECTED_MEAL_PLAN));
+            items = mMealPlan.getRecipe().getItems();
+            steps = mMealPlan.getRecipe().getSteps();
+            ((TextView) findViewById(R.id.textView_recipe_date)).setText(DATE_FORMAT.format(mMealPlan.getDate()));
+            ((TextView) findViewById(R.id.textView_recipe_type)).setText(mMealPlan.getMealType().toString());
+            ((TextView) findViewById(R. id.textView_recipe_name)).setText(mMealPlan.getRecipe().getName());
         }
 
         IngredientAdapter ingredientAdapter = new IngredientAdapter(items);
@@ -80,23 +82,40 @@ public class RecipeDetailActivity extends AppCompatActivity {
         ListView listViewS = (ListView) findViewById(R.id.list_display_recipe_steps);
         listViewS.setAdapter(stepsAdapter);
 
-
-
-        Button mFinishButton = (Button) findViewById(R.id.finish_button);
+        Button finishButton = (Button) findViewById(R.id.finish_button);
+        Button saveButton = (Button) findViewById(R.id.button_recipe_detail_save);
+        Button cancelButton = (Button) findViewById(R.id.button_recipe_detail_cancel);
+        finishButton.setOnClickListener(this);
+        saveButton.setOnClickListener(this);
+        cancelButton.setOnClickListener(this);
+        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.layout_activity_detail_buttons);
         if (isFromHistory){
-            mFinishButton.setVisibility(View.GONE);
+            finishButton.setVisibility(View.GONE);
+            linearLayout.setVisibility(View.GONE);
         } else if (isFromExplore) {
-            mFinishButton.setVisibility(View.GONE);
+            finishButton.setVisibility(View.GONE);
         } else {
-            mFinishButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // TODO: 3/5/17
-                    // Finish cooking and update pantry list action
-                    new RemoveMealPlanAsyncTask().execute();
+            linearLayout.setVisibility(View.GONE);
+        }
+    }
 
-                }
-            });
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.finish_button:
+                new RemoveMealPlanAsyncTask().execute();
+                break;
+            case R.id.button_recipe_detail_save:
+                Intent saveIntent = new Intent();
+                saveIntent.putExtra(ExploreRecipeActivity.IMPORT_RECIPE, mRecipe.toString());
+                setResult(RESULT_OK, saveIntent);
+                Toast.makeText(RecipeDetailActivity.this, "Chose this~", Toast.LENGTH_SHORT).show();
+                finish();
+                break;
+            case R.id.button_recipe_detail_cancel:
+                Toast.makeText(RecipeDetailActivity.this, "Cancelled", Toast.LENGTH_SHORT).show();
+                finish();
+                break;
         }
     }
 
@@ -111,15 +130,13 @@ public class RecipeDetailActivity extends AppCompatActivity {
                         RecipeDetailActivity.this,
                         MealPlanRecordApi.Builder.class
                 ).build();
-                Log.d("id", mealPlan.getId().toString());
-                mealPlanRecordApi.remove(mealPlan.getId()).execute();
-
-                // Add to history
+                Log.d("id", mMealPlan.getId().toString());
+                mealPlanRecordApi.remove(mMealPlan.getId()).execute();
                 HistoryRecordApi historyRecordApi = ServiceBuilderHelper.getBuilder(RecipeDetailActivity.this,
                         HistoryRecordApi.Builder.class).build();
                 HistoryRecord insert = new HistoryRecord();
                 insert.setEmail(new Session(RecipeDetailActivity.this).getString("email"));
-                insert.setHistory(mealPlan.toString());
+                insert.setHistory(mMealPlan.toString());
                 historyRecordApi.insert(insert).execute();
 
                 // Reduce pantry list
@@ -144,7 +161,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
                         map.get(entry.getKey().getItem()).put(entry.getKey(), entry.getValue());
                     }
 
-                    for (Map.Entry<Item, Integer> entry : mealPlan.getRecipe().getItems().entrySet()) {
+                    for (Map.Entry<Item, Integer> entry : mMealPlan.getRecipe().getItems().entrySet()) {
                         TreeMap<PantryItem, Integer> innerMap = map.get(entry.getKey());
                         int quantityNeed = entry.getValue();
                         while (quantityNeed > 0) {
@@ -229,26 +246,22 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            final View result;
+            final View result = getLayoutInflater().inflate(R.layout.entry_item, null);
 
-            result = getLayoutInflater().inflate(R.layout.entry_item, null);
+            Map.Entry<Item, Integer> item = getItem(position);
+            String material = item.getKey().getName();
+            String quantity = item.getValue().toString();
 
-                Map.Entry<Item, Integer> item = getItem(position);
-                String material = item.getKey().getName();
-                String quantity = item.getValue().toString();
-
-                TextView materialTV = (TextView) result.findViewById(R.id.textView_recipe_ingredient);
-                materialTV.setText(material);
-                Log.d("setM", material);
-                TextView quantityTV = (TextView) result.findViewById(R.id.textView_recipe_quantity);
-                Log.d("setQ", quantity);
-                quantityTV.setText(quantity);
+            TextView materialTV = (TextView) result.findViewById(R.id.textView_recipe_ingredient);
+            materialTV.setText(material);
+            Log.d("setM", material);
+            TextView quantityTV = (TextView) result.findViewById(R.id.textView_recipe_quantity);
+            Log.d("setQ", quantity);
+            quantityTV.setText(quantity);
 
             return result;
-
         }
     }
-
 
     private class StepsAdapter extends BaseAdapter {
         //private Context mContext;
@@ -278,7 +291,6 @@ public class RecipeDetailActivity extends AppCompatActivity {
             final View result;
 
             result = getLayoutInflater().inflate(R.layout.entry_step, null);
-
 
             String step = getItem(position);
 

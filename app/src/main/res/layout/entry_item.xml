@@ -7,29 +7,31 @@
         <TextView
             android:id="@+id/textView_recipe_ingredient"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:layout_marginTop="5dp"
+            android:layout_height="match_parent"
             android:gravity="center"
+            android:layout_gravity="center"
             android:textSize="16sp"
             android:typeface="serif"
             android:layout_weight="4"
-            android:text="Ingredient"/>
+            android:text="Ingredient"
+            android:textAlignment="center"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="___"
-            android:gravity="bottom"/>
+            android:text="  ------  "
+            android:gravity="center"
+            android:layout_gravity="center"/>
         <TextView
             android:id="@+id/textView_recipe_quantity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
             android:gravity="center"
+            android:layout_gravity="center"
             android:typeface="serif"
             android:textSize="20sp"
             android:layout_weight="4"
-            android:text="quantity"/>
+            android:text="quantity"
+            android:textAlignment="center"/>
 
 
 </LinearLayout>
