@@ -22,11 +22,21 @@
             android:orientation="horizontal">
 
             <ImageButton
-                android:id="@+id/button_pantry_edit"
+                android:id="@+id/imageButton_pantry_edit"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:scaleType="fitXY"
                 app:srcCompat="@drawable/edit3"
+                android:layout_marginTop="6dp"
+                android:layout_weight="1"
+                android:background="#00000000"/>
+
+            <ImageButton
+                android:id="@+id/imageButton_pantry_complete"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/complete"
                 android:layout_marginTop="6dp"
                 android:layout_weight="1"
                 android:background="#00000000"/>
@@ -39,16 +49,25 @@
                 android:layout_weight="7" />
 
 
-            <ImageButton
-                android:id="@+id/button_pantry_add"
+            <!--ImageButton
+                android:id="@+id/imageButton_pantry_add"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_marginTop="6dp"
                 android:scaleType="fitXY"
                 app:srcCompat="@drawable/add"
                 android:layout_weight="1"
-                android:background="#00000000"/>
+                android:background="#00000000"/-->
 
+            <ImageButton
+                android:id="@+id/imageButton_pantry_delete"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/cancel"
+                android:layout_marginTop="6dp"
+                android:layout_weight="1"
+                android:background="#00000000"/>
 
         </LinearLayout>
 

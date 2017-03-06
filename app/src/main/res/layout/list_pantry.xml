@@ -5,13 +5,10 @@
     android:weightSum="10"
     android:orientation="horizontal">
 
-
-
     <LinearLayout
         android:layout_width="0dip"
         android:layout_height="fill_parent"
-        android:layout_weight="2.7"
-        >
+        android:layout_weight="2.7">
 
         <TextView
             android:id="@+id/pantry_item_name"
@@ -32,17 +29,20 @@
         android:layout_height="fill_parent"
         android:layout_weight="3"
         android:layout_gravity="center"
-        android:gravity="center"
-        >
+        android:gravity="center">
 
-    <me.himanshusoni.quantityview.QuantityView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/pantry_item_quantity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:qv_quantity="20"
-        android:layout_gravity="center" />
-</LinearLayout>
+        <me.himanshusoni.quantityview.QuantityView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/quantity_pantry_list_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+        <TextView
+            android:id="@+id/textView_pantry_list_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
     <LinearLayout
             android:layout_width="0dip"
