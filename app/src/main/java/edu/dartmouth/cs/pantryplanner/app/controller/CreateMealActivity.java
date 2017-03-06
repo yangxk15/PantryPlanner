@@ -1,5 +1,7 @@
 package edu.dartmouth.cs.pantryplanner.app.controller;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -37,7 +39,7 @@ import edu.dartmouth.cs.pantryplanner.backend.entity.shoppingListRecordApi.Shopp
 import edu.dartmouth.cs.pantryplanner.backend.entity.shoppingListRecordApi.model.ShoppingListRecord;
 
 
-public class CreateMealActivity extends AppCompatActivity{
+public class CreateMealActivity extends AppCompatActivity {
 
     private Spinner spinner;
     private Button addMealButton;
@@ -45,7 +47,8 @@ public class CreateMealActivity extends AppCompatActivity{
     private Button cancelButton;
 
     private MealPlan mMealPlan;
-    private Recipe mRecipe;
+    public static Recipe mRecipe;
+    private final int REQUEST_DIALOG = 7;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,10 +66,8 @@ public class CreateMealActivity extends AppCompatActivity{
         addMealButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivityForResult(
-                        new Intent(getApplicationContext(), CreateRecipeActivity.class),
-                        RequestCode.CREATE_RECIPE.ordinal()
-                );
+                MyDialogFragment dialogFragment = MyDialogFragment.newInstance(1);
+                dialogFragment.show(getFragmentManager(), "DIALOG_FRAGMENT");
             }
         });
         saveButton = (Button) findViewById(R.id.create_meal_save);
@@ -89,6 +90,7 @@ public class CreateMealActivity extends AppCompatActivity{
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        Log.d("result", "checked");
         if (resultCode == RESULT_OK) {
             if (requestCode == RequestCode.CREATE_RECIPE.ordinal()) {
                 mRecipe = Recipe.fromString(data.getStringExtra(CreateRecipeActivity.CREATED_RECIPE));
@@ -114,8 +116,6 @@ public class CreateMealActivity extends AppCompatActivity{
         Toast.makeText(CreateMealActivity.this, "Meal plan discarded", Toast.LENGTH_SHORT).show();
         finish();
     }
-
-
 
     private class AddMealAsyncTask extends AsyncTask<Void, Void, IOException>{
 

@@ -45,7 +45,7 @@ public class PantryFragment extends Fragment implements Button.OnClickListener {
         adapter.add(new AbstractMap.SimpleEntry<>(new Item("Soy sauce", ItemType.INGREDIENT), 1));
         adapter.add(new AbstractMap.SimpleEntry<>(new Item("Skim milk", ItemType.DIARY), 15));
         adapter.add(new AbstractMap.SimpleEntry<>(new Item("Spinach", ItemType.VEGETABLE), 35));
-        
+
         listView.setAdapter(adapter);
 
         // set buttons listener

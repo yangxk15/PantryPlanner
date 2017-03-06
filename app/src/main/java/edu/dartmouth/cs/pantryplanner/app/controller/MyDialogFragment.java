@@ -5,19 +5,27 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 
 import edu.dartmouth.cs.pantryplanner.app.R;
+import edu.dartmouth.cs.pantryplanner.app.model.Recipe;
+import edu.dartmouth.cs.pantryplanner.app.util.RequestCode;
 
 /**
  * Created by Lucidity on 17/2/27.
  */
 
-public class MyDialogFragment extends DialogFragment implements DialogInterface.OnClickListener {
+public class MyDialogFragment extends DialogFragment implements DialogInterface.OnClickListener,
+                                    Button.OnClickListener {
     private int mId;
     private final static String dialogKey = "DIALOG_KEY";
+    Activity container;
 
     public static MyDialogFragment newInstance(int id) {
         MyDialogFragment dialogFragment = new MyDialogFragment();
@@ -28,22 +36,31 @@ public class MyDialogFragment extends DialogFragment implements DialogInterface.
     }
 
     @Override
-    public Dialog onCreateDialog(Bundle saveInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         mId = getArguments().getInt(dialogKey);
-        final Activity container = getActivity();
 
-        AlertDialog.Builder mDialog = new AlertDialog.Builder(container);
-        View view = container.getLayoutInflater().inflate(R.layout.fragment_dialog, null);
-        mDialog.setView(view);
-
-        mDialog.setTitle("Create an entry");
-        mDialog.setPositiveButton("Save", this);
-        mDialog.setNegativeButton("Cancel", null);
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext());
+        View view;
 
         switch (mId) {
+            case 0:
+                view = inflater.inflate(R.layout.fragment_dialog, null);
+                mBuilder.setView(view);
+                mBuilder.setTitle("Create an entry");
+                mBuilder.setPositiveButton("Save", this);
+                mBuilder.setNegativeButton("Cancel", null);
+                return view;
+            case 1:
+                view = inflater.inflate(R.layout.fragment_dialog_two_choice, null);
+                mBuilder.setView(view);
+                Button btnCreate = (Button) view.findViewById(R.id.button_dialog_create);
+                btnCreate.setOnClickListener(this);
+                Button btnImport = (Button) view.findViewById(R.id.button_dialog_import);
+                btnImport.setOnClickListener(this);
+                return view;
             default:
-                Log.d("dialog", "create");
-                return mDialog.create();
+                return null;
         }
     }
 
@@ -51,10 +68,30 @@ public class MyDialogFragment extends DialogFragment implements DialogInterface.
     public void onClick(DialogInterface dialog, int which) {
         switch (which) {
             case DialogInterface.BUTTON_POSITIVE:
-                switch (mId) {
-                    default:
-                        return;
-                }
+                break;
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (getActivity() == null || isDetached() || isRemoving()) {
+            this.dismiss();
+        }
+        switch (v.getId()) {
+            case R.id.button_dialog_create:
+                getActivity().startActivityForResult(
+                        new Intent(getActivity(), CreateRecipeActivity.class),
+                                RequestCode.CREATE_RECIPE.ordinal()
+                        );
+                this.dismiss();
+                break;
+            case R.id.button_dialog_import:
+                getActivity().startActivityForResult(
+                        new Intent(getActivity(), ExploreRecipeActivity.class),
+                                RequestCode.IMPORT_RECIPE.ordinal()
+                );
+                this.dismiss();
+                break;
         }
     }
 }

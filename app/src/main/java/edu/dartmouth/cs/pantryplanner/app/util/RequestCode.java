@@ -7,5 +7,6 @@ package edu.dartmouth.cs.pantryplanner.app.util;
 public enum RequestCode {
     LOGIN,
     REGISTER,
-    CREATE_RECIPE
+    CREATE_RECIPE,
+    IMPORT_RECIPE
 }

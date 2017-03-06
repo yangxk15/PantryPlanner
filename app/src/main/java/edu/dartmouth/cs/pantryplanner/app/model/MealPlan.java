@@ -39,6 +39,7 @@ public class MealPlan {
 
         for (MealPlanRecord mealPlanRecord : mealPlanRecords) {
             mealPlans.add(fromString(mealPlanRecord.getMealPlan()));
+            mealPlans.get(mealPlans.size() - 1).setId(mealPlanRecord.getId());
         }
 
         return mealPlans;

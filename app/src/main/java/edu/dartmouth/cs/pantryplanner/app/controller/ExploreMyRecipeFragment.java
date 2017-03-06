@@ -54,6 +54,8 @@ public class ExploreMyRecipeFragment extends Fragment {
     }
 
     private void dataProcess() {
+        if (recipes == null || recipes.size() == 0) Log.d("null", "null");
+
         String[] values = new String[recipes.size()];
         int i = 0;
         for (Recipe recipe : recipes) {
@@ -92,6 +94,7 @@ public class ExploreMyRecipeFragment extends Fragment {
 
                 if (recipeRecords == null) {
                     recipes = new ArrayList<>();
+                    Log.d("no", "record");
                 } else {
                     recipes = Recipe.fromRecipeRecordList(recipeRecords);
                 }
