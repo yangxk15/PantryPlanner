@@ -55,6 +55,7 @@ public class CreateRecipeActivity extends AppCompatActivity{
     private String name;
     private Map<Item, Integer> items = new HashMap<>();
     private List<String> steps = new ArrayList<>();
+    private int position = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,12 +79,12 @@ public class CreateRecipeActivity extends AppCompatActivity{
                         android.R.layout.simple_spinner_dropdown_item, spinnerArray);
                 spinner.setAdapter(spinnerArrayAdapter);
                 spinner.setLayoutParams(new ActionBar.LayoutParams(400, ActionBar.LayoutParams.WRAP_CONTENT));
-
                 t1.setWidth(500);
                 t2.setWidth(500);
                 t1.requestFocus();
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.showSoftInput(t1, InputMethodManager.SHOW_IMPLICIT);
+
 
                 final LinearLayout root = (LinearLayout) findViewById(R.id.my_create_recipe_layout);
                 final LinearLayout horizontal = new LinearLayout(CreateRecipeActivity.this);
@@ -91,7 +92,8 @@ public class CreateRecipeActivity extends AppCompatActivity{
                 horizontal.addView(spinner);
                 horizontal.addView(t1);
                 horizontal.addView(t2);
-                root.addView(horizontal,3);
+                root.addView(horizontal,4);
+
 
                 t1.setOnFocusChangeListener(new View.OnFocusChangeListener(){
                     @Override
@@ -130,12 +132,13 @@ public class CreateRecipeActivity extends AppCompatActivity{
                                 newTextView2.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);
                                 newTextView2.setPadding(50, 5, 20, 5);
 
+
                                 LinearLayout horizontal_text = new LinearLayout(CreateRecipeActivity.this);
                                 horizontal_text.setOrientation(LinearLayout.HORIZONTAL);
                                 root.removeView(horizontal);
                                 horizontal_text.addView(newTextView1);
                                 horizontal_text.addView(newTextView2);
-                                root.addView(horizontal_text, 3);
+                                root.addView(horizontal_text,position++);
                                 Log.d("spinner position: ", spinner.getSelectedItem().toString());
                                 Item item = new Item(material, ItemType.values()[spinner.getSelectedItemPosition()]);
                                 items.put(item, Integer.parseInt(quantity));
