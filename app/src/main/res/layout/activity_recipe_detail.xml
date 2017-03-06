@@ -14,10 +14,9 @@
 
     <TextView
         android:id="@+id/textView_recipe_name"
-        android:layout_width="230dp"
+        android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_marginTop="95dp"
-        android:layout_marginLeft="90dp"
         android:gravity="center"
         android:text="Recipe Name"
         android:typeface="serif"
@@ -83,9 +82,9 @@
             <ListView
                 android:id="@+id/list_display_recipe_items"
                 android:layout_width="match_parent"
-                android:layout_height="125dp"
-                android:layout_marginLeft="70dp"
-                android:layout_marginRight="70dp"/>
+                android:layout_height="135dp"
+                android:layout_marginLeft="60dp"
+                android:layout_marginRight="60dp"/>
 
 
             <TextView
