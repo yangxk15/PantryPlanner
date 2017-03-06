@@ -66,6 +66,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
                     // TODO: 3/5/17
                     // Finish cooking and update pantry list action
                     new RemoveMealPlanAsyncTask().execute();
+
                 }
             });
         }
