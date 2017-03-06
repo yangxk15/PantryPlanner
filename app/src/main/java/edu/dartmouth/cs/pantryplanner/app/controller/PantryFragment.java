@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -143,9 +144,15 @@ public class PantryFragment extends Fragment implements Button.OnClickListener, 
                 textView.setText(entry.getValue().toString());
                 quantityView.setVisibility(View.GONE);
             }
-            ((TextView) listItemView.findViewById(R.id.pantry_item_left_days))
-                    .setText(String.valueOf(Math.max(entry.getKey().getLeftDays(), 0)));
 
+            if (entry.getKey().getLeftDays() > 0) {
+                ((TextView) listItemView.findViewById(R.id.pantry_item_left_days))
+                        .setText(String.valueOf(entry.getKey().getLeftDays()));
+            } else {
+                ((TextView) listItemView.findViewById(R.id.expires_in)).setText("EXPIRED");
+                ((TextView) listItemView.findViewById(R.id.pantry_item_left_days)).setText("");
+                ((TextView) listItemView.findViewById(R.id.days)).setText("");
+            }
             return listItemView;
         }
     }
