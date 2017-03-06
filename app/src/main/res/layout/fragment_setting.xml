@@ -119,26 +119,26 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp">
+            android:layout_height="50dp"
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Days"
-                android:layout_weight="19"/>
+                android:layout_weight="9"
+                android:layout_marginTop="10dp"/>
 
             <me.himanshusoni.quantityview.QuantityView
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/quantityView_plan_dates"
                 android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 app:qv_maxQuantity="30"
                 app:qv_minQuantity="1"
                 app:qv_quantityDialog="false"
-                app:qv_quantity="7"/>
+                app:qv_quantity="7"
+                />
 
         </LinearLayout>
 
