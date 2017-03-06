@@ -178,6 +178,7 @@ public class CreateMealActivity extends AppCompatActivity {
         protected void onPostExecute(IOException ex){
             if (ex == null) {
                 Toast.makeText(CreateMealActivity.this, "Meal plan saved", Toast.LENGTH_SHORT).show();
+                setResult(RESULT_OK, new Intent());
                 finish();
             } else {
                 if (ex instanceof GoogleJsonResponseException) {

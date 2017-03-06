@@ -69,6 +69,7 @@ public class MealPlanFragment extends Fragment implements FragmentUtil {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_meal_plan, container, false);
         mExpandableListView = (ExpandableListView) view.findViewById(R.id.expandableListView_meal_plan);
+        updateFragment();
         return view;
     }
 
@@ -76,6 +77,8 @@ public class MealPlanFragment extends Fragment implements FragmentUtil {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             if (requestCode == RequestCode.VIEW_MEAL_PLAN.ordinal()) {
+                updateFragment();
+            } else if (requestCode == RequestCode.CREATE_MEAL.ordinal()) {
                 updateFragment();
             }
         }
@@ -185,7 +188,7 @@ public class MealPlanFragment extends Fragment implements FragmentUtil {
                     Calendar calendar = Calendar.getInstance();
                     calendar.add(Calendar.DATE, groupPosition);
                     i.putExtra(SELECTED_DATE, calendar.getTime());
-                    startActivity(i);
+                    startActivityForResult(i, RequestCode.CREATE_MEAL.ordinal());
                 }
             });
             TextView textView = (TextView) view.findViewById(R.id.textView_meal_plan_date);

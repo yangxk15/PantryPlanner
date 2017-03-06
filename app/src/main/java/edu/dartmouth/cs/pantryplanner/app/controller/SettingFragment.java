@@ -34,6 +34,7 @@ public class SettingFragment extends Fragment implements QuantityView.OnQuantity
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         super.onCreateView(inflater, container, savedInstanceState);
+        updateFragment();
         return inflater.inflate(R.layout.fragment_setting, container, false);
     }
 

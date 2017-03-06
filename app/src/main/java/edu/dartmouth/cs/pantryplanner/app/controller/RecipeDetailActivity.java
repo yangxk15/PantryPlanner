@@ -125,20 +125,6 @@ public class RecipeDetailActivity extends AppCompatActivity implements Button.On
         protected IOException doInBackground(Void... params) {
             IOException ex = null;
             try {
-                // Remove meal plan
-                MealPlanRecordApi mealPlanRecordApi = ServiceBuilderHelper.getBuilder(
-                        RecipeDetailActivity.this,
-                        MealPlanRecordApi.Builder.class
-                ).build();
-                Log.d("id", mMealPlan.getId().toString());
-                mealPlanRecordApi.remove(mMealPlan.getId()).execute();
-                HistoryRecordApi historyRecordApi = ServiceBuilderHelper.getBuilder(RecipeDetailActivity.this,
-                        HistoryRecordApi.Builder.class).build();
-                HistoryRecord insert = new HistoryRecord();
-                insert.setEmail(new Session(RecipeDetailActivity.this).getString("email"));
-                insert.setHistory(mMealPlan.toString());
-                historyRecordApi.insert(insert).execute();
-
                 // Reduce pantry list
                 PantryRecordApi pantryRecordApi = ServiceBuilderHelper.getBuilder(
                         RecipeDetailActivity.this,
@@ -165,8 +151,10 @@ public class RecipeDetailActivity extends AppCompatActivity implements Button.On
                         TreeMap<PantryItem, Integer> innerMap = map.get(entry.getKey());
                         int quantityNeed = entry.getValue();
                         while (quantityNeed > 0) {
-                            Log.d("TreeMap Test:", pantryItems.toString());
                             Map.Entry<PantryItem, Integer> earliestItem = innerMap.firstEntry();
+                            if (earliestItem == null) {
+                                throw new IOException("You don't have enough food to cook!");
+                            }
                             if (earliestItem.getValue() > quantityNeed) {
                                 pantryItems.put(earliestItem.getKey(), earliestItem.getValue() - quantityNeed);
                                 innerMap.put(earliestItem.getKey(), earliestItem.getValue() - quantityNeed);
@@ -184,6 +172,23 @@ public class RecipeDetailActivity extends AppCompatActivity implements Button.On
                     );
 
                     pantryRecordApi.update(pantryRecords.get(0).getId(), pantryRecords.get(0)).execute();
+
+                    // Remove meal plan
+                    MealPlanRecordApi mealPlanRecordApi = ServiceBuilderHelper.getBuilder(
+                            RecipeDetailActivity.this,
+                            MealPlanRecordApi.Builder.class
+                    ).build();
+                    Log.d("id", mMealPlan.getId().toString());
+                    mealPlanRecordApi.remove(mMealPlan.getId()).execute();
+
+                    // Add to history plan
+                    HistoryRecordApi historyRecordApi = ServiceBuilderHelper.getBuilder(RecipeDetailActivity.this,
+                            HistoryRecordApi.Builder.class).build();
+                    HistoryRecord insert = new HistoryRecord();
+                    insert.setEmail(new Session(RecipeDetailActivity.this).getString("email"));
+                    insert.setHistory(mMealPlan.toString());
+                    historyRecordApi.insert(insert).execute();
+
                 }
 
             } catch (IOException e) {
@@ -209,7 +214,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements Button.On
                 } else {
                     Toast.makeText(
                             RecipeDetailActivity.this,
-                            "Please check your internet connection and restart the app",
+                            ex.getMessage(),
                             Toast.LENGTH_LONG
                     ).show();
                 }

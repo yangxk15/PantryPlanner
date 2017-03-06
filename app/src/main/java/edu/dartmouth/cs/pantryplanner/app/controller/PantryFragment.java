@@ -63,6 +63,9 @@ public class PantryFragment extends Fragment implements Button.OnClickListener, 
         mListView = (ListView) view.findViewById(R.id.listView_pantry_list);
 
         view.findViewById(R.id.button_pantry_add).setOnClickListener(this);
+
+        updateFragment();
+
         return view;
     }
 

@@ -90,6 +90,7 @@ public class ShoppingListFragment extends Fragment implements ImageButton.OnClic
                 new CompleteShoppingTask().execute();
             }
         });
+        updateFragment();
         return view;
     }
 

@@ -66,6 +66,7 @@ public class HistoryListFragment extends Fragment implements FragmentUtil {
                 startActivity(intent);
             }
         });
+        updateFragment();
         return view;
     }
 
