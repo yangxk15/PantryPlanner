@@ -45,7 +45,7 @@ public class ExploreOtherRecipeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_explore_other_recipe, container, false);
-        mListView = (ListView) view.findViewById(R.id.listView_explore_my_list);
+        mListView = (ListView) view.findViewById(R.id.listView_explore_other_list);
         return view;
     }
 
@@ -56,13 +56,14 @@ public class ExploreOtherRecipeFragment extends Fragment {
     }
 
     private void dataProcess() {
+        if (recipes == null || recipes.size() == 0) return;
         String[] values = new String[recipes.size()];
         int i = 0;
         for (Recipe recipe : recipes) {
             values[i] = recipe.getName();
         }
 
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>
+        final ArrayAdapter<String> adapter = new ArrayAdapter<>
                 (this.getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, values);
 
         mListView.setAdapter(adapter);
@@ -87,8 +88,8 @@ public class ExploreOtherRecipeFragment extends Fragment {
                         RecipeRecordApi.Builder.class
                 ).build();
 
-                List<RecipeRecord> recipeRecords = recipeRecordApi.list
-                        ().execute().getItems();
+                List<RecipeRecord> recipeRecords = recipeRecordApi.list()
+                        .execute().getItems();
 
                 if (recipeRecords == null) {
                     recipes = new ArrayList<>();

@@ -22,6 +22,10 @@
         <activity
             android:name=".controller.MainActivity"
             android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".controller.RecipeDetailActivity"
@@ -30,10 +34,6 @@
         <activity
             android:name=".controller.LoginActivity"
             android:screenOrientation="portrait" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <activity
@@ -46,8 +46,7 @@
 
         <activity android:name=".controller.CreateRecipeActivity"/>
 
-
-
+        <activity android:name=".controller.ExploreRecipeActivity"/>
     </application>
 
 </manifest>

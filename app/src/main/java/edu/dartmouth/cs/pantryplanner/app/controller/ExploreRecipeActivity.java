@@ -35,7 +35,7 @@ public class ExploreRecipeActivity extends AppCompatActivity {
 
         mFragmentList = new ArrayList<>();
         mFragmentList.add(new ExploreMyRecipeFragment());
-        mFragmentList.add(new ExploreOtherRecipeFragment());
+        //mFragmentList.add(new ExploreOtherRecipeFragment());
 
         FragmentPagerAdapter fragmentPagerAdapter = new FragmentPagerAdapter(getFragmentManager()) {
             @Override
@@ -53,8 +53,8 @@ public class ExploreRecipeActivity extends AppCompatActivity {
                 switch (position) {
                     case 0:
                         return "My Recipe";
-                    case 1:
-                        return "Other Recipe";
+                    //case 1:
+                     //   return "Other Recipe";
                 }
                 return null;
             }
@@ -67,6 +67,6 @@ public class ExploreRecipeActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
         tabLayout.getTabAt(0).setIcon(ICONS[0]);
-        tabLayout.getTabAt(1).setIcon(ICONS[1]);
+        //tabLayout.getTabAt(1).setIcon(ICONS[1]);
     }
 }
