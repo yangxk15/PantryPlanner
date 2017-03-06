@@ -16,7 +16,7 @@
         android:id="@+id/textView_recipe_name"
         android:layout_width="230dp"
         android:layout_height="80dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="95dp"
         android:layout_marginLeft="90dp"
         android:gravity="center"
         android:text="Recipe Name"
@@ -28,8 +28,8 @@
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:orientation="horizontal"
-        android:layout_marginLeft="70dp"
-        android:layout_marginRight="70dp"
+        android:layout_marginLeft="60dp"
+        android:layout_marginRight="60dp"
         android:layout_marginTop="70dp"
         android:gravity="center"
         >
@@ -61,13 +61,13 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="350dp"
         android:orientation="vertical"
         android:layout_marginTop="200dp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="400dp"
             android:orientation="vertical"
             >
 
@@ -102,7 +102,7 @@
             <ListView
                 android:id="@+id/list_display_recipe_steps"
                 android:layout_width="wrap_content"
-                android:layout_height="120dp"
+                android:layout_height="300dp"
                 android:layout_marginLeft="70dp"
                 android:layout_marginRight="70dp"/>
 

@@ -5,6 +5,13 @@
     android:orientation="horizontal"
     android:layout_gravity="bottom">
 
+    <ImageView
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:src="@drawable/dot2"
+        android:layout_gravity="center"
+        android:layout_marginLeft="15dp"/>
+
     <TextView
         android:id="@+id/textView_meal_plan_recipe_name"
         android:layout_width="match_parent"

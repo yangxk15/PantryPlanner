@@ -19,6 +19,7 @@ public class OfyService {
         ObjectifyService.register(RecipeRecord.class);
         ObjectifyService.register(ShoppingListRecord.class);
         ObjectifyService.register(HistoryRecord.class);
+        ObjectifyService.register(PantryRecord.class);
     }
 
     public static Objectify ofy() {
