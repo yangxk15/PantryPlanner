@@ -37,16 +37,6 @@ import static edu.dartmouth.cs.pantryplanner.app.controller.MealPlanFragment.SEL
 public class HistoryListFragment extends Fragment {
 
     private List<MealPlan> mealPlans;
-
-//    String[] values = new String[]{"Banana Oatmeal Muffin",
-//            "Shrimp Pesto Pasta",
-//            "Broccoli Beef",
-//            "Honey Mustard Chicken and Avacado Salad ",
-//            "Healthier Chicken Alfredo Pasta",
-//            "Easy Breakfast Frittata",
-//            "Chocolate Strawberry Cream Puffs ",
-//            "Fluffy Japanese Cheesecake "
-//    };
     private String[] recipeStrings;
     private ListView listView;
     private ArrayAdapter<String> adapter;

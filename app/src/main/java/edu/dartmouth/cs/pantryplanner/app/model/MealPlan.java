@@ -11,14 +11,13 @@ import edu.dartmouth.cs.pantryplanner.backend.entity.historyRecordApi.model.Hist
 import edu.dartmouth.cs.pantryplanner.backend.entity.mealPlanRecordApi.model.MealPlanRecord;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 
 /**
  * Created by yangxk15 on 3/5/17.
  */
 
 @AllArgsConstructor(suppressConstructorProperties = true)
-@Getter
+@Data
 public class MealPlan {
     Long id;
     Date date;

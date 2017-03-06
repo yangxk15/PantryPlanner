@@ -1,9 +1,9 @@
 package edu.dartmouth.cs.pantryplanner.app.controller;
 
 
+import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +45,7 @@ public class PantryFragment extends Fragment implements Button.OnClickListener {
         adapter.add(new AbstractMap.SimpleEntry<>(new Item("Soy sauce", ItemType.INGREDIENT), 1));
         adapter.add(new AbstractMap.SimpleEntry<>(new Item("Skim milk", ItemType.DIARY), 15));
         adapter.add(new AbstractMap.SimpleEntry<>(new Item("Spinach", ItemType.VEGETABLE), 35));
+
         
         listView.setAdapter(adapter);
 
