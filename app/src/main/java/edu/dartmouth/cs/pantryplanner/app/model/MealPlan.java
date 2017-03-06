@@ -20,6 +20,7 @@ import lombok.Getter;
 @AllArgsConstructor(suppressConstructorProperties = true)
 @Getter
 public class MealPlan {
+    Long id;
     Date date;
     MealType mealType;
     Recipe recipe;

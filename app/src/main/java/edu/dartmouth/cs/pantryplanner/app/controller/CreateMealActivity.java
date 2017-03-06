@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -102,6 +101,7 @@ public class CreateMealActivity extends AppCompatActivity{
             return;
         }
         mMealPlan = new MealPlan(
+                null,
                 (Date) getIntent().getExtras().getSerializable(MealPlanFragment.SELECTED_DATE),
                 MealType.values()[spinner.getSelectedItemPosition()],
                 mRecipe

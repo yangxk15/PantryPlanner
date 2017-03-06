@@ -18,13 +18,13 @@
         android:layout_height="wrap_content"
         android:gravity="left"
         android:typeface="serif"
-        android:layout_weight="9"
+        android:layout_weight="10"
         android:textSize="15dp"/>
 
     <me.himanshusoni.quantityview.QuantityView
         android:id="@+id/quantityView_shop_beaf"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="120dp"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         app:qv_quantity="2"
         android:layout_gravity="center_horizontal"
