@@ -4,6 +4,7 @@ package edu.dartmouth.cs.pantryplanner.app.controller;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.app.ActionBar;
@@ -22,25 +23,45 @@ import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.api.client.googleapis.json.GoogleJsonError;
+import com.google.api.client.googleapis.json.GoogleJsonResponseException;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 
 import edu.dartmouth.cs.pantryplanner.app.R;
 import edu.dartmouth.cs.pantryplanner.app.model.Item;
 import edu.dartmouth.cs.pantryplanner.app.model.ItemType;
+import edu.dartmouth.cs.pantryplanner.app.util.ServiceBuilderHelper;
+import edu.dartmouth.cs.pantryplanner.app.util.Session;
+import edu.dartmouth.cs.pantryplanner.backend.entity.shoppingListRecordApi.ShoppingListRecordApi;
+import edu.dartmouth.cs.pantryplanner.backend.entity.shoppingListRecordApi.model.ShoppingListRecord;
+import me.himanshusoni.quantityview.QuantityView;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class ShoppingListFragment extends Fragment implements ImageButton.OnClickListener {
-    ShoppingListAdapter mShoppingListAdapter;
-    HashSet<Item> selectedItems;
+    HashSet<Map.Entry<Item, Integer>> selectedItems;
+
+    Map<Item, Integer> mShoppingListItems;
+
+    // UI Reference
+    ExpandableListView mListView;
 
     public ShoppingListFragment() {
         selectedItems = new HashSet<>();
@@ -51,15 +72,7 @@ public class ShoppingListFragment extends Fragment implements ImageButton.OnClic
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_shopping_list, container, false);
-        ExpandableListView listView = (ExpandableListView) view.findViewById(R.id.expandableListView_shopping_list);
-
-        dataProcess();
-
-        listView.setAdapter(mShoppingListAdapter);
-
-        for (int i = ItemType.values().length - 1; i >= 0; --i) {
-            listView.expandGroup(i);
-        }
+        mListView = (ExpandableListView) view.findViewById(R.id.expandableListView_shopping_list);
         return view;
     }
 
@@ -69,42 +82,20 @@ public class ShoppingListFragment extends Fragment implements ImageButton.OnClic
                       Type      Item
          */
 
-        Item apple = new Item("Apple", ItemType.FRUIT);
-        Item orange = new Item("Orange", ItemType.FRUIT);
-        Item beef = new Item("Beef", ItemType.MEAT);
-        Item c1 = new Item("Grape", ItemType.FRUIT);
-        Item c2 = new Item("Lemon", ItemType.FRUIT);
-        Item c3 = new Item("Tuna", ItemType.MEAT);
-        Item c4 = new Item("Apple", ItemType.FRUIT);
-        Item c5 = new Item("Chicken", ItemType.MEAT);
-        Item c6 = new Item("Pork", ItemType.MEAT);
-
-        // get a list of items from server
-        ArrayList<Item> items = new ArrayList<>();
-        items.add(apple);
-        items.add(orange);
-        items.add(beef);
-        items.add(c1);
-        items.add(c2);
-        items.add(c3);
-        items.add(c4);
-        items.add(c5);
-        items.add(c6);
-
-
-
-
-
-        ArrayList<ArrayList<Item>> typeList = new ArrayList<>();
+        ArrayList<ArrayList<Map.Entry<Item, Integer>>> typeList = new ArrayList<>();
         for (int i = 0; i < ItemType.values().length; ++i) {
-            typeList.add(new ArrayList<Item>());
+            typeList.add(new ArrayList<Map.Entry<Item, Integer>>());
         }
 
-        for (Item item : items) {
-            typeList.get(item.getItemType().ordinal()).add(item);
+        for (Map.Entry<Item, Integer> entry : mShoppingListItems.entrySet()) {
+            typeList.get(entry.getKey().getItemType().ordinal()).add(entry);
         }
 
-        mShoppingListAdapter = new ShoppingListAdapter(this.getActivity(), typeList);
+        mListView.setAdapter(new ShoppingListAdapter(this.getActivity(), typeList));
+
+        for (int i = ItemType.values().length - 1; i >= 0; --i) {
+            mListView.expandGroup(i);
+        }
     }
 
     @Override
@@ -117,11 +108,11 @@ public class ShoppingListFragment extends Fragment implements ImageButton.OnClic
     }
 
     private class ShoppingListAdapter extends BaseExpandableListAdapter {
-        ArrayList<ArrayList<Item>> groupList;
+        ArrayList<ArrayList<Map.Entry<Item, Integer>>> groupList;
         Context context;
 
         public ShoppingListAdapter(Context context,
-                               ArrayList<ArrayList<Item>> groupList) {
+                               ArrayList<ArrayList<Map.Entry<Item, Integer>>> groupList) {
             this.context = context;
             this.groupList = groupList;
         }
@@ -209,10 +200,10 @@ public class ShoppingListFragment extends Fragment implements ImageButton.OnClic
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = inflater.inflate(R.layout.list_shoping_list_item, parent, false);
 
-            final Item item = (Item) getChild(groupPosition, childPosition);
+            final Map.Entry<Item, Integer> item = (Map.Entry<Item, Integer>) getChild(groupPosition, childPosition);
 
-            TextView itemName = (TextView) view.findViewById(R.id.textView_shop_item);
-            itemName.setText("" + item.getName());
+            ((TextView) view.findViewById(R.id.textView_shop_item)).setText(item.getKey().getName());
+            ((QuantityView) view.findViewById(R.id.quantityView_shop_beaf)).setQuantity(item.getValue());
 
             CheckBox cBox = (CheckBox) view.findViewById(R.id.checkBox_shop_item_check);
             if (selectedItems.contains(item)) {
@@ -241,5 +232,66 @@ public class ShoppingListFragment extends Fragment implements ImageButton.OnClic
             return true;
         }
 
+    }
+
+    private class ReadShoppingListTask extends AsyncTask<Void, Void, IOException> {
+        @Override
+        protected IOException doInBackground(Void... params) {
+            IOException ex = null;
+
+            try {
+                ShoppingListRecordApi shoppingListRecordApi = ServiceBuilderHelper.getBuilder(
+                        ShoppingListFragment.this.getActivity(),
+                        ShoppingListRecordApi.Builder.class
+                ).build();
+
+                List<ShoppingListRecord> shoppingListRecords = shoppingListRecordApi.listWith(
+                        new Session(ShoppingListFragment.this.getActivity()).getString("email")
+                ).execute().getItems();
+
+                if (shoppingListRecords == null) {
+                    mShoppingListItems = new HashMap<>();
+                } else {
+                    mShoppingListItems = new Gson().fromJson(
+                            shoppingListRecords.get(0).getShoppingList(),
+                            new TypeToken<Map<Item, Integer>>(){}.getType()
+                    );
+                }
+
+            } catch (IOException e) {
+                ex = e;
+            }
+
+            return ex;
+        }
+
+        @Override
+        protected void onPostExecute(IOException ex) {
+            if (ex == null) {
+                dataProcess();
+            } else {
+                if (ex instanceof GoogleJsonResponseException) {
+                    GoogleJsonError error = ((GoogleJsonResponseException) ex).getDetails();
+                    Toast.makeText(
+                            ShoppingListFragment.this.getActivity(),
+                            error.getMessage(),
+                            Toast.LENGTH_LONG
+                    ).show();
+                } else {
+                    Toast.makeText(
+                            ShoppingListFragment.this.getActivity(),
+                            "Please check your internet connection and restart the app",
+                            Toast.LENGTH_LONG
+                    ).show();
+                }
+                Log.d(this.getClass().getName(), ex.toString());
+            }
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        new ReadShoppingListTask().execute();
     }
 }
