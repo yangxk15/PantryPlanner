@@ -37,7 +37,7 @@
 
     <me.himanshusoni.quantityview.QuantityView
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/pantry_item_number"
+        android:id="@+id/pantry_item_quantity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:qv_quantity="20"
@@ -89,7 +89,7 @@
         >
 
     <TextView
-        android:id="@+id/pantry_item_quantity"
+        android:id="@+id/pantry_item_left_days"
         android:text="4"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
