@@ -1,10 +1,13 @@
 package edu.dartmouth.cs.pantryplanner.app.model;
 
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+
+import static edu.dartmouth.cs.pantryplanner.app.util.Constants.DATE_FORMAT;
 
 /**
  * Created by yangxk15 on 3/5/17.
@@ -12,22 +15,40 @@ import lombok.Getter;
 
 @AllArgsConstructor(suppressConstructorProperties = true)
 @Getter
-public class PantryItem {
+public class PantryItem implements Comparable<PantryItem>{
     Date productionDate;
     Item item;
 
     @Override
     public int hashCode() {
-        return productionDate.hashCode() + item.hashCode();
+        return DATE_FORMAT.format(productionDate).hashCode() + item.hashCode();
     }
 
     @Override
     public boolean equals(Object o) {
-        return ((PantryItem) o).productionDate.equals(productionDate) && ((PantryItem) o).item.equals(item);
+        PantryItem pantryItem = (PantryItem) o;
+        return DATE_FORMAT.format(pantryItem.productionDate).equals(DATE_FORMAT.format(productionDate))
+                && pantryItem.item.equals(item);
     }
 
-    public int getLeftDays() {
+    @Override
+    public int compareTo(PantryItem other){
+        try {
+            Date d1 = DATE_FORMAT.parse(DATE_FORMAT.format(productionDate));
+            Date d2 = DATE_FORMAT.parse(DATE_FORMAT.format(other.productionDate));
+            return d1.compareTo(d2);
+        } catch (ParseException e) {
+            return 0;
+        }
+    }
+
+
+
+        public int getLeftDays() {
         Calendar calendar = Calendar.getInstance();
-        return (int) ((calendar.getTime().getTime() - productionDate.getTime()) / (1000 * 60 * 60 * 24));
+//        long daysPassed = (calendar.getTime().getTime() - productionDate.getTime()) / (1000 * 60 * 60 * 24);
+//        return item.itemType.getFreshTime() - (int) daysPassed;
+        long minutesPassed = (calendar.getTime().getTime() - productionDate.getTime()) / (1000 * 60);
+        return item.itemType.getFreshTime() - (int) minutesPassed;
     }
 }

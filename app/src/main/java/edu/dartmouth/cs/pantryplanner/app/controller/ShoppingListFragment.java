@@ -49,6 +49,7 @@ import edu.dartmouth.cs.pantryplanner.app.R;
 import edu.dartmouth.cs.pantryplanner.app.model.Item;
 import edu.dartmouth.cs.pantryplanner.app.model.ItemType;
 import edu.dartmouth.cs.pantryplanner.app.model.PantryItem;
+import edu.dartmouth.cs.pantryplanner.app.util.FragmentUtil;
 import edu.dartmouth.cs.pantryplanner.app.util.ServiceBuilderHelper;
 import edu.dartmouth.cs.pantryplanner.app.util.Session;
 import edu.dartmouth.cs.pantryplanner.backend.entity.pantryRecordApi.PantryRecordApi;
@@ -61,7 +62,7 @@ import me.himanshusoni.quantityview.QuantityView;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ShoppingListFragment extends Fragment implements ImageButton.OnClickListener {
+public class ShoppingListFragment extends Fragment implements ImageButton.OnClickListener, FragmentUtil {
     Map<Item, Integer> selectedItems;
 
     Map<Item, Integer> mShoppingListItems;
@@ -417,8 +418,12 @@ public class ShoppingListFragment extends Fragment implements ImageButton.OnClic
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public String getFragmentName() {
+        return "Shop";
+    }
+
+    @Override
+    public void updateFragment() {
         new ReadShoppingListTask().execute();
     }
 }

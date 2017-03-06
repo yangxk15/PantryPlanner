@@ -8,5 +8,6 @@ public enum RequestCode {
     LOGIN,
     REGISTER,
     CREATE_RECIPE,
-    IMPORT_RECIPE
+    IMPORT_RECIPE,
+    VIEW_MEAL_PLAN
 }
