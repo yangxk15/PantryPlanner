@@ -68,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:text="change"
                 android:layout_marginLeft="60dp"
-                android:alpha="0.6"/>
+                android:alpha="0.5"/>
         </LinearLayout>
 
         <LinearLayout
@@ -89,7 +89,7 @@
                 android:layout_height="wrap_content"
                 android:text="change"
                 android:layout_marginLeft="146dp"
-                android:alpha="0.6"/>
+                android:alpha="0.5"/>
         </LinearLayout>
 
 
