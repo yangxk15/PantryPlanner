@@ -20,11 +20,13 @@ import java.util.Map;
 import edu.dartmouth.cs.pantryplanner.app.R;
 import edu.dartmouth.cs.pantryplanner.app.model.Item;
 import edu.dartmouth.cs.pantryplanner.app.model.MealPlan;
+import edu.dartmouth.cs.pantryplanner.app.model.Recipe;
 import edu.dartmouth.cs.pantryplanner.app.util.ServiceBuilderHelper;
 import edu.dartmouth.cs.pantryplanner.app.util.Session;
 import edu.dartmouth.cs.pantryplanner.backend.entity.historyRecordApi.HistoryRecordApi;
 import edu.dartmouth.cs.pantryplanner.backend.entity.historyRecordApi.model.HistoryRecord;
 import edu.dartmouth.cs.pantryplanner.backend.entity.mealPlanRecordApi.MealPlanRecordApi;
+import edu.dartmouth.cs.pantryplanner.backend.entity.recipeRecordApi.model.RecipeRecord;
 
 import static edu.dartmouth.cs.pantryplanner.app.util.Constants.DATE_FORMAT;
 
@@ -37,27 +39,40 @@ public class RecipeDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_recipe_detail);
 
         boolean isFromHistory = getIntent().getBooleanExtra("isFromHistory", false);
+        boolean isFromExplore = getIntent().getBooleanExtra("isFromExplore", false);
 
-        String temp = getIntent().getStringExtra(MealPlanFragment.SELECTED_MEAL_PLAN);
-        Log.d("selected",temp);
-        mealPlan = MealPlan.fromString(getIntent().getStringExtra(MealPlanFragment.SELECTED_MEAL_PLAN));
+        Recipe recipe;
+        Map<Item, Integer> items;
+        List<String> steps;
 
-        Map<Item, Integer> items = mealPlan.getRecipe().getItems();
+        if (isFromExplore) {
+            recipe = Recipe.fromString(getIntent().getStringExtra(ExploreRecipeActivity.RECIPE_KEY));
+            items = recipe.getItems();
+            steps = recipe.getSteps();((TextView) findViewById(R. id.textView_recipe_name)).setText(recipe.getName());
+        } else {
+            String temp = getIntent().getStringExtra(MealPlanFragment.SELECTED_MEAL_PLAN);
+            mealPlan = MealPlan.fromString(getIntent().getStringExtra(MealPlanFragment.SELECTED_MEAL_PLAN));
+            items = mealPlan.getRecipe().getItems();
+            steps = mealPlan.getRecipe().getSteps();
+            ((TextView) findViewById(R.id.textView_recipe_date)).setText(DATE_FORMAT.format(mealPlan.getDate()));
+            ((TextView) findViewById(R.id.textView_recipe_type)).setText(mealPlan.getMealType().toString());
+            ((TextView) findViewById(R. id.textView_recipe_name)).setText(mealPlan.getRecipe().getName());
+        }
+
         IngredientAdapter ingredientAdapter = new IngredientAdapter(items);
         ListView listViewIn = (ListView) findViewById(R.id.list_display_recipe_items);
         listViewIn.setAdapter(ingredientAdapter);
 
-        List<String> steps = mealPlan.getRecipe().getSteps();
         StepsAdapter stepsAdapter = new StepsAdapter(steps);
         ListView listViewS = (ListView) findViewById(R.id.list_display_recipe_steps);
         listViewS.setAdapter(stepsAdapter);
 
-        ((TextView) findViewById(R.id.textView_recipe_date)).setText(DATE_FORMAT.format(mealPlan.getDate()));
-        ((TextView) findViewById(R.id.textView_recipe_type)).setText(mealPlan.getMealType().toString());
-        ((TextView) findViewById(R. id.textView_recipe_name)).setText(mealPlan.getRecipe().getName());
+
 
         Button mFinishButton = (Button) findViewById(R.id.finish_button);
         if (isFromHistory){
+            mFinishButton.setVisibility(View.GONE);
+        } else if (isFromExplore) {
             mFinishButton.setVisibility(View.GONE);
         } else {
             mFinishButton.setOnClickListener(new View.OnClickListener() {

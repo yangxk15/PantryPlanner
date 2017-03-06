@@ -70,7 +70,8 @@ public class ExploreMyRecipeFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getActivity(), RecipeDetailActivity.class);
-                intent.putExtra("RecipeName", recipes.get(position).toString()); // send recipe.toString();
+                intent.putExtra(ExploreRecipeActivity.RECIPE_KEY, recipes.get(position).toString());
+                intent.putExtra("isFromExplore", true);
                 startActivity(intent);
             }
         });
