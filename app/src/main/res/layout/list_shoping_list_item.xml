@@ -21,7 +21,14 @@
         android:layout_weight="6"
         android:textSize="15dp"/>
 
-    <me.himanshusoni.quantityview.QuantityView
+    <TextView
+        android:id="@+id/textView_shop_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="7"/>
+
+    <!--me.himanshusoni.quantityview.QuantityView
         android:id="@+id/quantityView_shop_beaf"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="100dp"
@@ -31,7 +38,7 @@
         app:qv_minQuantity="1"
         android:layout_gravity="center"
         android:layout_weight="7"
-        app:qv_quantityDialog="false"/>
+        app:qv_quantityDialog="false"/-->
 
     <TextView
         android:id="@+id/textView_shop_item_unit"
