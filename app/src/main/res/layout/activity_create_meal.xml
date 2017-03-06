@@ -26,27 +26,39 @@
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:typeface="serif"
             android:text="Mar 2 2017" />
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:textSize="16sp"
-            android:text="Meal Type: "/>
+            android:layout_marginTop="50dp"
+            android:orientation="horizontal">
 
-        <Spinner
-            android:id="@+id/spinner_meal_plan_type_select"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="50dp"
+                android:textSize="16sp"
+                android:typeface="serif"
+                android:text="Meal Type: "
+                android:layout_weight="1"/>
+
+            <Spinner
+                android:id="@+id/spinner_meal_plan_type_select"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+
 
         <Button
             android:id="@+id/button_meal_plan_add"
             style="?android:textAppearanceSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="170dp"
+            android:layout_marginTop="150dp"
             android:background="#707070"
             android:textColor="@color/White"
             android:layout_gravity="center"
