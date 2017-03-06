@@ -18,7 +18,7 @@ import lombok.Getter;
  */
 
 @AllArgsConstructor(suppressConstructorProperties = true)
-@Getter
+@Data
 public class MealPlan {
     Long id;
     Date date;
