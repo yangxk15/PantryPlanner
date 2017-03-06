@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.api.client.googleapis.json.GoogleJsonError;
@@ -37,6 +38,8 @@ import edu.dartmouth.cs.pantryplanner.backend.entity.mealPlanRecordApi.model.Mea
 import edu.dartmouth.cs.pantryplanner.backend.entity.shoppingListRecordApi.ShoppingListRecordApi;
 import edu.dartmouth.cs.pantryplanner.backend.entity.shoppingListRecordApi.model.ShoppingListRecord;
 
+import static edu.dartmouth.cs.pantryplanner.app.util.Constants.DATE_FORMAT;
+
 
 public class CreateMealActivity extends AppCompatActivity {
     private Spinner spinner;
@@ -47,10 +50,16 @@ public class CreateMealActivity extends AppCompatActivity {
     private MealPlan mMealPlan;
     private Recipe mRecipe;
 
+    private Date mDate;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_meal);
+
+        mDate = (Date) getIntent().getExtras().getSerializable(MealPlanFragment.SELECTED_DATE);
+        ((TextView) findViewById(R.id.textView_meal_plan_showing_date))
+                .setText(DATE_FORMAT.format(mDate));
 
         spinner = (Spinner) findViewById(R.id.spinner_meal_plan_type_select);
 
@@ -103,7 +112,7 @@ public class CreateMealActivity extends AppCompatActivity {
         }
         mMealPlan = new MealPlan(
                 null,
-                (Date) getIntent().getExtras().getSerializable(MealPlanFragment.SELECTED_DATE),
+                mDate,
                 MealType.values()[spinner.getSelectedItemPosition()],
                 mRecipe
         );
