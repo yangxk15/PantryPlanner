@@ -92,6 +92,7 @@ public class CreateMealActivity extends AppCompatActivity {
             } else if (requestCode == RequestCode.IMPORT_RECIPE.ordinal()) {
                 mRecipe = Recipe.fromString(data.getStringExtra(ExploreRecipeActivity.IMPORT_RECIPE));
             }
+            addMealButton.setText("   REPLACE RECIPE   ");
         }
     }
 
