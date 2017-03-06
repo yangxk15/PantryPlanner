@@ -25,9 +25,11 @@
         </ImageView>
 
         <TextView
+            android:id="@+id/textView_setting_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Welcome :) Foo"
+            android:textSize="15sp"
             android:gravity="center"
             android:layout_marginTop="10dp"/>
 
@@ -133,6 +135,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 android:layout_weight="1"
+                app:qv_maxQuantity="30"
+                app:qv_minQuantity="1"
+                app:qv_quantityDialog="false"
                 app:qv_quantity="7"/>
 
         </LinearLayout>
