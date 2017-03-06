@@ -44,11 +44,6 @@ public class MealPlanRecordEndpoint {
 
     private static final int DEFAULT_LIST_LIMIT = 20;
 
-    static {
-        // Typically you would register this inside an OfyServive wrapper. See: https://code.google.com/p/objectify-appengine/wiki/BestPractices
-        ObjectifyService.register(MealPlanRecord.class);
-    }
-
     /**
      * Returns the {@link MealPlanRecord} with the corresponding ID.
      *

@@ -58,8 +58,6 @@ public class CreateRecipeActivity extends AppCompatActivity{
     private Map<Item, Integer> items = new HashMap<>();
     private List<String> steps = new ArrayList<>();
 
-
-
     private ArrayList<TextView> mTextViewList = new ArrayList<>();
 
     @Override
@@ -159,7 +157,6 @@ public class CreateRecipeActivity extends AppCompatActivity{
             @Override
             public void onClick(View view){
                 saveBtnSelected(view);
-
             }
         });
         mCancelButton = (Button) findViewById(R.id.create_recipe_cancel);

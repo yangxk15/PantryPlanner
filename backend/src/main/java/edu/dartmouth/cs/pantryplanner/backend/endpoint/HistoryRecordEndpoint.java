@@ -7,7 +7,6 @@ import com.google.api.server.spi.response.CollectionResponse;
 import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.api.datastore.QueryResultIterator;
-import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.cmd.Query;
 
 import java.util.ArrayList;
@@ -17,8 +16,7 @@ import java.util.logging.Logger;
 import javax.annotation.Nullable;
 import javax.inject.Named;
 
-import edu.dartmouth.cs.pantryplanner.backend.entity.MealPlanRecord;
-import edu.dartmouth.cs.pantryplanner.backend.entity.RecipeRecord;
+import edu.dartmouth.cs.pantryplanner.backend.entity.HistoryRecord;
 
 import static com.googlecode.objectify.ObjectifyService.ofy;
 
@@ -30,96 +28,96 @@ import static com.googlecode.objectify.ObjectifyService.ofy;
  * DO NOT deploy this code unchanged as part of a real application to real users.
  */
 @Api(
-        name = "recipeRecordApi",
+        name = "historyRecordApi",
         version = "v1",
-        resource = "recipeRecord",
+        resource = "historyRecord",
         namespace = @ApiNamespace(
                 ownerDomain = "entity.backend.pantryplanner.cs.dartmouth.edu",
                 ownerName = "entity.backend.pantryplanner.cs.dartmouth.edu",
                 packagePath = ""
         )
 )
-public class RecipeRecordEndpoint {
+public class HistoryRecordEndpoint {
 
-    private static final Logger logger = Logger.getLogger(RecipeRecordEndpoint.class.getName());
+    private static final Logger logger = Logger.getLogger(HistoryRecordEndpoint.class.getName());
 
     private static final int DEFAULT_LIST_LIMIT = 20;
 
     /**
-     * Returns the {@link RecipeRecord} with the corresponding ID.
+     * Returns the {@link HistoryRecord} with the corresponding ID.
      *
      * @param id the ID of the entity to be retrieved
      * @return the entity with the corresponding ID
-     * @throws NotFoundException if there is no {@code RecipeRecord} with the provided ID.
+     * @throws NotFoundException if there is no {@code HistoryRecord} with the provided ID.
      */
     @ApiMethod(
             name = "get",
-            path = "recipeRecord/{id}",
+            path = "historyRecord/{id}",
             httpMethod = ApiMethod.HttpMethod.GET)
-    public RecipeRecord get(@Named("id") Long id) throws NotFoundException {
-        logger.info("Getting RecipeRecord with ID: " + id);
-        RecipeRecord recipeRecord = ofy().load().type(RecipeRecord.class).id(id).now();
-        if (recipeRecord == null) {
-            throw new NotFoundException("Could not find RecipeRecord with ID: " + id);
+    public HistoryRecord get(@Named("id") Long id) throws NotFoundException {
+        logger.info("Getting HistoryRecord with ID: " + id);
+        HistoryRecord historyRecord = ofy().load().type(HistoryRecord.class).id(id).now();
+        if (historyRecord == null) {
+            throw new NotFoundException("Could not find HistoryRecord with ID: " + id);
         }
-        return recipeRecord;
+        return historyRecord;
     }
 
     /**
-     * Inserts a new {@code RecipeRecord}.
+     * Inserts a new {@code HistoryRecord}.
      */
     @ApiMethod(
             name = "insert",
-            path = "recipeRecord",
+            path = "historyRecord",
             httpMethod = ApiMethod.HttpMethod.POST)
-    public RecipeRecord insert(RecipeRecord recipeRecord) {
+    public HistoryRecord insert(HistoryRecord historyRecord) {
         // Typically in a RESTful API a POST does not have a known ID (assuming the ID is used in the resource path).
-        // You should validate that recipeRecord.id has not been set. If the ID type is not supported by the
+        // You should validate that historyRecord.id has not been set. If the ID type is not supported by the
         // Objectify ID generator, e.g. long or String, then you should generate the unique ID yourself prior to saving.
         //
         // If your client provides the ID then you should probably use PUT instead.
-        ofy().save().entity(recipeRecord).now();
-        logger.info("Created RecipeRecord with ID: " + recipeRecord.getId());
+        ofy().save().entity(historyRecord).now();
+        logger.info("Created HistoryRecord with ID: " + historyRecord.getId());
 
-        return ofy().load().entity(recipeRecord).now();
+        return ofy().load().entity(historyRecord).now();
     }
 
     /**
-     * Updates an existing {@code RecipeRecord}.
+     * Updates an existing {@code HistoryRecord}.
      *
-     * @param id           the ID of the entity to be updated
-     * @param recipeRecord the desired state of the entity
+     * @param id            the ID of the entity to be updated
+     * @param historyRecord the desired state of the entity
      * @return the updated version of the entity
      * @throws NotFoundException if the {@code id} does not correspond to an existing
-     *                           {@code RecipeRecord}
+     *                           {@code HistoryRecord}
      */
     @ApiMethod(
             name = "update",
-            path = "recipeRecord/{id}",
+            path = "historyRecord/{id}",
             httpMethod = ApiMethod.HttpMethod.PUT)
-    public RecipeRecord update(@Named("id") Long id, RecipeRecord recipeRecord) throws NotFoundException {
+    public HistoryRecord update(@Named("id") Long id, HistoryRecord historyRecord) throws NotFoundException {
         // TODO: You should validate your ID parameter against your resource's ID here.
         checkExists(id);
-        ofy().save().entity(recipeRecord).now();
-        logger.info("Updated RecipeRecord: " + recipeRecord);
-        return ofy().load().entity(recipeRecord).now();
+        ofy().save().entity(historyRecord).now();
+        logger.info("Updated HistoryRecord: " + historyRecord);
+        return ofy().load().entity(historyRecord).now();
     }
 
     /**
-     * Deletes the specified {@code RecipeRecord}.
+     * Deletes the specified {@code HistoryRecord}.
      *
      * @param id the ID of the entity to delete
      * @throws NotFoundException if the {@code id} does not correspond to an existing
-     *                           {@code RecipeRecord}
+     *                           {@code HistoryRecord}
      */
     @ApiMethod(
             name = "remove",
-            path = "recipeRecord/{id}",
+            path = "historyRecord/{id}",
             httpMethod = ApiMethod.HttpMethod.DELETE)
     public void remove(@Named("id") Long id) throws NotFoundException {
         checkExists(id);
-        ofy().delete().type(RecipeRecord.class).id(id).now();
-        logger.info("Deleted RecipeRecord with ID: " + id);
+        ofy().delete().type(HistoryRecord.class).id(id).now();
+        logger.info("Deleted HistoryRecord with ID: " + id);
     }
 
     /**
@@ -131,36 +129,36 @@ public class RecipeRecordEndpoint {
      */
     @ApiMethod(
             name = "list",
-            path = "recipeRecord",
+            path = "historyRecord",
             httpMethod = ApiMethod.HttpMethod.GET)
-    public CollectionResponse<RecipeRecord> list(@Nullable @Named("cursor") String cursor, @Nullable @Named("limit") Integer limit) {
+    public CollectionResponse<HistoryRecord> list(@Nullable @Named("cursor") String cursor, @Nullable @Named("limit") Integer limit) {
         limit = limit == null ? DEFAULT_LIST_LIMIT : limit;
-        Query<RecipeRecord> query = ofy().load().type(RecipeRecord.class).limit(limit);
+        Query<HistoryRecord> query = ofy().load().type(HistoryRecord.class).limit(limit);
         if (cursor != null) {
             query = query.startAt(Cursor.fromWebSafeString(cursor));
         }
-        QueryResultIterator<RecipeRecord> queryIterator = query.iterator();
-        List<RecipeRecord> recipeRecordList = new ArrayList<RecipeRecord>(limit);
+        QueryResultIterator<HistoryRecord> queryIterator = query.iterator();
+        List<HistoryRecord> historyRecordList = new ArrayList<HistoryRecord>(limit);
         while (queryIterator.hasNext()) {
-            recipeRecordList.add(queryIterator.next());
+            historyRecordList.add(queryIterator.next());
         }
-        return CollectionResponse.<RecipeRecord>builder().setItems(recipeRecordList).setNextPageToken(queryIterator.getCursor().toWebSafeString()).build();
+        return CollectionResponse.<HistoryRecord>builder().setItems(historyRecordList).setNextPageToken(queryIterator.getCursor().toWebSafeString()).build();
     }
 
     @ApiMethod(
             name = "listWith"
     )
-    public CollectionResponse<RecipeRecord> listWith(@Named("email") String email) {
-        List<RecipeRecord> recipeRecordList = ofy().load().type(RecipeRecord.class).filter("email", email).list();
-        logger.info("list with email " + email + "and found " + recipeRecordList.size() + " record.");
-        return CollectionResponse.<RecipeRecord>builder().setItems(recipeRecordList).build();
+    public CollectionResponse<HistoryRecord> listWith(@Named("email") String email) {
+        List<HistoryRecord> historyRecords = ofy().load().type(HistoryRecord.class).filter("email", email).list();
+        logger.info("list with email " + email + "and found " + historyRecords.size() + " record.");
+        return CollectionResponse.<HistoryRecord>builder().setItems(historyRecords).build();
     }
 
     private void checkExists(Long id) throws NotFoundException {
         try {
-            ofy().load().type(RecipeRecord.class).id(id).safe();
+            ofy().load().type(HistoryRecord.class).id(id).safe();
         } catch (com.googlecode.objectify.NotFoundException e) {
-            throw new NotFoundException("Could not find RecipeRecord with ID: " + id);
+            throw new NotFoundException("Could not find HistoryRecord with ID: " + id);
         }
     }
 }

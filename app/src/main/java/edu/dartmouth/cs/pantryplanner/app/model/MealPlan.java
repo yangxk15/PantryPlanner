@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import edu.dartmouth.cs.pantryplanner.backend.entity.historyRecordApi.model.HistoryRecord;
 import edu.dartmouth.cs.pantryplanner.backend.entity.mealPlanRecordApi.model.MealPlanRecord;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,15 +32,21 @@ public class MealPlan {
         return new Gson().fromJson(s, MealPlan.class);
     }
 
-    public static MealPlan fromMealPlanRecord(MealPlanRecord mealPlanRecord) {
-        return fromString(mealPlanRecord.getMealPlan());
-    }
-
     public static List<MealPlan> fromMealPlanRecords(List<MealPlanRecord> mealPlanRecords) {
         List<MealPlan> mealPlans = new ArrayList<>(mealPlanRecords.size());
 
         for (MealPlanRecord mealPlanRecord : mealPlanRecords) {
-            mealPlans.add(fromMealPlanRecord(mealPlanRecord));
+            mealPlans.add(fromString(mealPlanRecord.getMealPlan()));
+        }
+
+        return mealPlans;
+    }
+
+    public static List<MealPlan> fromHistoryRecords(List<HistoryRecord> historyRecords) {
+        List<MealPlan> mealPlans = new ArrayList<>(historyRecords.size());
+
+        for (HistoryRecord historyRecord : historyRecords) {
+            mealPlans.add(fromString(historyRecord.getHistory()));
         }
 
         return mealPlans;
