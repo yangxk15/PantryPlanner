@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 import javax.annotation.Nullable;
 import javax.inject.Named;
 
+import edu.dartmouth.cs.pantryplanner.backend.entity.MealPlanRecord;
 import edu.dartmouth.cs.pantryplanner.backend.entity.RecipeRecord;
 
 import static com.googlecode.objectify.ObjectifyService.ofy;
@@ -144,6 +145,15 @@ public class RecipeRecordEndpoint {
             recipeRecordList.add(queryIterator.next());
         }
         return CollectionResponse.<RecipeRecord>builder().setItems(recipeRecordList).setNextPageToken(queryIterator.getCursor().toWebSafeString()).build();
+    }
+
+    @ApiMethod(
+            name = "listWith"
+    )
+    public CollectionResponse<RecipeRecord> listWith(@Named("email") String email) {
+        List<RecipeRecord> recipeRecordList = ofy().load().type(RecipeRecord.class).filter("email", email).list();
+        logger.info("list with email " + email + "and found " + recipeRecordList.size() + " record.");
+        return CollectionResponse.<RecipeRecord>builder().setItems(recipeRecordList).build();
     }
 
     private void checkExists(Long id) throws NotFoundException {

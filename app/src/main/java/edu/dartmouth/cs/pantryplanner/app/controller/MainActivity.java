@@ -1,5 +1,6 @@
 package edu.dartmouth.cs.pantryplanner.app.controller;
 
+import android.content.SharedPreferences;
 import android.support.design.widget.TabLayout;
 import android.support.v13.app.FragmentPagerAdapter;
 
@@ -11,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import java.util.ArrayList;
 
 import edu.dartmouth.cs.pantryplanner.app.R;
+import edu.dartmouth.cs.pantryplanner.app.model.MealPlan;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -79,5 +81,12 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.getTabAt(2).setIcon(ICONS[2]);
         tabLayout.getTabAt(3).setIcon(ICONS[3]);
         tabLayout.getTabAt(4).setIcon(ICONS[4]);
+
+        loadSetting();
+    }
+
+    private void loadSetting() {
+        SharedPreferences sharedPreferences = getSharedPreferences(SettingFragment.PREFER_KEY, MODE_PRIVATE);
+        MealPlanFragment.mMealNumber = sharedPreferences.getInt(SettingFragment.MEAL_DAY_KEY, 7);
     }
 }

@@ -3,6 +3,9 @@ package edu.dartmouth.cs.pantryplanner.app.controller;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v13.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,42 +21,52 @@ import edu.dartmouth.cs.pantryplanner.app.R;
  */
 
 public class ExploreRecipeActivity extends AppCompatActivity {
-    private ArrayList<Fragment> mExploreFragmentList;
-    String[] values = new String[]{"Banana Oatmeal Muffin",
-            "Shrimp Pesto Pasta",
-            "Broccoli Beef",
-            "Honey Mustard Chicken and Avacado Salad ",
-            "Healthier Chicken Alfredo Pasta",
-            "Easy Breakfast Frittata",
-            "Chocolate Strawberry Cream Puffs ",
-            "Fluffy Japanese Cheesecake "
+    private ArrayList<Fragment> mFragmentList;
+    public static final String USERNAME = "Username";
+    final int[] ICONS = new int[]{
+            R.drawable.exploremyrecipe,
+            R.drawable.exploreotherrecipe,
     };
-
-
-    public ExploreRecipeActivity() {
-        // Required empty public constructor
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_explore_recipe);
 
-        ListView listView = (ListView) findViewById(R.id.listView_explore_list);
+        mFragmentList = new ArrayList<>();
+        mFragmentList.add(new ExploreMyRecipeFragment());
+        mFragmentList.add(new ExploreOtherRecipeFragment());
 
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                (this, android.R.layout.simple_list_item_1, android.R.id.text1, values);
-
-        listView.setAdapter(adapter);
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        FragmentPagerAdapter fragmentPagerAdapter = new FragmentPagerAdapter(getFragmentManager()) {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(ExploreRecipeActivity.this, RecipeDetailActivity.class);
-                intent.putExtra("RecipeName", (String) adapter.getItem(position));
-                startActivity(intent);
+            public Fragment getItem(int position) {
+                return mFragmentList.get(position);
             }
-        });
+
+            @Override
+            public int getCount() {
+                return mFragmentList.size();
+            }
+
+            @Override
+            public CharSequence getPageTitle(int position) {
+                switch (position) {
+                    case 0:
+                        return "My Recipe";
+                    case 1:
+                        return "Other Recipe";
+                }
+                return null;
+            }
+        };
+
+        ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager_activity_explore);
+        viewPager.setAdapter(fragmentPagerAdapter);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout_activity_explore);
+        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setTabMode(TabLayout.MODE_FIXED);
+        tabLayout.getTabAt(0).setIcon(ICONS[0]);
+        tabLayout.getTabAt(1).setIcon(ICONS[1]);
     }
 }
