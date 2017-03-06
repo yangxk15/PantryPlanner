@@ -159,7 +159,6 @@
         android:layout_marginTop="83dp"
         android:background="@color/button"
         android:text="Log out"
-        android:onClick="onChangeClick"
         android:layout_gravity="center"/>
 
 
