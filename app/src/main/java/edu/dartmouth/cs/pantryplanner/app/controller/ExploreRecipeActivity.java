@@ -21,8 +21,10 @@ import edu.dartmouth.cs.pantryplanner.app.R;
  */
 
 public class ExploreRecipeActivity extends AppCompatActivity {
-    private ArrayList<Fragment> mFragmentList;
     public static final String USERNAME = "Username";
+    public static final String RECIPE_KEY = "RecipeName";
+
+    private ArrayList<Fragment> mFragmentList;
     final int[] ICONS = new int[]{
             R.drawable.exploremyrecipe,
             R.drawable.exploreotherrecipe,
