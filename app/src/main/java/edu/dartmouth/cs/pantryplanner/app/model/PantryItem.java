@@ -1,5 +1,6 @@
 package edu.dartmouth.cs.pantryplanner.app.model;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import lombok.AllArgsConstructor;
@@ -23,5 +24,10 @@ public class PantryItem {
     @Override
     public boolean equals(Object o) {
         return ((PantryItem) o).productionDate.equals(productionDate) && ((PantryItem) o).item.equals(item);
+    }
+
+    public int getLeftDays() {
+        Calendar calendar = Calendar.getInstance();
+        return (int) ((calendar.getTime().getTime() - productionDate.getTime()) / (1000 * 60 * 60 * 24));
     }
 }

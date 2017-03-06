@@ -98,7 +98,6 @@ public class RecipeDetailActivity extends AppCompatActivity {
             return ex;
         }
 
-
     }
 
     private class IngredientAdapter extends BaseAdapter {
