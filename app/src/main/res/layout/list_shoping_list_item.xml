@@ -30,7 +30,8 @@
         app:qv_maxQuantity="30"
         app:qv_minQuantity="1"
         android:layout_gravity="center"
-        android:layout_weight="7"/>
+        android:layout_weight="7"
+        app:qv_quantityDialog="false"/>
 
     <TextView
         android:id="@+id/textView_shop_item_unit"
