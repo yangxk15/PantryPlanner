@@ -143,15 +143,9 @@ public class HistoryListFragment extends Fragment implements FragmentUtil {
     @Override
     public void updateFragment() {
         if (getActivity() != null) {
-            new ReadHistoryListTask().execute();
+            mTask = new ReadHistoryListTask();
+            mTask.execute();
         }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        mTask = new ReadHistoryListTask();
-        mTask.execute();
     }
 
     @Override

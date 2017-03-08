@@ -387,9 +387,9 @@ public class PantryFragment extends Fragment implements Button.OnClickListener, 
 
     @Override
     public void updateFragment() {
-
         if (getActivity() != null) {
-            new ReadPantryListTask(isEdit).execute();
+            mTask = new ReadPantryListTask(isEdit);
+            mTask.execute();
         }
     }
 
@@ -403,14 +403,13 @@ public class PantryFragment extends Fragment implements Button.OnClickListener, 
             buttons[2].setVisibility(View.GONE);
             buttons[3].setVisibility(View.GONE);
             isEdit = false;
-            mTask = new ReadPantryListTask(isEdit);
-            mTask.execute();
+            updateFragment();
         }
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onDetach() {
+        super.onDetach();
         if (mTask != null) {
             mTask.cancel(true);
         }
