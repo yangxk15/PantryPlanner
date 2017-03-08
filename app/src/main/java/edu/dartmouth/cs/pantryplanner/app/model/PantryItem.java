@@ -22,7 +22,7 @@ public class PantryItem implements Comparable<PantryItem>{
 
     @Override
     public int hashCode() {
-        return DATE_FORMAT.format(productionDate).hashCode() + item.hashCode();
+        return MINUTE_FORMAT.format(productionDate).hashCode() + item.hashCode();
     }
 
     @Override
@@ -35,8 +35,8 @@ public class PantryItem implements Comparable<PantryItem>{
     @Override
     public int compareTo(PantryItem other){
         try {
-            Date d1 = DATE_FORMAT.parse(DATE_FORMAT.format(productionDate));
-            Date d2 = DATE_FORMAT.parse(DATE_FORMAT.format(other.productionDate));
+            Date d1 = MINUTE_FORMAT.parse(MINUTE_FORMAT.format(productionDate));
+            Date d2 = MINUTE_FORMAT.parse(MINUTE_FORMAT.format(other.productionDate));
             return d1.compareTo(d2);
         } catch (ParseException e) {
             return 0;

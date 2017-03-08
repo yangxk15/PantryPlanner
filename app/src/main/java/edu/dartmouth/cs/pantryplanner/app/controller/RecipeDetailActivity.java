@@ -186,6 +186,10 @@ public class RecipeDetailActivity extends AppCompatActivity implements Button.On
                             }
                         }
 
+                        Log.d("total", "" + total);
+                        Log.d("valid", "" + valid);
+                        Log.d("quantityNeed", "" + quantityNeed);
+
                         if (total < quantityNeed) {
                             if (!force) {
                                 throw new IOException("You don't have enough "  + entry.getKey().getName() +  "!");
@@ -198,19 +202,40 @@ public class RecipeDetailActivity extends AppCompatActivity implements Button.On
                             }
                         }
 
-                        while (quantityNeed > 0) {
-                            Map.Entry<PantryItem, Integer> earliestItem = innerMap.firstEntry();
-                            if (earliestItem == null) {
-                                break;
+                        if (total > quantityNeed || valid < quantityNeed) {
+                            while (quantityNeed > 0) {
+                                Map.Entry<PantryItem, Integer> earliestItem = innerMap.lastEntry();
+                                if (earliestItem == null) {
+                                    break;
+                                }
+                                if (earliestItem.getValue() > quantityNeed) {
+                                    pantryItems.put(earliestItem.getKey(), earliestItem.getValue() - quantityNeed);
+                                    innerMap.put(earliestItem.getKey(), earliestItem.getValue() - quantityNeed);
+                                } else {
+                                    pantryItems.remove(earliestItem.getKey());
+                                    innerMap.remove(earliestItem.getKey());
+                                }
+                                quantityNeed -= earliestItem.getValue();
                             }
-                            if (earliestItem.getValue() > quantityNeed) {
-                                pantryItems.put(earliestItem.getKey(), earliestItem.getValue() - quantityNeed);
-                                innerMap.put(earliestItem.getKey(), earliestItem.getValue() - quantityNeed);
-                            } else {
-                                pantryItems.remove(earliestItem.getKey());
-                                innerMap.remove(earliestItem.getKey());
+                        } else {
+                            while (quantityNeed > 0) {
+                                Map.Entry<PantryItem, Integer> earliestItem = innerMap.firstEntry();
+                                if (earliestItem == null) {
+                                    break;
+                                }
+                                if (earliestItem.getKey().getLeftDays() <= 0) {
+                                    innerMap.remove(earliestItem.getKey());
+                                    continue;
+                                }
+                                if (earliestItem.getValue() > quantityNeed) {
+                                    pantryItems.put(earliestItem.getKey(), earliestItem.getValue() - quantityNeed);
+                                    innerMap.put(earliestItem.getKey(), earliestItem.getValue() - quantityNeed);
+                                } else {
+                                    pantryItems.remove(earliestItem.getKey());
+                                    innerMap.remove(earliestItem.getKey());
+                                }
+                                quantityNeed -= earliestItem.getValue();
                             }
-                            quantityNeed -= earliestItem.getValue();
                         }
                     }
 
