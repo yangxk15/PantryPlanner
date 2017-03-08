@@ -52,12 +52,13 @@ public class PantryFragment extends Fragment implements Button.OnClickListener, 
     private boolean isEdit;
     private ListView mListView;
     private Map<PantryItem, Integer> pantryItems;
-<<<<<<< HEAD
+    private Map<PantryItem, Boolean> hasBeenSet = new HashMap<>();
+
     private static boolean firstForNotification = true;
-=======
+
     private Map<PantryItem, Integer> tmpPantryItems;
     private HashSet<PantryItem> selectedItems;
->>>>>>> origin/master
+
 
     private ImageButton[] buttons = new ImageButton[4];
 
@@ -256,6 +257,9 @@ public class PantryFragment extends Fragment implements Button.OnClickListener, 
                 if (this.curEdit != isEdit) return;
                 PantryListAdapter pantryListAdapter = new PantryListAdapter(PantryFragment.this.getActivity());
                 List<Map.Entry<PantryItem, Integer>> pantryList = new ArrayList<>(pantryItems.entrySet());
+
+                setNotification(pantryItems);
+
                 Collections.sort(pantryList, new Comparator<Map.Entry<PantryItem, Integer>>() {
                     @Override
                     public int compare(Map.Entry<PantryItem, Integer> o1, Map.Entry<PantryItem, Integer> o2) {
@@ -330,21 +334,8 @@ public class PantryFragment extends Fragment implements Button.OnClickListener, 
             if (ex == null) {
                 Toast.makeText(getActivity(), "Pantry list changed", Toast.LENGTH_SHORT).show();
                 PantryListAdapter pantryListAdapter = new PantryListAdapter(PantryFragment.this.getActivity());
-                if (pantryItems != null && pantryItems.size() != 0){
-                    Date date = new Date();
-                    int hour = date.getHours();
-                    int day = date.getDate();
-                    Log.d("hour", Integer.toString(hour));
-                    Log.d("day", Integer.toString(day));
-                    for (PantryItem pantryItem : pantryItems.keySet()) {
-                        int minites = pantryItem.getLeftDays();
-                        int curMin = date.getMinutes();
-                        Log.d("min left", Integer.toString(minites));
-                        Log.d("curMin", Integer.toString(curMin));
-                        PSMScheduler.setSchedule(getContext(), day, hour, minites + curMin, 0);
-                    }
-                }
                 List<Map.Entry<PantryItem, Integer>> pantryList = new ArrayList<>(pantryItems.entrySet());
+                setNotification(pantryItems);
                 Collections.sort(pantryList, new Comparator<Map.Entry<PantryItem, Integer>>() {
                     @Override
                     public int compare(Map.Entry<PantryItem, Integer> o1, Map.Entry<PantryItem, Integer> o2) {
@@ -395,6 +386,32 @@ public class PantryFragment extends Fragment implements Button.OnClickListener, 
             buttons[3].setVisibility(View.GONE);
             isEdit = false;
             updateFragment();
+        }
+    }
+
+    private void setNotification(Map<PantryItem, Integer> pantryItems){
+        if (pantryItems != null && pantryItems.size() != 0) {
+            Log.d("pantryitems","!=0");
+            Date date = new Date();
+            int hour = date.getHours();
+            int day = date.getDate();
+            Log.d("hour", Integer.toString(hour));
+            Log.d("day", Integer.toString(day));
+            for (PantryItem pantryItem : pantryItems.keySet()) {
+                if ( hasBeenSet.containsKey(pantryItem) && hasBeenSet.get(pantryItem)){
+                    continue;
+                }
+                int minites = pantryItem.getLeftDays();
+                if (minites > 0) {
+                    int curMin = date.getMinutes();
+                    Log.d("min left", Integer.toString(minites));
+                    Log.d("curMin", Integer.toString(curMin));
+                    PSMScheduler psmScheduler = new PSMScheduler();
+                    psmScheduler.setSchedule(getContext(), day, hour,
+                            minites + curMin, 0);
+                    hasBeenSet.put(pantryItem, true);
+                }
+            }
         }
     }
 }

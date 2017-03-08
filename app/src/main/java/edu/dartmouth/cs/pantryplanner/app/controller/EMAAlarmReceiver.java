@@ -12,6 +12,8 @@ import android.util.Log;
 
 import edu.dartmouth.cs.pantryplanner.app.R;
 
+import static android.app.Notification.VISIBILITY_PUBLIC;
+
 
 public class EMAAlarmReceiver extends BroadcastReceiver {
     //Receive broadcas
@@ -32,16 +34,11 @@ public class EMAAlarmReceiver extends BroadcastReceiver {
                 .setContentText("")
                 .setTicker("New Message Alert!")
                 .setSmallIcon(R.drawable.refrigerator)
-                .setContentIntent(pendingIntent).build();
+                .setContentIntent(pendingIntent)
+                .setVisibility(VISIBILITY_PUBLIC).build();
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(0, notification);
-    }
-    // start the stress meter
-    private void startPSM(Context context) {
-        Intent emaIntent = new Intent(context, MainActivity.class); //The activity you  want to start.
-        emaIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(emaIntent);
     }
 
 

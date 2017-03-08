@@ -17,8 +17,16 @@ public class PSMScheduler {
 //        setSchedule(context,0,38,0);
 //        setSchedule(context, 00,36, 0);
 //    }
+//    private Context context;
+//    private int day;
+//    private int hour;
+//    private int min;
+//    private int sec;
 
-    public static void setSchedule(Context context, int day, int hour, int min, int sec) {
+    public PSMScheduler(){
+
+    }
+    public void setSchedule(Context context, int day, int hour, int min, int sec) {
 
         // the request code distinguish different stress meter schedule instances
         int requestCode = hour * 10000 + min * 100 + sec;

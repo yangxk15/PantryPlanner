@@ -69,87 +69,97 @@ public class CreateRecipeActivity extends AppCompatActivity{
             @Override
             public void onClick(View view){
                 /* dynamically add edit text box and spinner */
-                final EditText t1 = new EditText(CreateRecipeActivity.this);
-                final EditText t2 = new EditText(CreateRecipeActivity.this);
-                ArrayList<String> spinnerArray = new ArrayList<>(Arrays.asList(ItemType.getItemTypes()));
+                if (position < 13) {
+                    final EditText t1 = new EditText(CreateRecipeActivity.this);
+                    final EditText t2 = new EditText(CreateRecipeActivity.this);
+                    ArrayList<String> spinnerArray = new ArrayList<>(Arrays.asList(ItemType.getItemTypes()));
 
 
-                final Spinner spinner = new Spinner(CreateRecipeActivity.this);
-                ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(CreateRecipeActivity.this,
-                        android.R.layout.simple_spinner_dropdown_item, spinnerArray);
-                spinner.setAdapter(spinnerArrayAdapter);
-                spinner.setLayoutParams(new ActionBar.LayoutParams(400, ActionBar.LayoutParams.WRAP_CONTENT));
-                t1.setWidth(500);
-                t2.setWidth(500);
-                t1.requestFocus();
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.showSoftInput(t1, InputMethodManager.SHOW_IMPLICIT);
+                    final Spinner spinner = new Spinner(CreateRecipeActivity.this);
+                    ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(CreateRecipeActivity.this,
+                            android.R.layout.simple_spinner_dropdown_item, spinnerArray);
+                    spinner.setAdapter(spinnerArrayAdapter);
+                    spinner.setLayoutParams(new ActionBar.LayoutParams(400, ActionBar.LayoutParams.WRAP_CONTENT));
+                    t1.setWidth(500);
+                    t2.setWidth(500);
+                    t1.requestFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.showSoftInput(t1, InputMethodManager.SHOW_IMPLICIT);
 
 
-                final LinearLayout root = (LinearLayout) findViewById(R.id.my_create_recipe_layout);
-                final LinearLayout horizontal = new LinearLayout(CreateRecipeActivity.this);
-                horizontal.setOrientation(LinearLayout.HORIZONTAL);
-                horizontal.addView(spinner);
-                horizontal.addView(t1);
-                horizontal.addView(t2);
-                root.addView(horizontal,4);
+                    final LinearLayout root = (LinearLayout) findViewById(R.id.my_create_recipe_layout);
+                    final LinearLayout horizontal = new LinearLayout(CreateRecipeActivity.this);
+                    horizontal.setOrientation(LinearLayout.HORIZONTAL);
+                    horizontal.addView(spinner);
+                    horizontal.addView(t1);
+                    horizontal.addView(t2);
+                    root.addView(horizontal, 4);
 
 
-                t1.setOnFocusChangeListener(new View.OnFocusChangeListener(){
-                    @Override
-                    public void onFocusChange(View v, boolean hasFocus) {
-                       if (!hasFocus) {
-                           Log.d("focus", "focus loosed");
-                       } else {
-                           Log.d("focus", "focused");
-                       }
-                    }
-                });
-                t2.setKeyListener(new DigitsKeyListener());
-                t2.setOnFocusChangeListener(new View.OnFocusChangeListener(){
-                    @Override
-                    public void onFocusChange(View v, boolean hasFocus) {
-                        if (!hasFocus) {
-                            Log.d("focus2", "focus loosed");
-                           /* get user's input */
-                            String material = t1.getText().toString();
-                            Log.d("material", material);
-                            String quantity = t2.getText().toString();
-                            Log.d("quantity", quantity);
-                            if (!material.equals("") && !quantity.equals("")){
-
-                                material = WordUtils.capitalizeFully(material);
-
-                                TextView newTextView1 = new TextView(CreateRecipeActivity.this);
-                                TextView newTextView2 = new TextView(CreateRecipeActivity.this);
-
-                                newTextView1.setText(material);
-                                newTextView1.setTypeface(Typeface.DEFAULT_BOLD);
-                                newTextView1.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);
-                                newTextView1.setPadding(50, 5, 20, 5);
-                                newTextView2.setText(quantity);
-                                newTextView2.setTypeface(Typeface.DEFAULT_BOLD);
-                                newTextView2.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);
-                                newTextView2.setPadding(50, 5, 20, 5);
-
-
-                                LinearLayout horizontal_text = new LinearLayout(CreateRecipeActivity.this);
-                                horizontal_text.setOrientation(LinearLayout.HORIZONTAL);
-                                root.removeView(horizontal);
-                                horizontal_text.addView(newTextView1);
-                                horizontal_text.addView(newTextView2);
-                                root.addView(horizontal_text,position++);
-                                Log.d("spinner position: ", spinner.getSelectedItem().toString());
-                                Item item = new Item(material, ItemType.values()[spinner.getSelectedItemPosition()]);
-                                items.put(item, Integer.parseInt(quantity));
+                    t1.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                        @Override
+                        public void onFocusChange(View v, boolean hasFocus) {
+                            if (!hasFocus) {
+                                Log.d("focus", "focus loosed");
                             } else {
-                                root.removeView(horizontal);
+                                Log.d("focus", "focused");
                             }
-                        } else {
-                            Log.d("focus", "focused");
                         }
-                    }
-                });
+                    });
+                    t2.setKeyListener(new DigitsKeyListener());
+                    t2.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                        @Override
+                        public void onFocusChange(View v, boolean hasFocus) {
+                            if (!hasFocus) {
+                                Log.d("focus2", "focus loosed");
+                           /* get user's input */
+                                String material = t1.getText().toString();
+                                Log.d("material", material);
+                                String quantity = t2.getText().toString();
+                                Log.d("quantity", quantity);
+                                if (!material.equals("") && !quantity.equals("")) {
+
+                                    material = WordUtils.capitalizeFully(material);
+
+                                    TextView newTextView1 = new TextView(CreateRecipeActivity.this);
+                                    TextView newTextView2 = new TextView(CreateRecipeActivity.this);
+
+                                    newTextView1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+
+                                    newTextView1.setText(material);
+                                    newTextView1.setTypeface(Typeface.DEFAULT_BOLD);
+                                    newTextView1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+                                    newTextView1.setPadding(50, 5, 20, 5);
+                                    newTextView2.setText(quantity);
+                                    newTextView2.setTypeface(Typeface.DEFAULT_BOLD);
+                                    newTextView2.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+                                    newTextView2.setPadding(50, 5, 20, 5);
+
+
+                                    LinearLayout horizontal_text = new LinearLayout(CreateRecipeActivity.this);
+                                    horizontal_text.setOrientation(LinearLayout.HORIZONTAL);
+                                    root.removeView(horizontal);
+                                    horizontal_text.addView(newTextView1);
+                                    horizontal_text.addView(newTextView2);
+                                    root.addView(horizontal_text, position++);
+                                    Log.d("spinner position: ", spinner.getSelectedItem().toString());
+                                    Item item = new Item(material, ItemType.values()[spinner.getSelectedItemPosition()]);
+                                    items.put(item, Integer.parseInt(quantity));
+                                } else {
+                                    root.removeView(horizontal);
+                                }
+                            } else {
+                                Log.d("focus", "focused");
+                            }
+                        }
+                    });
+                } else {
+                    Toast.makeText(
+                            CreateRecipeActivity.this,
+                            "Number of ingrendies has reached the limit",
+                            Toast.LENGTH_SHORT
+                    ).show();
+                }
             }
         });
         findViewById(R.id.create_recipe_save).setOnClickListener(new View.OnClickListener(){
