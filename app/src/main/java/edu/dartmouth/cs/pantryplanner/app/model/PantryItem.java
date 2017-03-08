@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import static edu.dartmouth.cs.pantryplanner.app.util.Constants.DATE_FORMAT;
+import static edu.dartmouth.cs.pantryplanner.app.util.Constants.MINUTE_FORMAT;
 
 /**
  * Created by yangxk15 on 3/5/17.
@@ -21,21 +22,21 @@ public class PantryItem implements Comparable<PantryItem>{
 
     @Override
     public int hashCode() {
-        return DATE_FORMAT.format(productionDate).hashCode() + item.hashCode();
+        return MINUTE_FORMAT.format(productionDate).hashCode() + item.hashCode();
     }
 
     @Override
     public boolean equals(Object o) {
         PantryItem pantryItem = (PantryItem) o;
-        return DATE_FORMAT.format(pantryItem.productionDate).equals(DATE_FORMAT.format(productionDate))
+        return MINUTE_FORMAT.format(pantryItem.productionDate).equals(MINUTE_FORMAT.format(productionDate))
                 && pantryItem.item.equals(item);
     }
 
     @Override
     public int compareTo(PantryItem other){
         try {
-            Date d1 = DATE_FORMAT.parse(DATE_FORMAT.format(productionDate));
-            Date d2 = DATE_FORMAT.parse(DATE_FORMAT.format(other.productionDate));
+            Date d1 = MINUTE_FORMAT.parse(MINUTE_FORMAT.format(productionDate));
+            Date d2 = MINUTE_FORMAT.parse(MINUTE_FORMAT.format(other.productionDate));
             return d1.compareTo(d2);
         } catch (ParseException e) {
             return 0;

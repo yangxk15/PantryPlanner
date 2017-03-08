@@ -26,7 +26,7 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor(suppressConstructorProperties = true)
 public class ServiceBuilderHelper {
-    public static <T extends Builder> T getBuilder(Context context, Class<T> cls) {
+    public static <T extends Builder> T getBuilder(Context context, Class<T> cls) throws IOException {
         T builder;
 
         try {
@@ -43,8 +43,8 @@ public class ServiceBuilderHelper {
                     )
             );
         } catch (Exception e) {
-            builder = null;
             Log.d("ServiceBuilderHelper", e.toString());
+            throw new IOException("ServiceBuilderHelper");
         }
 
         return builder;

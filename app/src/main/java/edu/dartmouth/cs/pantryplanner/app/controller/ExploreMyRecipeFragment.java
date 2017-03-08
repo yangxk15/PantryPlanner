@@ -37,6 +37,8 @@ public class ExploreMyRecipeFragment extends Fragment {
     // UI Reference
     private ListView mListView;
 
+    private ReadMyRecipeListTask mTask = null;
+
     public ExploreMyRecipeFragment() {
         // Required empty public constructor
     }
@@ -51,7 +53,16 @@ public class ExploreMyRecipeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        new ReadMyRecipeListTask().execute();
+        mTask = new ReadMyRecipeListTask();
+        mTask.execute();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mTask != null) {
+            mTask.cancel(true);
+        }
     }
 
     private void dataProcess() {
@@ -106,6 +117,10 @@ public class ExploreMyRecipeFragment extends Fragment {
 
         @Override
         protected void onPostExecute(IOException ex) {
+            if (isCancelled()) {
+                return;
+            }
+
             if (ex == null) {
                 dataProcess();
             } else {
@@ -125,6 +140,7 @@ public class ExploreMyRecipeFragment extends Fragment {
                 }
                 Log.d(this.getClass().getName(), ex.toString());
             }
+            mTask = null;
         }
 
     }

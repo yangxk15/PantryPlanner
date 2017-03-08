@@ -38,9 +38,10 @@ import static edu.dartmouth.cs.pantryplanner.app.controller.MealPlanFragment.SEL
 public class HistoryListFragment extends Fragment implements FragmentUtil {
 
     private List<MealPlan> mealPlans;
-    private String[] recipeStrings;
+    private ArrayList<String> recipeStrings;
     private ListView listView;
     private ArrayAdapter<String> adapter;
+    private ReadHistoryListTask mTask = null;
 
     public HistoryListFragment() {
         // Required empty public constructor
@@ -73,15 +74,10 @@ public class HistoryListFragment extends Fragment implements FragmentUtil {
         protected IOException doInBackground(Void... arg0) {
             IOException ex = null;
             try {
-                HistoryRecordApi.Builder builder = ServiceBuilderHelper.getBuilder(
+                HistoryRecordApi historyRecordApi = ServiceBuilderHelper.getBuilder(
                         HistoryListFragment.this.getActivity(),
                         HistoryRecordApi.Builder.class
-                );
-                if (builder == null) {
-                    return null;
-                }
-
-                HistoryRecordApi historyRecordApi = builder.build();
+                ).build();
 
                 List<HistoryRecord> historyRecords = historyRecordApi.listWith(
                         new Session(HistoryListFragment.this.getActivity()).getString("email")
@@ -94,9 +90,9 @@ public class HistoryListFragment extends Fragment implements FragmentUtil {
                 } else {
                     mealPlans = MealPlan.fromHistoryRecords(historyRecords);
                 }
-                recipeStrings = new String[mealPlans.size()];
+                recipeStrings = new ArrayList<>();
                 for (int i = 0; i < mealPlans.size(); i++){
-                    recipeStrings[i] = mealPlans.get(i).getRecipe().getName();
+                    recipeStrings.add(mealPlans.get(i).getRecipe().getName());
                 }
 
             } catch (IOException e) {
@@ -108,6 +104,10 @@ public class HistoryListFragment extends Fragment implements FragmentUtil {
 
         @Override
         protected void onPostExecute(IOException ex) {
+            if (isCancelled()) {
+                return;
+            }
+
             if (ex == null) {
                 if (recipeStrings != null) {
                     adapter = new ArrayAdapter<>
@@ -131,6 +131,7 @@ public class HistoryListFragment extends Fragment implements FragmentUtil {
                 }
                 Log.d(this.getClass().getName(), ex.toString());
             }
+            mTask = null;
         }
     }
 
@@ -141,6 +142,23 @@ public class HistoryListFragment extends Fragment implements FragmentUtil {
 
     @Override
     public void updateFragment() {
-        new ReadHistoryListTask().execute();
+        if (getActivity() != null) {
+            new ReadHistoryListTask().execute();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mTask = new ReadHistoryListTask();
+        mTask.execute();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mTask != null) {
+            mTask.cancel(true);
+        }
     }
 }

@@ -68,8 +68,9 @@ import me.himanshusoni.quantityview.QuantityView;
  */
 public class ShoppingListFragment extends Fragment implements FragmentUtil, Button.OnClickListener {
     Map<Item, Integer> selectedItems;
-
     Map<Item, Integer> mShoppingListItems;
+
+    private ReadShoppingListTask mTask = null;
 
     // UI Reference
     ExpandableListView mListView;
@@ -119,7 +120,7 @@ public class ShoppingListFragment extends Fragment implements FragmentUtil, Butt
                     return;
                 } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setTitle("Bought these items?");
+                    builder.setTitle("Buy these items?");
                     builder.setNegativeButton("Cancel", null);
                     builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
@@ -297,6 +298,10 @@ public class ShoppingListFragment extends Fragment implements FragmentUtil, Butt
 
         @Override
         protected void onPostExecute(IOException ex) {
+            if (isCancelled()) {
+                return;
+            }
+
             if (ex == null) {
                 dataProcess();
             } else {
@@ -316,6 +321,7 @@ public class ShoppingListFragment extends Fragment implements FragmentUtil, Butt
                 }
                 Log.d(this.getClass().getName(), ex.toString());
             }
+            mTask = null;
         }
     }
 
@@ -437,6 +443,23 @@ public class ShoppingListFragment extends Fragment implements FragmentUtil, Butt
 
     @Override
     public void updateFragment() {
-        new ReadShoppingListTask().execute();
+        if (getActivity() != null) {
+            new ReadShoppingListTask().execute();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mTask = new ReadShoppingListTask();
+        mTask.execute();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mTask != null) {
+            mTask.cancel(true);
+        }
     }
 }
