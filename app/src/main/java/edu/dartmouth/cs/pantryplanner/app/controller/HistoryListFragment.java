@@ -73,15 +73,10 @@ public class HistoryListFragment extends Fragment implements FragmentUtil {
         protected IOException doInBackground(Void... arg0) {
             IOException ex = null;
             try {
-                HistoryRecordApi.Builder builder = ServiceBuilderHelper.getBuilder(
+                HistoryRecordApi historyRecordApi = ServiceBuilderHelper.getBuilder(
                         HistoryListFragment.this.getActivity(),
                         HistoryRecordApi.Builder.class
-                );
-                if (builder == null) {
-                    return null;
-                }
-
-                HistoryRecordApi historyRecordApi = builder.build();
+                ).build();
 
                 List<HistoryRecord> historyRecords = historyRecordApi.listWith(
                         new Session(HistoryListFragment.this.getActivity()).getString("email")
@@ -141,6 +136,9 @@ public class HistoryListFragment extends Fragment implements FragmentUtil {
 
     @Override
     public void updateFragment() {
-        new ReadHistoryListTask().execute();
+
+        if (getActivity() != null) {
+            new ReadHistoryListTask().execute();
+        }
     }
 }

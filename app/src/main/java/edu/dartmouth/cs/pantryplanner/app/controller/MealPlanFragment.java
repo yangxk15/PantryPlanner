@@ -89,7 +89,6 @@ public class MealPlanFragment extends Fragment implements FragmentUtil {
         /*  HashMap<String, ArrayList<ArrayList<Meal>>>
                     Day       Tag       Meal
          */
-
         Calendar calendar = Calendar.getInstance();
 
         HashMap<String, ArrayList<ArrayList<MealPlan>>> dateMap = new HashMap<>();
@@ -102,20 +101,23 @@ public class MealPlanFragment extends Fragment implements FragmentUtil {
             calendar.add(Calendar.DATE, 1);
         }
 
-        for (MealPlan mealPlan: mealPlans) {
-            if (!dateMap.containsKey(DATE_FORMAT.format(mealPlan.getDate()))) continue;
-            ArrayList<ArrayList<MealPlan>> mealTypeList = dateMap.get(DATE_FORMAT.format(mealPlan.getDate()));
-            mealTypeList.get(mealPlan.getMealType().ordinal()).add(mealPlan);
-        }
 
-        // remove all empty meal type list
-        Iterator it = dateMap.entrySet().iterator();
-        while (it.hasNext()) {
-            HashMap.Entry pair = (HashMap.Entry)it.next();
-            ArrayList<ArrayList<Recipe>> mealTypeList2 = (ArrayList)pair.getValue();
-            for (int i = MealType.values().length - 1; i >=0; --i) {
-                if (mealTypeList2.get(i).size() == 0) {
-                    mealTypeList2.remove(i);
+        if (mealPlans != null) {
+            for (MealPlan mealPlan: mealPlans) {
+                if (!dateMap.containsKey(DATE_FORMAT.format(mealPlan.getDate()))) continue;
+                ArrayList<ArrayList<MealPlan>> mealTypeList = dateMap.get(DATE_FORMAT.format(mealPlan.getDate()));
+                mealTypeList.get(mealPlan.getMealType().ordinal()).add(mealPlan);
+            }
+
+            // remove all empty meal type list
+            Iterator it = dateMap.entrySet().iterator();
+            while (it.hasNext()) {
+                HashMap.Entry pair = (HashMap.Entry) it.next();
+                ArrayList<ArrayList<Recipe>> mealTypeList2 = (ArrayList) pair.getValue();
+                for (int i = MealType.values().length - 1; i >= 0; --i) {
+                    if (mealTypeList2.get(i).size() == 0) {
+                        mealTypeList2.remove(i);
+                    }
                 }
             }
         }
@@ -300,6 +302,8 @@ public class MealPlanFragment extends Fragment implements FragmentUtil {
 
     @Override
     public void updateFragment() {
-        new ReadMealPlanListTask().execute();
+        if (getActivity() != null) {
+            new ReadMealPlanListTask().execute();
+        }
     }
 }
