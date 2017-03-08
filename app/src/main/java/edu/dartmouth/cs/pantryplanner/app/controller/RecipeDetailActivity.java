@@ -164,6 +164,9 @@ public class RecipeDetailActivity extends AppCompatActivity implements Button.On
                     for (Map.Entry<Item, Integer> entry : mMealPlan.getRecipe().getItems().entrySet()) {
                         TreeMap<PantryItem, Integer> innerMap = map.get(entry.getKey());
                         int quantityNeed = entry.getValue();
+                        if (innerMap == null) {
+                            throw new IOException("You don't have enough food to cook!");
+                        }
                         while (quantityNeed > 0 && innerMap != null) {
                             Map.Entry<PantryItem, Integer> earliestItem = innerMap.firstEntry();
                             if (earliestItem == null) {

@@ -6,7 +6,6 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,8 +28,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -52,6 +53,7 @@ public class PantryFragment extends Fragment implements Button.OnClickListener, 
     private boolean isEdit;
     private ListView mListView;
     private Map<PantryItem, Integer> pantryItems;
+    private static boolean firstForNotification = true;
     private Map<PantryItem, Integer> tmpPantryItems;
     private HashSet<PantryItem> selectedItems;
 
@@ -80,6 +82,9 @@ public class PantryFragment extends Fragment implements Button.OnClickListener, 
 
         updateFragment(); // load data to adapter
 
+
+        //PSMScheduler.setSchedule(getContext(), 8,0, 49,0);
+
         return view;
     }
 
@@ -105,6 +110,13 @@ public class PantryFragment extends Fragment implements Button.OnClickListener, 
                 buttons[1].setVisibility(View.GONE);
                 buttons[2].setVisibility(View.GONE);
                 buttons[3].setVisibility(View.GONE);
+                for (Iterator<Map.Entry<PantryItem, Integer>> it = tmpPantryItems.entrySet().iterator();
+                     it.hasNext();) {
+                    Map.Entry<PantryItem, Integer> entry = it.next();
+                    if (entry.getValue() == 0) {
+                        it.remove();
+                    }
+                }
                 pantryItems = tmpPantryItems;
                 new ChangePantryTask().execute();
                 break;
@@ -323,6 +335,20 @@ public class PantryFragment extends Fragment implements Button.OnClickListener, 
             if (ex == null) {
                 Toast.makeText(getActivity(), "Pantry list changed", Toast.LENGTH_SHORT).show();
                 PantryListAdapter pantryListAdapter = new PantryListAdapter(PantryFragment.this.getActivity());
+                if (pantryItems != null && pantryItems.size() != 0){
+                    Date date = new Date();
+                    int hour = date.getHours();
+                    int day = date.getDate();
+                    Log.d("hour", Integer.toString(hour));
+                    Log.d("day", Integer.toString(day));
+                    for (PantryItem pantryItem : pantryItems.keySet()) {
+                        int minites = pantryItem.getLeftDays();
+                        int curMin = date.getMinutes();
+                        Log.d("min left", Integer.toString(minites));
+                        Log.d("curMin", Integer.toString(curMin));
+                        PSMScheduler.setSchedule(getContext(), day, hour, minites + curMin, 0);
+                    }
+                }
                 List<Map.Entry<PantryItem, Integer>> pantryList = new ArrayList<>(pantryItems.entrySet());
                 Collections.sort(pantryList, new Comparator<Map.Entry<PantryItem, Integer>>() {
                     @Override

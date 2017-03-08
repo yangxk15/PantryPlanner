@@ -38,7 +38,7 @@ import static edu.dartmouth.cs.pantryplanner.app.controller.MealPlanFragment.SEL
 public class HistoryListFragment extends Fragment implements FragmentUtil {
 
     private List<MealPlan> mealPlans;
-    private String[] recipeStrings;
+    private ArrayList<String> recipeStrings;
     private ListView listView;
     private ArrayAdapter<String> adapter;
 
@@ -94,9 +94,9 @@ public class HistoryListFragment extends Fragment implements FragmentUtil {
                 } else {
                     mealPlans = MealPlan.fromHistoryRecords(historyRecords);
                 }
-                recipeStrings = new String[mealPlans.size()];
+                recipeStrings = new ArrayList<>();
                 for (int i = 0; i < mealPlans.size(); i++){
-                    recipeStrings[i] = mealPlans.get(i).getRecipe().getName();
+                    recipeStrings.add(mealPlans.get(i).getRecipe().getName());
                 }
 
             } catch (IOException e) {

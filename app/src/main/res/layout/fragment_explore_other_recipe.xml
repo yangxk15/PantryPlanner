@@ -5,12 +5,13 @@
 
     <EditText android:id="@+id/inputSearch"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="70dp"
         android:hint="Search recipes.."
         android:inputType="textVisiblePassword"/>/>
 
     <ListView
         android:id="@+id/listView_explore_other_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:typeface="serif"/>
 </LinearLayout>

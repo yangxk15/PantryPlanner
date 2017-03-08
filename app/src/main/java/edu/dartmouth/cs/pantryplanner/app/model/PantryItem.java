@@ -44,7 +44,7 @@ public class PantryItem implements Comparable<PantryItem>{
 
 
 
-        public int getLeftDays() {
+    public int getLeftDays() {
         Calendar calendar = Calendar.getInstance();
 //        long daysPassed = (calendar.getTime().getTime() - productionDate.getTime()) / (1000 * 60 * 60 * 24);
 //        return item.itemType.getFreshTime() - (int) daysPassed;
