@@ -51,6 +51,7 @@ import static edu.dartmouth.cs.pantryplanner.app.util.Constants.DATE_FORMAT;
 public class MealPlanFragment extends Fragment implements FragmentUtil {
     public static final String SELECTED_DATE = "Selected Date";
     public static final String SELECTED_MEAL_PLAN = "Selected Meal Plan";
+    private ReadMealPlanListTask mTask = null;
 
     private List<MealPlan> mealPlans;
 
@@ -273,6 +274,9 @@ public class MealPlanFragment extends Fragment implements FragmentUtil {
 
         @Override
         protected void onPostExecute(IOException ex) {
+            if (isCancelled()) {
+                return;
+            }
             if (ex == null) {
                 dataProcess();
             } else {
@@ -292,6 +296,7 @@ public class MealPlanFragment extends Fragment implements FragmentUtil {
                 }
                 Log.d(this.getClass().getName(), ex.toString());
             }
+            mTask = null;
         }
     }
 
@@ -303,7 +308,8 @@ public class MealPlanFragment extends Fragment implements FragmentUtil {
     @Override
     public void updateFragment() {
         if (getActivity() != null) {
-            new ReadMealPlanListTask().execute();
+            mTask = new ReadMealPlanListTask();
+            mTask.execute();
         }
     }
 }

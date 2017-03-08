@@ -444,15 +444,9 @@ public class ShoppingListFragment extends Fragment implements FragmentUtil, Butt
     @Override
     public void updateFragment() {
         if (getActivity() != null) {
-            new ReadShoppingListTask().execute();
+            mTask = new ReadShoppingListTask();
+            mTask.execute();
         }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        mTask = new ReadShoppingListTask();
-        mTask.execute();
     }
 
     @Override
