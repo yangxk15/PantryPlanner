@@ -81,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
         );
 
         viewPager.setOffscreenPageLimit(mFragmentList.size() - 1);
+        //PSMScheduler.setSchedule(this);
     }
 
     private void loadSetting() {
