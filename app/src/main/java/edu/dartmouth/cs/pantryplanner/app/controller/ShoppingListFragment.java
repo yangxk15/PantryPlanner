@@ -298,8 +298,8 @@ public class ShoppingListFragment extends Fragment implements FragmentUtil, Butt
 
         @Override
         protected void onPostExecute(IOException ex) {
+            mTask = null;
             if (isCancelled()) {
-                mTask = null;
                 return;
             }
 

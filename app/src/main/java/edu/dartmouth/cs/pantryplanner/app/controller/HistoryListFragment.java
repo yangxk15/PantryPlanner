@@ -109,8 +109,8 @@ public class HistoryListFragment extends Fragment implements FragmentUtil {
 
         @Override
         protected void onPostExecute(IOException ex) {
+            mTask = null;
             if (isCancelled()) {
-                mTask = null;
                 return;
             }
 

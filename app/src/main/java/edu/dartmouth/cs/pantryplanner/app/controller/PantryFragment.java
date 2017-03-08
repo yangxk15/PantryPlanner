@@ -260,8 +260,8 @@ public class PantryFragment extends Fragment implements Button.OnClickListener, 
 
         @Override
         protected void onPostExecute(IOException ex) {
+            mTask = null;
             if (isCancelled()) {
-                mTask = null;
                 return;
             }
 
@@ -343,8 +343,8 @@ public class PantryFragment extends Fragment implements Button.OnClickListener, 
 
         @Override
         protected void onPostExecute(IOException ex) {
+            mTask2 = null;
             if (isCancelled()) {
-                mTask2 = null;
                 return;
             }
 
