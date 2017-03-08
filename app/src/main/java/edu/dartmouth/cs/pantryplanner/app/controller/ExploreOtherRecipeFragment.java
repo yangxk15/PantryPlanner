@@ -45,6 +45,7 @@ import edu.dartmouth.cs.pantryplanner.backend.entity.user.User;
 
 public class ExploreOtherRecipeFragment extends Fragment {
     private Map<Recipe, List<String>> recipes = new HashMap<>();
+    private Map<Recipe, String> creators = new HashMap<>();
     // UI Reference
     private ListView mListView;
     private EditText inputSearch;
@@ -86,10 +87,10 @@ public class ExploreOtherRecipeFragment extends Fragment {
 
         String[] values = new String[list.size()];
         for (int i = 0; i < list.size(); i++) {
-            values[i] = list.get(i).getKey().getName() + ", created by " + list.get(i).getValue().get(0);
+            values[i] = list.get(i).getKey().getName() + ", " + creators.get(list.get(i).getKey());
             int imported = list.get(i).getValue().size() - 1;
             if (imported > 0) {
-                values[i] += ", imported by " + imported + " people";
+                values[i] += ", " + imported;
             }
             map.put(values[i], i);
         }
@@ -165,7 +166,7 @@ public class ExploreOtherRecipeFragment extends Fragment {
                 for (RecipeRecord recipeRecord : recipeRecords) {
                     Recipe recipe = Recipe.fromRecord(recipeRecord);
                     recipes.put(recipe, new ArrayList<String>());
-                    recipes.get(recipe).add(recipeRecord.getEmail());
+                    creators.put(recipe, recipeRecord.getEmail());
                 }
 
                 MealPlanRecordApi mealPlanRecordApi = ServiceBuilderHelper.getBuilder(
@@ -178,7 +179,7 @@ public class ExploreOtherRecipeFragment extends Fragment {
 
                 for (MealPlanRecord mealPlanRecord : mealPlanRecords) {
                     Recipe recipe = MealPlan.fromString(mealPlanRecord.getMealPlan()).getRecipe();
-                    if (recipes.containsKey(recipe) && !recipes.get(recipe).get(0).equals(mealPlanRecord.getEmail())) {
+                    if (recipes.containsKey(recipe)) {
                         recipes.get(recipe).add(mealPlanRecord.getEmail());
                     }
                 }
