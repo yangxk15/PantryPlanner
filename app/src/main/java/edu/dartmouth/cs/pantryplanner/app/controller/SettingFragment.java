@@ -64,7 +64,7 @@ public class SettingFragment extends Fragment implements QuantityView.OnQuantity
         quantityView.setQuantity(MealPlanFragment.mMealNumber);
 
         TextView textView = (TextView) view.findViewById(R.id.textView_setting_username);
-        textView.setText("Username");
+        textView.setText(new Session(getActivity()).getString("firstName"));
     }
 
     @Override

@@ -8,7 +8,7 @@ import java.util.Locale;
  */
 
 public interface Constants {
-    boolean localMode = true;
-    String LOCAL_SERVER_IP = "172.20.10.11";
+    boolean localMode = false;
+    String LOCAL_SERVER_IP = "10.31.47.252";
     SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MMM dd yyyy", Locale.US);
 }
