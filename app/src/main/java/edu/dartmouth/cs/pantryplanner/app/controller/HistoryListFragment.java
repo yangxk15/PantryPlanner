@@ -41,6 +41,7 @@ public class HistoryListFragment extends Fragment implements FragmentUtil {
     private ArrayList<String> recipeStrings;
     private ListView listView;
     private ArrayAdapter<String> adapter;
+    private ReadHistoryListTask mTask = null;
 
     public HistoryListFragment() {
         // Required empty public constructor
@@ -103,6 +104,10 @@ public class HistoryListFragment extends Fragment implements FragmentUtil {
 
         @Override
         protected void onPostExecute(IOException ex) {
+            if (isCancelled()) {
+                return;
+            }
+
             if (ex == null) {
                 if (recipeStrings != null) {
                     adapter = new ArrayAdapter<>
@@ -126,6 +131,7 @@ public class HistoryListFragment extends Fragment implements FragmentUtil {
                 }
                 Log.d(this.getClass().getName(), ex.toString());
             }
+            mTask = null;
         }
     }
 
@@ -136,9 +142,23 @@ public class HistoryListFragment extends Fragment implements FragmentUtil {
 
     @Override
     public void updateFragment() {
-
         if (getActivity() != null) {
             new ReadHistoryListTask().execute();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mTask = new ReadHistoryListTask();
+        mTask.execute();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mTask != null) {
+            mTask.cancel(true);
         }
     }
 }

@@ -55,6 +55,8 @@ public class ExploreOtherRecipeFragment extends Fragment {
     private HashMap<String, Integer> map = new HashMap<>();
     private ArrayAdapter<String> adapter;
 
+    private ReadOtherRecipeListTask mTask = null;
+
     public ExploreOtherRecipeFragment() {
         // Required empty public constructor
     }
@@ -70,7 +72,16 @@ public class ExploreOtherRecipeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        new ReadOtherRecipeListTask().execute();
+        mTask = new ReadOtherRecipeListTask();
+        mTask.execute();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mTask != null) {
+            mTask.cancel(true);
+        }
     }
 
     private void dataProcess() {
@@ -223,6 +234,9 @@ public class ExploreOtherRecipeFragment extends Fragment {
 
         @Override
         protected void onPostExecute(IOException ex) {
+            if (isCancelled()) {
+                return;
+            }
             if (ex == null) {
                 dataProcess();
             } else {
@@ -242,6 +256,7 @@ public class ExploreOtherRecipeFragment extends Fragment {
                 }
                 Log.d(this.getClass().getName(), ex.toString());
             }
+            mTask = null;
         }
     }
 

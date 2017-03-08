@@ -56,13 +56,14 @@ public class PantryFragment extends Fragment implements Button.OnClickListener, 
     private static boolean firstForNotification = true;
     private Map<PantryItem, Integer> tmpPantryItems;
     private HashSet<PantryItem> selectedItems;
-
     private ImageButton[] buttons = new ImageButton[4];
+    private ReadPantryListTask mTask = null;
 
     public PantryFragment() {
         isEdit = false;
         selectedItems = new HashSet<>();
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -81,8 +82,6 @@ public class PantryFragment extends Fragment implements Button.OnClickListener, 
         mListView = (ListView) view.findViewById(R.id.listView_pantry_list);
 
         updateFragment(); // load data to adapter
-
-
         //PSMScheduler.setSchedule(getContext(), 8,0, 49,0);
 
         return view;
@@ -260,6 +259,10 @@ public class PantryFragment extends Fragment implements Button.OnClickListener, 
 
         @Override
         protected void onPostExecute(IOException ex) {
+            if (isCancelled()) {
+                return;
+            }
+
             if (ex == null) {
                 if (this.curEdit != isEdit) return;
                 PantryListAdapter pantryListAdapter = new PantryListAdapter(PantryFragment.this.getActivity());
@@ -290,6 +293,7 @@ public class PantryFragment extends Fragment implements Button.OnClickListener, 
                 }
                 Log.d(this.getClass().getName(), ex.toString());
             }
+            mTask = null;
         }
     }
 
@@ -335,6 +339,10 @@ public class PantryFragment extends Fragment implements Button.OnClickListener, 
 
         @Override
         protected void onPostExecute(IOException ex) {
+            if (isCancelled()) {
+                return;
+            }
+
             if (ex == null) {
                 Toast.makeText(getActivity(), "Pantry list changed", Toast.LENGTH_SHORT).show();
                 PantryListAdapter pantryListAdapter = new PantryListAdapter(PantryFragment.this.getActivity());
@@ -405,7 +413,16 @@ public class PantryFragment extends Fragment implements Button.OnClickListener, 
             buttons[2].setVisibility(View.GONE);
             buttons[3].setVisibility(View.GONE);
             isEdit = false;
-            updateFragment();
+            mTask = new ReadPantryListTask(isEdit);
+            mTask.execute();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mTask != null) {
+            mTask.cancel(true);
         }
     }
 }
