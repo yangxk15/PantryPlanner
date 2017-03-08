@@ -189,7 +189,7 @@ public class PantryFragment extends Fragment implements Button.OnClickListener, 
                     }
                 }); // set the listener
             } else {
-                textView.setText(entry.getValue().toString());
+                textView.setText(entry.getValue().toString() + "   Unit  ");
             }
 
             if (entry.getKey().getLeftDays() > 0) {
