@@ -31,6 +31,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -109,6 +110,13 @@ public class PantryFragment extends Fragment implements Button.OnClickListener, 
                 buttons[1].setVisibility(View.GONE);
                 buttons[2].setVisibility(View.GONE);
                 buttons[3].setVisibility(View.GONE);
+                for (Iterator<Map.Entry<PantryItem, Integer>> it = tmpPantryItems.entrySet().iterator();
+                     it.hasNext();) {
+                    Map.Entry<PantryItem, Integer> entry = it.next();
+                    if (entry.getValue() == 0) {
+                        it.remove();
+                    }
+                }
                 pantryItems = tmpPantryItems;
                 new ChangePantryTask().execute();
                 break;
