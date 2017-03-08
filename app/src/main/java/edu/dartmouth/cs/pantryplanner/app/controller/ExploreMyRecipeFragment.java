@@ -53,8 +53,10 @@ public class ExploreMyRecipeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        mTask = new ReadMyRecipeListTask();
-        mTask.execute();
+        if (mTask == null) {
+            mTask = new ReadMyRecipeListTask();
+            mTask.execute();
+        }
     }
 
     @Override

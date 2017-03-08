@@ -18,8 +18,10 @@ import com.google.api.client.googleapis.json.GoogleJsonError;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import edu.dartmouth.cs.pantryplanner.app.R;
 import edu.dartmouth.cs.pantryplanner.app.model.MealPlan;
@@ -92,7 +94,10 @@ public class HistoryListFragment extends Fragment implements FragmentUtil {
                 }
                 recipeStrings = new ArrayList<>();
                 for (int i = 0; i < mealPlans.size(); i++){
-                    recipeStrings.add(mealPlans.get(i).getRecipe().getName());
+                    recipeStrings.add(
+                            mealPlans.get(i).getRecipe().getName() + ", "  + mealPlans.get(i).getMealType().toString()
+                                    +  ", " + new SimpleDateFormat("MMM dd", Locale.US).format(mealPlans.get(i).getDate())
+                    );
                 }
 
             } catch (IOException e) {
@@ -154,5 +159,11 @@ public class HistoryListFragment extends Fragment implements FragmentUtil {
         if (mTask != null) {
             mTask.cancel(true);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateFragment();
     }
 }

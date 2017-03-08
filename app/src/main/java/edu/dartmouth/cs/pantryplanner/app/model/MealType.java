@@ -14,6 +14,10 @@ public enum MealType {
         this.text = text;
     }
 
+    public String toString() {
+        return text;
+    }
+
     public static String[] getMealTypes() {
         MealType[] mealTypes = MealType.values();
         String[] types = new String[mealTypes.length];

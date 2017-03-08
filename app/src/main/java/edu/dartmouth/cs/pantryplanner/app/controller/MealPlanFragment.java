@@ -307,9 +307,23 @@ public class MealPlanFragment extends Fragment implements FragmentUtil {
 
     @Override
     public void updateFragment() {
-        if (getActivity() != null) {
+        if (getActivity() != null && mTask == null) {
             mTask = new ReadMealPlanListTask();
             mTask.execute();
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mTask != null) {
+            mTask.cancel(true);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateFragment();
     }
 }

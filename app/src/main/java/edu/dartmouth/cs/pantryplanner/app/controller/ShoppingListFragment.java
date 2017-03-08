@@ -456,4 +456,10 @@ public class ShoppingListFragment extends Fragment implements FragmentUtil, Butt
             mTask.cancel(true);
         }
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateFragment();
+    }
 }
