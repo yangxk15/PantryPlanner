@@ -12,8 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 import com.google.api.client.googleapis.json.GoogleJsonError;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
@@ -28,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -49,12 +52,14 @@ public class PantryFragment extends Fragment implements Button.OnClickListener, 
     private boolean isEdit;
     private ListView mListView;
     private Map<PantryItem, Integer> pantryItems;
+    private Map<PantryItem, Integer> tmpPantryItems;
+    private HashSet<PantryItem> selectedItems;
 
-    private ImageButton[] buttons = new ImageButton[3];
+    private ImageButton[] buttons = new ImageButton[4];
 
     public PantryFragment() {
         isEdit = false;
-        // Required empty public constructor
+        selectedItems = new HashSet<>();
     }
 
     @Override
@@ -64,16 +69,16 @@ public class PantryFragment extends Fragment implements Button.OnClickListener, 
         View view = inflater.inflate(R.layout.fragment_pantry, container, false);
         buttons[0] = (ImageButton) view.findViewById(R.id.imageButton_pantry_edit);
         buttons[1] = (ImageButton) view.findViewById(R.id.imageButton_pantry_complete);
-        buttons[2] = (ImageButton) view.findViewById(R.id.imageButton_pantry_delete);
+        buttons[2] = (ImageButton) view.findViewById(R.id.imageButton_pantry_cancel);
+        buttons[3] = (ImageButton) view.findViewById(R.id.imageButton_pantry_delete);
         buttons[0].setOnClickListener(this);
         buttons[1].setOnClickListener(this);
         buttons[2].setOnClickListener(this);
-        buttons[1].setVisibility(View.GONE);
-        buttons[2].setVisibility(View.GONE);
+        buttons[3].setOnClickListener(this);
 
         mListView = (ListView) view.findViewById(R.id.listView_pantry_list);
 
-        updateFragment();
+        updateFragment(); // load data to adapter
 
         return view;
     }
@@ -86,34 +91,45 @@ public class PantryFragment extends Fragment implements Button.OnClickListener, 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            //case R.id.imageButton_pantry_add:
-            //    MyDialogFragment dialogFragment = MyDialogFragment.newInstance(0);
-            //    dialogFragment.show(getFragmentManager(), "DIALOG_FRAGMENT");
-            //    break;
             case R.id.imageButton_pantry_edit:
                 isEdit = true;
                 buttons[0].setVisibility(View.GONE);
                 buttons[1].setVisibility(View.VISIBLE);
                 buttons[2].setVisibility(View.VISIBLE);
-                //updateFragment();
+                buttons[3].setVisibility(View.VISIBLE);
+                updateFragment();
                 break;
             case R.id.imageButton_pantry_complete:
                 isEdit = false;
                 buttons[0].setVisibility(View.VISIBLE);
                 buttons[1].setVisibility(View.GONE);
                 buttons[2].setVisibility(View.GONE);
-                // TODO: change storage
-                //updateFragment();
+                buttons[3].setVisibility(View.GONE);
+                if (pantryItems.equals(tmpPantryItems)) break;
+                pantryItems = tmpPantryItems;
+                new ChangePantryTask().execute();
+                break;
+            case R.id.imageButton_pantry_cancel:
+                isEdit = false;
+                buttons[0].setVisibility(View.VISIBLE);
+                buttons[1].setVisibility(View.GONE);
+                buttons[2].setVisibility(View.GONE);
+                buttons[3].setVisibility(View.GONE);
+                updateFragment();
                 break;
             case R.id.imageButton_pantry_delete:
                 isEdit = false;
                 buttons[0].setVisibility(View.VISIBLE);
                 buttons[1].setVisibility(View.GONE);
                 buttons[2].setVisibility(View.GONE);
-                //updateFragment();
+                buttons[3].setVisibility(View.GONE);
+                if (pantryItems.size() == 0) break;
+                for (PantryItem item : selectedItems) {
+                    pantryItems.remove(item);
+                }
+                new ChangePantryTask().execute();
                 break;
         }
-        updateFragment();
     }
 
     private class PantryListAdapter extends ArrayAdapter<Map.Entry<PantryItem, Integer>> {
@@ -122,8 +138,8 @@ public class PantryFragment extends Fragment implements Button.OnClickListener, 
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent){
-            Map.Entry<PantryItem, Integer> entry = getItem(position);
+        public View getView(final int position, View convertView, ViewGroup parent){
+            final Map.Entry<PantryItem, Integer> entry = getItem(position);
             LayoutInflater inflater = (LayoutInflater) getContext()
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View listItemView = convertView;
@@ -131,19 +147,49 @@ public class PantryFragment extends Fragment implements Button.OnClickListener, 
                 listItemView = inflater.inflate(R.layout.list_pantry, parent, false);
             }
 
+            final PantryItem curItem = entry.getKey();
             ((TextView) listItemView.findViewById(R.id.pantry_item_name))
-                    .setText(entry.getKey().getItem().getName());
+                    .setText(curItem.getItem().getName());
 
-            QuantityView quantityView = (QuantityView) listItemView
-                    .findViewById(R.id.quantity_pantry_list_item);
+
             TextView textView = (TextView) listItemView.findViewById(R.id.textView_pantry_list_num);
 
             if (isEdit) {
-                quantityView.setQuantity(entry.getValue());
+                CheckBox cBox = (CheckBox) listItemView.findViewById(R.id.checkBox_list_pantry_item_check);
+                final QuantityView quantityView = (QuantityView) listItemView
+                        .findViewById(R.id.quantity_pantry_list_item);
+                quantityView.setOnQuantityChangeListener(new QuantityView.OnQuantityChangeListener() {
+                    @Override
+                    public void onQuantityChanged(int oldQuantity, int newQuantity, boolean programmatically) {
+                        tmpPantryItems.put(curItem, quantityView.getQuantity());
+                    }
+
+                    @Override
+                    public void onLimitReached() {}
+                });
+
+                quantityView.setVisibility(View.VISIBLE);
+                cBox.setVisibility(View.VISIBLE);
                 textView.setVisibility(View.GONE);
+
+                quantityView.setQuantity(entry.getValue());
+
+                if (selectedItems.contains(curItem)) {
+                    cBox.setChecked(true);
+                }
+                cBox.setTag(position); // set the tag so we can identify the correct row in the listener
+                cBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        if (isChecked) {
+                            selectedItems.add(curItem);
+                        } else {
+                            selectedItems.remove(curItem);
+                        }
+                    }
+                }); // set the listener
             } else {
                 textView.setText(entry.getValue().toString());
-                quantityView.setVisibility(View.GONE);
             }
 
             if (entry.getKey().getLeftDays() > 0) {
@@ -158,12 +204,20 @@ public class PantryFragment extends Fragment implements Button.OnClickListener, 
         }
     }
 
+
     private class ReadPantryListTask extends AsyncTask<Void, Void, IOException> {
+        private boolean curEdit;
+
+        public ReadPantryListTask(boolean curEdit) {
+            this.curEdit = curEdit;
+        }
+
         @Override
         protected IOException doInBackground(Void... params) {
 
             IOException ex = null;
             try {
+                if (this.curEdit != isEdit) {return null;}
                 PantryRecordApi pantryRecordApi = ServiceBuilderHelper.getBuilder(
                         PantryFragment.this.getActivity(),
                         PantryRecordApi.Builder.class
@@ -179,6 +233,83 @@ public class PantryFragment extends Fragment implements Button.OnClickListener, 
                             new TypeToken<Map<PantryItem, Integer>>(){}.getType()
                     );
                 }
+                if (isEdit) {
+                    tmpPantryItems = new HashMap<>(pantryItems);
+                }
+            } catch (IOException e) {
+                ex = e;
+            }
+
+            return ex;
+        }
+
+        @Override
+        protected void onPostExecute(IOException ex) {
+            if (ex == null && this.curEdit == isEdit) {
+                PantryListAdapter pantryListAdapter = new PantryListAdapter(PantryFragment.this.getActivity());
+                List<Map.Entry<PantryItem, Integer>> pantryList = new ArrayList<>(pantryItems.entrySet());
+                Collections.sort(pantryList, new Comparator<Map.Entry<PantryItem, Integer>>() {
+                    @Override
+                    public int compare(Map.Entry<PantryItem, Integer> o1, Map.Entry<PantryItem, Integer> o2) {
+                        return o1.getKey().getLeftDays() - o2.getKey().getLeftDays();
+                    }
+                });
+                pantryListAdapter.addAll(pantryList);
+                mListView.setAdapter(pantryListAdapter);
+                pantryListAdapter.notifyDataSetChanged();
+            } else {
+                if (ex instanceof GoogleJsonResponseException) {
+                    GoogleJsonError error = ((GoogleJsonResponseException) ex).getDetails();
+                    Toast.makeText(
+                            PantryFragment.this.getActivity(),
+                            error.getMessage(),
+                            Toast.LENGTH_LONG
+                    ).show();
+                } else {
+                    Toast.makeText(
+                            PantryFragment.this.getActivity(),
+                            "Please check your internet connection and restart the app",
+                            Toast.LENGTH_LONG
+                    ).show();
+                }
+                Log.d(this.getClass().getName(), ex.toString());
+            }
+        }
+    }
+
+    private class ChangePantryTask extends AsyncTask<Void, Void, IOException> {
+        @Override
+        protected IOException doInBackground(Void... params) {
+            String email = new Session(PantryFragment.this.getActivity()).getString("email");
+            IOException ex = null;
+
+            try {
+                // Update pantry list
+                PantryRecordApi pantryRecordApi = ServiceBuilderHelper.getBuilder(
+                        PantryFragment.this.getActivity(),
+                        PantryRecordApi.Builder.class
+                ).build();
+                List<PantryRecord> pantryRecords = pantryRecordApi.listWith(
+                        new Session(PantryFragment.this.getActivity()).getString("email")
+                ).execute().getItems();
+
+                if (pantryRecords == null) {
+                    PantryRecord pantryRecord = new PantryRecord();
+                    pantryRecord.setEmail(email);
+                    pantryRecord.setPantryList(
+                            new GsonBuilder().enableComplexMapKeySerialization()
+                                    .create().toJson(pantryItems)
+                    );
+                    pantryRecordApi.insert(pantryRecord).execute();
+                } else {
+                    PantryRecord pantryRecord = pantryRecords.get(0);
+                    pantryRecord.setPantryList(
+                            new GsonBuilder().enableComplexMapKeySerialization()
+                                    .create().toJson(pantryItems)
+                    );
+                    pantryRecordApi.update(pantryRecord.getId(), pantryRecord).execute();
+                }
+
             } catch (IOException e) {
                 ex = e;
             }
@@ -227,16 +358,18 @@ public class PantryFragment extends Fragment implements Button.OnClickListener, 
 
     @Override
     public void updateFragment() {
-        new ReadPantryListTask().execute();
+        new ReadPantryListTask(isEdit).execute();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (isEdit != false) {
+        selectedItems.clear();
+        if (isEdit) {
             buttons[0].setVisibility(View.VISIBLE);
             buttons[1].setVisibility(View.GONE);
             buttons[2].setVisibility(View.GONE);
+            buttons[3].setVisibility(View.GONE);
             isEdit = false;
             updateFragment();
         }
