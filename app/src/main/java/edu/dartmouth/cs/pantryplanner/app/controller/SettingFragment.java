@@ -1,6 +1,7 @@
 package edu.dartmouth.cs.pantryplanner.app.controller;
 
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -40,9 +41,8 @@ public class SettingFragment extends Fragment implements QuantityView.OnQuantity
         view.findViewById(R.id.btn_setting_logout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new Session(getActivity()).clear();
-                startActivity(new Intent(getActivity(), LoginActivity.class));
-                getActivity().finish();
+                MyDialogFragment dialogFragment = MyDialogFragment.newInstance(3);
+                dialogFragment.show(getFragmentManager(), "DIALOG_FRAGMENT");
             }
         });
 
