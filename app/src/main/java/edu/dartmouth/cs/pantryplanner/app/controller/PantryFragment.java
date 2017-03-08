@@ -56,7 +56,6 @@ public class PantryFragment extends Fragment implements Button.OnClickListener, 
     private Map<PantryItem, Boolean> hasBeenSet = new HashMap<>();
     private Map<PantryItem, Integer> tmpPantryItems;
     private HashSet<PantryItem> selectedItems;
-
     private ImageButton[] buttons = new ImageButton[4];
     private ReadPantryListTask mTask = null;
 
