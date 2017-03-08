@@ -45,6 +45,7 @@
         android:layout_width="30dp"
         android:layout_height="wrap_content"
         android:text="Unit"
+        android:typeface="serif"
         android:layout_marginRight="15dp"
         android:layout_weight="1"/>
 
