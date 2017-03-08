@@ -202,7 +202,7 @@ public class CreateRecipeActivity extends AppCompatActivity{
     }
 
     private void attemptSaveRecipe() {
-        name = mRecipeName.getText().toString();
+        name = WordUtils.capitalizeFully(mRecipeName.getText().toString());
         steps.add(mSteps.getText().toString());
 
         if (TextUtils.isEmpty(name)) {
