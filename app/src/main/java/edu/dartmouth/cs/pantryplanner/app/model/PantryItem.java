@@ -36,7 +36,7 @@ public class PantryItem implements Comparable<PantryItem>{
         try {
             Date d1 = DATE_FORMAT.parse(DATE_FORMAT.format(productionDate));
             Date d2 = DATE_FORMAT.parse(DATE_FORMAT.format(other.productionDate));
-            return d1.compareTo(d2);
+            return d2.compareTo(d1);
         } catch (ParseException e) {
             return 0;
         }

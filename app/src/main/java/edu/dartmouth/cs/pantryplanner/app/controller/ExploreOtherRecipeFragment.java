@@ -90,10 +90,10 @@ public class ExploreOtherRecipeFragment extends Fragment {
 
         String[] values = new String[list.size()];
         for (int i = 0; i < list.size(); i++) {
-            values[i] = list.get(i).getKey().getName() + ", " + creators.get(list.get(i).getKey());
+            values[i] = list.get(i).getKey().getName() + ", by " + creators.get(list.get(i).getKey());
             int imported = list.get(i).getValue().size() - 1;
             if (imported > 0) {
-                values[i] += ", " + imported;
+                values[i] += ", imported by " + imported;
             }
             map.put(values[i], i);
         }

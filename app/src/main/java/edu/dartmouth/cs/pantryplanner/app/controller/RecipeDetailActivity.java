@@ -41,6 +41,7 @@ import edu.dartmouth.cs.pantryplanner.backend.entity.mealPlanRecordApi.MealPlanR
 import edu.dartmouth.cs.pantryplanner.backend.entity.pantryRecordApi.PantryRecordApi;
 import edu.dartmouth.cs.pantryplanner.backend.entity.pantryRecordApi.model.PantryRecord;
 import edu.dartmouth.cs.pantryplanner.backend.entity.recipeRecordApi.model.RecipeRecord;
+import lombok.AllArgsConstructor;
 
 import static edu.dartmouth.cs.pantryplanner.app.util.Constants.DATE_FORMAT;
 
@@ -103,7 +104,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements Button.On
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.finish_button:
-                new RemoveMealPlanAsyncTask().execute();
+                new RemoveMealPlanAsyncTask(false).execute();
                 break;
             case R.id.button_recipe_detail_save:
                 Intent saveIntent = new Intent();
@@ -119,12 +120,24 @@ public class RecipeDetailActivity extends AppCompatActivity implements Button.On
         }
     }
 
+    @AllArgsConstructor(suppressConstructorProperties = true)
     private class RemoveMealPlanAsyncTask extends AsyncTask<Void, Void, IOException>{
+
+        boolean delete;
 
         @Override
         protected IOException doInBackground(Void... params) {
             IOException ex = null;
             try {
+                if (delete) {
+                    Log.d("RecipeDetailActivity", "Just remove meal plan");
+                    MealPlanRecordApi mealPlanRecordApi = ServiceBuilderHelper.getBuilder(
+                            RecipeDetailActivity.this,
+                            MealPlanRecordApi.Builder.class
+                    ).build();
+                    Log.d("id", mMealPlan.getId().toString());
+                    mealPlanRecordApi.remove(mMealPlan.getId()).execute();
+                }
                 // Reduce pantry list
                 Log.d("RecipeDetailActivity", "Reduce pantry list");
                 PantryRecordApi pantryRecordApi = ServiceBuilderHelper.getBuilder(
@@ -206,7 +219,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements Button.On
         @Override
         protected void onPostExecute(IOException ex) {
             if (ex == null) {
-                Toast.makeText(RecipeDetailActivity.this, "Cooking finished!", Toast.LENGTH_SHORT);
+                Toast.makeText(RecipeDetailActivity.this, delete ? "Meal plan deleted" : "Cooking finished!", Toast.LENGTH_SHORT);
                 setResult(RESULT_OK, new Intent());
                 finish();
             } else {
@@ -228,6 +241,10 @@ public class RecipeDetailActivity extends AppCompatActivity implements Button.On
             }
         }
 
+    }
+
+    public void onClickDeleteMealPlan() {
+        new RemoveMealPlanAsyncTask(true).execute();
     }
 
     private class IngredientAdapter extends BaseAdapter {
