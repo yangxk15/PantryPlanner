@@ -52,12 +52,9 @@ public class PantryFragment extends Fragment implements Button.OnClickListener, 
     private boolean isEdit;
     private ListView mListView;
     private Map<PantryItem, Integer> pantryItems;
-<<<<<<< HEAD
     private static boolean firstForNotification = true;
-=======
     private Map<PantryItem, Integer> tmpPantryItems;
     private HashSet<PantryItem> selectedItems;
->>>>>>> origin/master
 
     private ImageButton[] buttons = new ImageButton[4];
 
