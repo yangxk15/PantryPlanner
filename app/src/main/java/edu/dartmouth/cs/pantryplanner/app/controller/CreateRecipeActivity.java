@@ -233,7 +233,7 @@ public class CreateRecipeActivity extends AppCompatActivity{
 
                 RecipeRecord recipeRecord = new RecipeRecord();
                 recipeRecord.setEmail(
-                        new Session(CreateRecipeActivity.this).getString("lastName") + " " + new Session(CreateRecipeActivity.this).getString("firstName")
+                        new Session(CreateRecipeActivity.this).getString("email")
                 );
                 recipeRecord.setRecipe(mRecipe.toString());
 

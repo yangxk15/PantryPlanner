@@ -40,6 +40,7 @@ import edu.dartmouth.cs.pantryplanner.backend.entity.mealPlanRecordApi.model.Mea
 import edu.dartmouth.cs.pantryplanner.backend.entity.recipeRecordApi.RecipeRecordApi;
 import edu.dartmouth.cs.pantryplanner.backend.entity.recipeRecordApi.model.RecipeRecord;
 import edu.dartmouth.cs.pantryplanner.backend.entity.user.User;
+import edu.dartmouth.cs.pantryplanner.backend.entity.user.model.UserRecord;
 
 /**
  * Created by Lucidity on 17/3/5.
@@ -169,7 +170,14 @@ public class ExploreOtherRecipeFragment extends Fragment {
                     for (RecipeRecord recipeRecord : recipeRecords) {
                         Recipe recipe = Recipe.fromRecord(recipeRecord);
                         recipes.put(recipe, new ArrayList<String>());
-                        creators.put(recipe, recipeRecord.getEmail());
+                        User userService = ServiceBuilderHelper.getBuilder(
+                                ExploreOtherRecipeFragment.this.getActivity(),
+                                User.Builder.class
+                        ).build();
+                        UserRecord userRecord = userService.getUserInfo(recipeRecord.getEmail()).execute();
+                        if (userRecord != null) {
+                            creators.put(recipe, userRecord.getFirstName());
+                        }
                     }
                 }
 

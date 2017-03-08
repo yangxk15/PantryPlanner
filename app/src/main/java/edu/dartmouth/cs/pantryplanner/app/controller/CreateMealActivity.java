@@ -131,7 +131,7 @@ public class CreateMealActivity extends AppCompatActivity {
             IOException ex = null;
             try {
                 MealPlanRecord mealPlanRecord = new MealPlanRecord();
-                mealPlanRecord.setEmail(new Session(CreateMealActivity.this).getString("lastName") + " " + new Session(CreateMealActivity.this).getString("firstName"));
+                mealPlanRecord.setEmail(new Session(CreateMealActivity.this).getString("email"));
                 mealPlanRecord.setMealPlan(mMealPlan.toString());
                 MealPlanRecordApi mealPlanRecordApi = ServiceBuilderHelper.getBuilder(
                         CreateMealActivity.this,

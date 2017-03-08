@@ -186,7 +186,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements Button.On
                             HistoryRecordApi.Builder.class).build();
                     HistoryRecord insert = new HistoryRecord();
                     insert.setEmail(
-                            new Session(RecipeDetailActivity.this).getString("lastName") + " " + new Session(RecipeDetailActivity.this).getString("firstName")
+                            new Session(RecipeDetailActivity.this).getString("email")
                     );
                     insert.setHistory(mMealPlan.toString());
                     historyRecordApi.insert(insert).execute();
