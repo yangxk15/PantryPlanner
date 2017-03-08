@@ -126,6 +126,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements Button.On
             IOException ex = null;
             try {
                 // Reduce pantry list
+                Log.d("RecipeDetailActivity", "Reduce pantry list");
                 PantryRecordApi pantryRecordApi = ServiceBuilderHelper.getBuilder(
                         RecipeDetailActivity.this,
                         PantryRecordApi.Builder.class
@@ -174,6 +175,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements Button.On
                     pantryRecordApi.update(pantryRecords.get(0).getId(), pantryRecords.get(0)).execute();
 
                     // Remove meal plan
+                    Log.d("RecipeDetailActivity", "Remove meal plan");
                     MealPlanRecordApi mealPlanRecordApi = ServiceBuilderHelper.getBuilder(
                             RecipeDetailActivity.this,
                             MealPlanRecordApi.Builder.class
@@ -182,6 +184,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements Button.On
                     mealPlanRecordApi.remove(mMealPlan.getId()).execute();
 
                     // Add to history plan
+                    Log.d("RecipeDetailActivity", "Add to history plan");
                     HistoryRecordApi historyRecordApi = ServiceBuilderHelper.getBuilder(RecipeDetailActivity.this,
                             HistoryRecordApi.Builder.class).build();
                     HistoryRecord insert = new HistoryRecord();
@@ -190,7 +193,8 @@ public class RecipeDetailActivity extends AppCompatActivity implements Button.On
                     );
                     insert.setHistory(mMealPlan.toString());
                     historyRecordApi.insert(insert).execute();
-
+                } else {
+                    throw new IOException("You don't have enough food to cook!");
                 }
 
             } catch (IOException e) {
