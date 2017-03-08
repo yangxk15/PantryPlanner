@@ -66,7 +66,9 @@ public class RecipeDetailActivity extends AppCompatActivity implements Button.On
         if (isFromExplore) {
             mRecipe = Recipe.fromString(getIntent().getStringExtra(ExploreRecipeActivity.RECIPE_KEY));
             items = mRecipe.getItems();
-            steps = mRecipe.getSteps();((TextView) findViewById(R. id.textView_recipe_name)).setText(mRecipe.getName());
+            steps = mRecipe.getSteps();
+            ((TextView) findViewById(R.id.textView_recipe_name)).setText(mRecipe.getName());
+            ((TextView) findViewById(R.id.textView_gangan)).setText(" ");
         } else {
             String temp = getIntent().getStringExtra(MealPlanFragment.SELECTED_MEAL_PLAN);
             mMealPlan = MealPlan.fromString(getIntent().getStringExtra(MealPlanFragment.SELECTED_MEAL_PLAN));
