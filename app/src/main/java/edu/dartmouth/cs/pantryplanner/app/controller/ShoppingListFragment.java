@@ -2,7 +2,10 @@ package edu.dartmouth.cs.pantryplanner.app.controller;
 
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -63,7 +66,7 @@ import me.himanshusoni.quantityview.QuantityView;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ShoppingListFragment extends Fragment implements FragmentUtil {
+public class ShoppingListFragment extends Fragment implements FragmentUtil, Button.OnClickListener {
     Map<Item, Integer> selectedItems;
 
     Map<Item, Integer> mShoppingListItems;
@@ -81,22 +84,10 @@ public class ShoppingListFragment extends Fragment implements FragmentUtil {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_shopping_list, container, false);
         mListView = (ExpandableListView) view.findViewById(R.id.expandableListView_shopping_list);
-        view.findViewById(R.id.complete_shopping).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (selectedItems.isEmpty()) {
-                    Toast.makeText(getActivity(), "Please select at least one item", Toast.LENGTH_SHORT).show();
-                    return;
-                } else {
-                    // TODO: dialog
-                    new CompleteShoppingTask().execute();
-                }
-            }
-        });
+        view.findViewById(R.id.complete_shopping).setOnClickListener(this);
         updateFragment();
         return view;
     }
-
 
     private void dataProcess() {
         /*  ArrayList<ArrayList<<Item>>
@@ -116,6 +107,28 @@ public class ShoppingListFragment extends Fragment implements FragmentUtil {
 
         for (int i = ItemType.values().length - 1; i >= 0; --i) {
             mListView.expandGroup(i);
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.complete_shopping:
+                if (selectedItems.isEmpty()) {
+                    Toast.makeText(getActivity(), "Please select at least one item", Toast.LENGTH_SHORT).show();
+                    return;
+                } else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setTitle("Choose those items?");
+                    builder.setNegativeButton("Cancel", null);
+                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            new CompleteShoppingTask().execute();
+                        }
+                    });
+                    builder.create().show();
+                }
         }
     }
 
@@ -191,6 +204,7 @@ public class ShoppingListFragment extends Fragment implements FragmentUtil {
                     imageView.setImageResource(R.drawable.others);
                     break;
             }
+            /*
             ImageButton imageButton = (ImageButton) view.findViewById(R.id.imageButton_shop_add);
             imageButton.setFocusable(false);
             imageButton.setOnClickListener(new View.OnClickListener() {
@@ -200,6 +214,7 @@ public class ShoppingListFragment extends Fragment implements FragmentUtil {
 
                 }
             });
+            */
             TextView textView = (TextView) view.findViewById(R.id.textView_shop_type);
             textView.setText(ItemType.values()[groupPosition].toString());
             return view;
