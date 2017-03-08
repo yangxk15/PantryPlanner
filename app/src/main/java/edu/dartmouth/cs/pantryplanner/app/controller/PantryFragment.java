@@ -105,12 +105,12 @@ public class PantryFragment extends Fragment implements Button.OnClickListener, 
                 buttons[1].setVisibility(View.GONE);
                 buttons[2].setVisibility(View.GONE);
                 buttons[3].setVisibility(View.GONE);
-                if (pantryItems.equals(tmpPantryItems)) break;
                 pantryItems = tmpPantryItems;
                 new ChangePantryTask().execute();
                 break;
             case R.id.imageButton_pantry_cancel:
                 isEdit = false;
+                Toast.makeText(getActivity(), "Changes discarded", Toast.LENGTH_SHORT).show();
                 buttons[0].setVisibility(View.VISIBLE);
                 buttons[1].setVisibility(View.GONE);
                 buttons[2].setVisibility(View.GONE);
@@ -245,7 +245,8 @@ public class PantryFragment extends Fragment implements Button.OnClickListener, 
 
         @Override
         protected void onPostExecute(IOException ex) {
-            if (ex == null && this.curEdit == isEdit) {
+            if (ex == null) {
+                if (this.curEdit != isEdit) return;
                 PantryListAdapter pantryListAdapter = new PantryListAdapter(PantryFragment.this.getActivity());
                 List<Map.Entry<PantryItem, Integer>> pantryList = new ArrayList<>(pantryItems.entrySet());
                 Collections.sort(pantryList, new Comparator<Map.Entry<PantryItem, Integer>>() {
@@ -320,6 +321,7 @@ public class PantryFragment extends Fragment implements Button.OnClickListener, 
         @Override
         protected void onPostExecute(IOException ex) {
             if (ex == null) {
+                Toast.makeText(getActivity(), "Pantry list changed", Toast.LENGTH_SHORT).show();
                 PantryListAdapter pantryListAdapter = new PantryListAdapter(PantryFragment.this.getActivity());
                 List<Map.Entry<PantryItem, Integer>> pantryList = new ArrayList<>(pantryItems.entrySet());
                 Collections.sort(pantryList, new Comparator<Map.Entry<PantryItem, Integer>>() {

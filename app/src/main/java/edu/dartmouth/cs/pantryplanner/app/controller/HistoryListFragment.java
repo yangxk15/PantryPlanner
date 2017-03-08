@@ -42,13 +42,9 @@ public class HistoryListFragment extends Fragment implements FragmentUtil {
     private ListView listView;
     private ArrayAdapter<String> adapter;
 
-
-
     public HistoryListFragment() {
         // Required empty public constructor
     }
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,7 +52,6 @@ public class HistoryListFragment extends Fragment implements FragmentUtil {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_history_list, container, false);
         listView = (ListView) view.findViewById(R.id.listView_history_list);
-
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -66,10 +61,10 @@ public class HistoryListFragment extends Fragment implements FragmentUtil {
                 startActivity(intent);
             }
         });
+
         updateFragment();
         return view;
     }
-
 
 
 
@@ -114,9 +109,11 @@ public class HistoryListFragment extends Fragment implements FragmentUtil {
         @Override
         protected void onPostExecute(IOException ex) {
             if (ex == null) {
-                adapter = new ArrayAdapter<>
-                        (getActivity(), R.layout.list_recipe, android.R.id.text1, recipeStrings);
-                listView.setAdapter(adapter);
+                if (recipeStrings != null) {
+                    adapter = new ArrayAdapter<>
+                            (getActivity(), R.layout.list_recipe, android.R.id.text1, recipeStrings);
+                    listView.setAdapter(adapter);
+                }
             } else {
                 if (ex instanceof GoogleJsonResponseException) {
                     GoogleJsonError error = ((GoogleJsonResponseException) ex).getDetails();

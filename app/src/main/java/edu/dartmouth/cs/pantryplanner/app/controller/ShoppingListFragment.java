@@ -93,7 +93,7 @@ public class ShoppingListFragment extends Fragment implements FragmentUtil, Butt
         /*  ArrayList<ArrayList<<Item>>
                       Type      Item
          */
-
+        if (mShoppingListItems == null) return;
         ArrayList<ArrayList<Map.Entry<Item, Integer>>> typeList = new ArrayList<>();
         for (int i = 0; i < ItemType.values().length; ++i) {
             typeList.add(new ArrayList<Map.Entry<Item, Integer>>());
