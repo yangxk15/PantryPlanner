@@ -47,7 +47,7 @@ public class Recipe {
 
     @Override
     public int hashCode() {
-        return name.hashCode() + items.hashCode() + steps.hashCode();gi
+        return name.hashCode() + items.hashCode() + steps.hashCode();
     }
 
     @Override

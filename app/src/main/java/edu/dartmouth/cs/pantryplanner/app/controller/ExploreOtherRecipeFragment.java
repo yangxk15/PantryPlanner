@@ -22,22 +22,29 @@ import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import edu.dartmouth.cs.pantryplanner.app.R;
+import edu.dartmouth.cs.pantryplanner.app.model.MealPlan;
 import edu.dartmouth.cs.pantryplanner.app.model.Recipe;
 import edu.dartmouth.cs.pantryplanner.app.util.RequestCode;
 import edu.dartmouth.cs.pantryplanner.app.util.ServiceBuilderHelper;
+import edu.dartmouth.cs.pantryplanner.backend.entity.mealPlanRecordApi.MealPlanRecordApi;
+import edu.dartmouth.cs.pantryplanner.backend.entity.mealPlanRecordApi.model.MealPlanRecord;
 import edu.dartmouth.cs.pantryplanner.backend.entity.recipeRecordApi.RecipeRecordApi;
 import edu.dartmouth.cs.pantryplanner.backend.entity.recipeRecordApi.model.RecipeRecord;
+import edu.dartmouth.cs.pantryplanner.backend.entity.user.User;
 
 /**
  * Created by Lucidity on 17/3/5.
  */
 
 public class ExploreOtherRecipeFragment extends Fragment {
-    private List<Recipe> recipes;
+    private Map<Recipe, List<String>> recipes = new HashMap<>();
     // UI Reference
     private ListView mListView;
     private EditText inputSearch;
@@ -63,11 +70,27 @@ public class ExploreOtherRecipeFragment extends Fragment {
     }
 
     private void dataProcess() {
-        Log.d("size", "" + recipes.size());
-        if (recipes == null || recipes.size() == 0) return;
-        String[] values = new String[recipes.size()];
-        for (int i = 0; i < values.length; ++i) {
-            values[i] = recipes.get(i).getName();
+        final List<Map.Entry<Recipe, List<String>>> list = new ArrayList<>(recipes.entrySet());
+        Collections.sort(list, new Comparator<Map.Entry<Recipe, List<String>>>() {
+            @Override
+            public int compare(Map.Entry<Recipe, List<String>> o1, Map.Entry<Recipe, List<String>> o2) {
+                if (o1.getValue().size() < o2.getValue().size()) {
+                    return 1;
+                } else if (o1.getValue().size() > o2.getValue().size()) {
+                    return -1;
+                } else {
+                    return o1.getKey().getName().compareTo(o2.getKey().getName());
+                }
+            }
+        });
+
+        String[] values = new String[list.size()];
+        for (int i = 0; i < list.size(); i++) {
+            values[i] = list.get(i).getKey().getName() + ", created by " + list.get(i).getValue().get(0);
+            int imported = list.get(i).getValue().size() - 1;
+            if (imported > 0) {
+                values[i] += ", imported by " + imported + " people";
+            }
             map.put(values[i], i);
         }
 
@@ -80,7 +103,7 @@ public class ExploreOtherRecipeFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getActivity(), RecipeDetailActivity.class);
-                intent.putExtra(ExploreRecipeActivity.RECIPE_KEY, recipes.get(position).toString());
+                intent.putExtra(ExploreRecipeActivity.RECIPE_KEY, list.get(position).getKey().toString());
                 intent.putExtra("isFromExplore", true);
                 startActivityForResult(intent, RequestCode.IMPORT_RECIPE.ordinal());
             }
@@ -100,7 +123,7 @@ public class ExploreOtherRecipeFragment extends Fragment {
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         Integer origin = map.get(adapter.getItem(position));
                         Intent intent = new Intent(getActivity(), RecipeDetailActivity.class);
-                        intent.putExtra(ExploreRecipeActivity.RECIPE_KEY, recipes.get(origin).toString());
+                        intent.putExtra(ExploreRecipeActivity.RECIPE_KEY, list.get(origin).getKey().toString());
                         intent.putExtra("isFromExplore", true);
                         startActivityForResult(intent, RequestCode.IMPORT_RECIPE.ordinal());
                     }
@@ -139,10 +162,25 @@ public class ExploreOtherRecipeFragment extends Fragment {
                 List<RecipeRecord> recipeRecords = recipeRecordApi.list()
                         .execute().getItems();
 
-                if (recipeRecords == null) {
-                    recipes = new ArrayList<>();
-                } else {
-                    recipes = Recipe.fromRecipeRecordList(recipeRecords);
+                for (RecipeRecord recipeRecord : recipeRecords) {
+                    Recipe recipe = Recipe.fromRecord(recipeRecord);
+                    recipes.put(recipe, new ArrayList<String>());
+                    recipes.get(recipe).add(recipeRecord.getEmail());
+                }
+
+                MealPlanRecordApi mealPlanRecordApi = ServiceBuilderHelper.getBuilder(
+                        ExploreOtherRecipeFragment.this.getActivity(),
+                        MealPlanRecordApi.Builder.class
+                ).build();
+
+                List<MealPlanRecord> mealPlanRecords = mealPlanRecordApi.list()
+                        .execute().getItems();
+
+                for (MealPlanRecord mealPlanRecord : mealPlanRecords) {
+                    Recipe recipe = MealPlan.fromString(mealPlanRecord.getMealPlan()).getRecipe();
+                    if (recipes.containsKey(recipe) && !recipes.get(recipe).get(0).equals(mealPlanRecord.getEmail())) {
+                        recipes.get(recipe).add(mealPlanRecord.getEmail());
+                    }
                 }
             } catch (IOException e) {
                 ex = e;

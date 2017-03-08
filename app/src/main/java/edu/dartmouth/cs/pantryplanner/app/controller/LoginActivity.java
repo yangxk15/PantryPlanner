@@ -32,6 +32,7 @@ import edu.dartmouth.cs.pantryplanner.app.util.RequestCode;
 import edu.dartmouth.cs.pantryplanner.app.util.ServiceBuilderHelper;
 import edu.dartmouth.cs.pantryplanner.app.util.Session;
 import edu.dartmouth.cs.pantryplanner.backend.entity.user.User;
+import edu.dartmouth.cs.pantryplanner.backend.entity.user.model.UserRecord;
 import edu.dartmouth.cs.pantryplanner.backend.registration.Registration;
 import lombok.AllArgsConstructor;
 import lombok.core.Main;
@@ -196,7 +197,11 @@ public class LoginActivity extends AppCompatActivity {
                         User.Builder.class
                 ).build();
 
-                userService.login(mEmail, mPassword).execute();
+                UserRecord userRecord = userService.login(mEmail, mPassword).execute();
+                new Session(LoginActivity.this).putString("email", userRecord.getEmail());
+                new Session(LoginActivity.this).putString("password", userRecord.getPassword());
+                new Session(LoginActivity.this).putString("firstName", userRecord.getFirstName());
+                new Session(LoginActivity.this).putString("lastName", userRecord.getLastName());
             } catch (IOException e) {
                 ex = e;
             }
@@ -210,8 +215,6 @@ public class LoginActivity extends AppCompatActivity {
             showProgress(false);
 
             if (ex == null) {
-                new Session(LoginActivity.this).putString("email", mEmail);
-                new Session(LoginActivity.this).putString("password", mPassword);
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 finish();
             } else {

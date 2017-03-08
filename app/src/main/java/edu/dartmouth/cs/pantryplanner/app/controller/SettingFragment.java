@@ -55,7 +55,7 @@ public class SettingFragment extends Fragment implements QuantityView.OnQuantity
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ImageView imageView = (ImageView) getActivity().findViewById(R.id.imageview_setting_photo);
-        imageView.setImageResource(R.drawable.default_photo);
+        imageView.setImageResource(R.drawable.chef);
 
         QuantityView quantityView = (QuantityView) view.findViewById(R.id.quantityView_plan_dates);
         quantityView.setOnQuantityChangeListener(this);
