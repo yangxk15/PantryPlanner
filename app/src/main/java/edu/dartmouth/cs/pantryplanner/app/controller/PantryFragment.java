@@ -234,6 +234,7 @@ public class PantryFragment extends Fragment implements Button.OnClickListener, 
                         PantryFragment.this.getActivity(),
                         PantryRecordApi.Builder.class
                 ).build();
+
                 List<PantryRecord> pantryRecords = pantryRecordApi.listWith(
                         new Session(PantryFragment.this.getActivity()).getString("email")
                 ).execute().getItems();
@@ -242,12 +243,14 @@ public class PantryFragment extends Fragment implements Button.OnClickListener, 
                 } else {
                     pantryItems = new Gson().fromJson(
                             pantryRecords.get(0).getPantryList(),
-                            new TypeToken<Map<PantryItem, Integer>>(){}.getType()
+                            new TypeToken<Map<PantryItem, Integer>>() {
+                            }.getType()
                     );
                 }
                 if (isEdit) {
                     tmpPantryItems = new HashMap<>(pantryItems);
                 }
+
             } catch (IOException e) {
                 ex = e;
             }
@@ -386,7 +389,10 @@ public class PantryFragment extends Fragment implements Button.OnClickListener, 
 
     @Override
     public void updateFragment() {
-        new ReadPantryListTask(isEdit).execute();
+
+        if (getActivity() != null) {
+            new ReadPantryListTask(isEdit).execute();
+        }
     }
 
     @Override

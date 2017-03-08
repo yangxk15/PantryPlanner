@@ -437,6 +437,8 @@ public class ShoppingListFragment extends Fragment implements FragmentUtil, Butt
 
     @Override
     public void updateFragment() {
-        new ReadShoppingListTask().execute();
+        if (getActivity() != null) {
+            new ReadShoppingListTask().execute();
+        }
     }
 }
