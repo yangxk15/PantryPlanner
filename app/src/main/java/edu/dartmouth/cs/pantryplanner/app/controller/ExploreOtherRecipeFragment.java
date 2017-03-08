@@ -33,11 +33,14 @@ import edu.dartmouth.cs.pantryplanner.app.model.MealPlan;
 import edu.dartmouth.cs.pantryplanner.app.model.Recipe;
 import edu.dartmouth.cs.pantryplanner.app.util.RequestCode;
 import edu.dartmouth.cs.pantryplanner.app.util.ServiceBuilderHelper;
+import edu.dartmouth.cs.pantryplanner.backend.entity.historyRecordApi.HistoryRecordApi;
+import edu.dartmouth.cs.pantryplanner.backend.entity.historyRecordApi.model.HistoryRecord;
 import edu.dartmouth.cs.pantryplanner.backend.entity.mealPlanRecordApi.MealPlanRecordApi;
 import edu.dartmouth.cs.pantryplanner.backend.entity.mealPlanRecordApi.model.MealPlanRecord;
 import edu.dartmouth.cs.pantryplanner.backend.entity.recipeRecordApi.RecipeRecordApi;
 import edu.dartmouth.cs.pantryplanner.backend.entity.recipeRecordApi.model.RecipeRecord;
 import edu.dartmouth.cs.pantryplanner.backend.entity.user.User;
+import edu.dartmouth.cs.pantryplanner.backend.entity.user.model.UserRecord;
 
 /**
  * Created by Lucidity on 17/3/5.
@@ -163,10 +166,19 @@ public class ExploreOtherRecipeFragment extends Fragment {
                 List<RecipeRecord> recipeRecords = recipeRecordApi.list()
                         .execute().getItems();
 
-                for (RecipeRecord recipeRecord : recipeRecords) {
-                    Recipe recipe = Recipe.fromRecord(recipeRecord);
-                    recipes.put(recipe, new ArrayList<String>());
-                    creators.put(recipe, recipeRecord.getEmail());
+                if (recipeRecords != null) {
+                    for (RecipeRecord recipeRecord : recipeRecords) {
+                        Recipe recipe = Recipe.fromRecord(recipeRecord);
+                        recipes.put(recipe, new ArrayList<String>());
+                        User userService = ServiceBuilderHelper.getBuilder(
+                                ExploreOtherRecipeFragment.this.getActivity(),
+                                User.Builder.class
+                        ).build();
+                        UserRecord userRecord = userService.getUserInfo(recipeRecord.getEmail()).execute();
+                        if (userRecord != null) {
+                            creators.put(recipe, userRecord.getFirstName());
+                        }
+                    }
                 }
 
                 MealPlanRecordApi mealPlanRecordApi = ServiceBuilderHelper.getBuilder(
@@ -177,12 +189,31 @@ public class ExploreOtherRecipeFragment extends Fragment {
                 List<MealPlanRecord> mealPlanRecords = mealPlanRecordApi.list()
                         .execute().getItems();
 
-                for (MealPlanRecord mealPlanRecord : mealPlanRecords) {
-                    Recipe recipe = MealPlan.fromString(mealPlanRecord.getMealPlan()).getRecipe();
-                    if (recipes.containsKey(recipe)) {
-                        recipes.get(recipe).add(mealPlanRecord.getEmail());
+                if (mealPlanRecords != null) {
+                    for (MealPlanRecord mealPlanRecord : mealPlanRecords) {
+                        Recipe recipe = MealPlan.fromString(mealPlanRecord.getMealPlan()).getRecipe();
+                        if (recipes.containsKey(recipe)) {
+                            recipes.get(recipe).add(mealPlanRecord.getEmail());
+                        }
                     }
                 }
+
+                HistoryRecordApi historyRecordApi = ServiceBuilderHelper.getBuilder(
+                        ExploreOtherRecipeFragment.this.getActivity(),
+                        HistoryRecordApi.Builder.class
+                ).build();
+
+                List<HistoryRecord> historyRecords = historyRecordApi.list().execute().getItems();
+
+                if (historyRecords != null) {
+                    for (HistoryRecord historyRecord : historyRecords) {
+                        Recipe recipe = MealPlan.fromString(historyRecord.getHistory()).getRecipe();
+                        if (recipes.containsKey(recipe)) {
+                            recipes.get(recipe).add(historyRecord.getEmail());
+                        }
+                    }
+                }
+
             } catch (IOException e) {
                 ex = e;
             }

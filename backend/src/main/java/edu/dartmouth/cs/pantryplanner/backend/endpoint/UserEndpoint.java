@@ -99,6 +99,13 @@ public class UserEndpoint {
         return ofy().load().entity(userRecord).now();
     }
 
+
+    @ApiMethod(name = "getUserInfo")
+    public UserRecord getFullName(@Named("email") String email)
+            throws NotFoundException{
+        return findRecord(email);
+    }
+
     private UserRecord findRecord(String email) {
         return OfyService.ofy().load().type(UserRecord.class).filter("email", email).first().now();
     }

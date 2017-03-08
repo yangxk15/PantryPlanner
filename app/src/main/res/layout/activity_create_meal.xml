@@ -8,11 +8,11 @@
 
     <ImageButton
         android:src="@drawable/addmorerecipe"
-        android:layout_marginTop="117dp"
+        android:layout_marginTop="127dp"
         android:scaleType="fitXY"
-        android:layout_width="360dp"
-        android:layout_height="360dp"
-        android:layout_marginLeft="7dp"
+        android:layout_width="320dp"
+        android:layout_height="320dp"
+        android:layout_marginLeft="27dp"
         android:background="@color/White"/>
 
     <LinearLayout
@@ -45,9 +45,10 @@
 
             <Spinner
                 android:id="@+id/spinner_meal_plan_type_select"
-                android:layout_width="wrap_content"
+                android:layout_width="90dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:layout_marginRight="20dp"/>
 
         </LinearLayout>
 

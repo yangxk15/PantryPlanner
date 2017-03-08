@@ -68,9 +68,9 @@ public class MyDialogFragment extends DialogFragment implements DialogInterface.
                 mBuilder.setNegativeButton("Cancel", null);
                 return mBuilder.create();
             case 3:
-                mBuilder.setTitle("Do you want to quit?");
+                mBuilder.setTitle("Are you sure you want to log out?");
                 mBuilder.setPositiveButton("Cancel", null);
-                mBuilder.setNegativeButton("Quit", new DialogInterface.OnClickListener() {
+                mBuilder.setNegativeButton("Log Out", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         new Session(getActivity()).clear();
