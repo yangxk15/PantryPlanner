@@ -11,4 +11,5 @@ public interface Constants {
     boolean localMode = false;
     String LOCAL_SERVER_IP = "172.20.10.11";
     SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MMM dd yyyy", Locale.US);
+    SimpleDateFormat MINUTE_FORMAT = new SimpleDateFormat("MMM dd yyyy hh:mm", Locale.US);
 }

@@ -1,6 +1,8 @@
 package edu.dartmouth.cs.pantryplanner.app.controller;
 
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -104,7 +106,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements Button.On
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.finish_button:
-                new RemoveMealPlanAsyncTask(false).execute();
+                new RemoveMealPlanAsyncTask(false, false).execute();
                 break;
             case R.id.button_recipe_detail_save:
                 Intent saveIntent = new Intent();
@@ -124,6 +126,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements Button.On
     private class RemoveMealPlanAsyncTask extends AsyncTask<Void, Void, IOException>{
 
         boolean delete;
+        boolean force;
 
         @Override
         protected IOException doInBackground(Void... params) {
@@ -137,6 +140,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements Button.On
                     ).build();
                     Log.d("id", mMealPlan.getId().toString());
                     mealPlanRecordApi.remove(mMealPlan.getId()).execute();
+                    return null;
                 }
                 // Reduce pantry list
                 Log.d("RecipeDetailActivity", "Reduce pantry list");
@@ -163,14 +167,41 @@ public class RecipeDetailActivity extends AppCompatActivity implements Button.On
 
                     for (Map.Entry<Item, Integer> entry : mMealPlan.getRecipe().getItems().entrySet()) {
                         TreeMap<PantryItem, Integer> innerMap = map.get(entry.getKey());
-                        int quantityNeed = entry.getValue();
                         if (innerMap == null) {
-                            throw new IOException("You don't have enough food to cook!");
+                            if (!force) {
+                                throw new IOException("You don't have any " + entry.getKey().getName() + "!");
+                            } else {
+                                continue;
+                            }
                         }
-                        while (quantityNeed > 0 && innerMap != null) {
+
+                        int quantityNeed = entry.getValue();
+
+                        int total = 0;
+                        int valid = 0;
+                        for (Map.Entry<PantryItem, Integer> innerEntry : innerMap.entrySet()) {
+                            total += innerEntry.getValue();
+                            if (innerEntry.getKey().getLeftDays() > 0) {
+                                valid += innerEntry.getValue();
+                            }
+                        }
+
+                        if (total < quantityNeed) {
+                            if (!force) {
+                                throw new IOException("You don't have enough "  + entry.getKey().getName() +  "!");
+                            }
+                        }
+
+                        if (valid < quantityNeed) {
+                            if (!force) {
+                                throw new IOException("You don't have enough fresh "  + entry.getKey().getName() +  "!");
+                            }
+                        }
+
+                        while (quantityNeed > 0) {
                             Map.Entry<PantryItem, Integer> earliestItem = innerMap.firstEntry();
                             if (earliestItem == null) {
-                                throw new IOException("You don't have enough food to cook!");
+                                break;
                             }
                             if (earliestItem.getValue() > quantityNeed) {
                                 pantryItems.put(earliestItem.getKey(), earliestItem.getValue() - quantityNeed);
@@ -209,7 +240,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements Button.On
                     );
                     insert.setHistory(mMealPlan.toString());
                     historyRecordApi.insert(insert).execute();
-                } else {
+                } else if (!force) {
                     throw new IOException("You don't have enough food to cook!");
                 }
 
@@ -226,20 +257,29 @@ public class RecipeDetailActivity extends AppCompatActivity implements Button.On
                 setResult(RESULT_OK, new Intent());
                 finish();
             } else {
-                if (ex instanceof GoogleJsonResponseException) {
-                    GoogleJsonError error = ((GoogleJsonResponseException) ex).getDetails();
-                    Toast.makeText(
-                            RecipeDetailActivity.this,
-                            error.getMessage(),
-                            Toast.LENGTH_LONG
-                    ).show();
-                } else {
-                    Toast.makeText(
-                            RecipeDetailActivity.this,
-                            ex.getMessage(),
-                            Toast.LENGTH_LONG
-                    ).show();
-                }
+//                if (ex instanceof GoogleJsonResponseException) {
+//                    GoogleJsonError error = ((GoogleJsonResponseException) ex).getDetails();
+                    new AlertDialog.Builder(RecipeDetailActivity.this).setTitle(ex.getMessage())
+                    .setNegativeButton("Cancel", null)
+                    .setPositiveButton("Finish anyway", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            new RemoveMealPlanAsyncTask(false, true).execute();
+                        }
+                    }
+                    ).create().show();
+//                    Toast.makeText(
+//                            RecipeDetailActivity.this,
+//                            error.getMessage(),
+//                            Toast.LENGTH_LONG
+//                    ).show();
+//                } else {
+//                    Toast.makeText(
+//                            RecipeDetailActivity.this,
+//                            ex.getMessage(),
+//                            Toast.LENGTH_LONG
+//                    ).show();
+//                }
                 Log.d(this.getClass().getName(), ex.toString());
             }
         }
@@ -247,7 +287,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements Button.On
     }
 
     public void onClickDeleteMealPlan() {
-        new RemoveMealPlanAsyncTask(true).execute();
+        new RemoveMealPlanAsyncTask(true, false).execute();
     }
 
     private class IngredientAdapter extends BaseAdapter {
