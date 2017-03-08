@@ -45,4 +45,15 @@ public class Recipe {
         return recipes;
     }
 
+    @Override
+    public int hashCode() {
+        return name.hashCode() + items.hashCode() + steps.hashCode();gi
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        Recipe other = (Recipe) o;
+        return name.equals(other.name) && items.equals(items) && steps.equals(steps);
+    }
+
 }

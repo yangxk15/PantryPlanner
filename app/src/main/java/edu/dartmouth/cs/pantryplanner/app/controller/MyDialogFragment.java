@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.widget.Button;
 import edu.dartmouth.cs.pantryplanner.app.R;
 import edu.dartmouth.cs.pantryplanner.app.model.Recipe;
 import edu.dartmouth.cs.pantryplanner.app.util.RequestCode;
+import edu.dartmouth.cs.pantryplanner.app.util.Session;
 
 /**
  * Created by Lucidity on 17/2/27.
@@ -25,7 +27,6 @@ public class MyDialogFragment extends DialogFragment implements DialogInterface.
                                     Button.OnClickListener {
     private int mId;
     private final static String dialogKey = "DIALOG_KEY";
-    Activity container;
 
     public static MyDialogFragment newInstance(int id) {
         MyDialogFragment dialogFragment = new MyDialogFragment();
@@ -66,6 +67,18 @@ public class MyDialogFragment extends DialogFragment implements DialogInterface.
                 mBuilder.setPositiveButton("Save", this);
                 mBuilder.setNegativeButton("Cancel", null);
                 return mBuilder.create();
+            case 3:
+                mBuilder.setTitle("Do you want to quit?");
+                mBuilder.setPositiveButton("Cancel", null);
+                mBuilder.setNegativeButton("Quit", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        new Session(getActivity()).clear();
+                        startActivity(new Intent(getActivity(), LoginActivity.class));
+                        getActivity().finish();
+                    }
+                });
+                return mBuilder.create();
             default:
                 return null;
         }
@@ -101,4 +114,5 @@ public class MyDialogFragment extends DialogFragment implements DialogInterface.
                 break;
         }
     }
+
 }
