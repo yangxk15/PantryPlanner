@@ -70,7 +70,7 @@
                     android:id="@+id/login_activity_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:typeface="serif"
+                    android:hint="@string/login_activity_prompt_password"
                     android:inputType="textPassword"
                     android:maxLines="1" />
 
