@@ -1,4 +1,5 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,6 +13,7 @@
     android:focusableInTouchMode="true"
     tools:context="edu.dartmouth.cs.pantryplanner.app.controller.LoginActivity">
 
+
     <!-- Login progress -->
     <ProgressBar
         android:id="@+id/login_activity_progress"
@@ -22,19 +24,33 @@
         android:layout_marginBottom="8dp"
         android:visibility="gone" />
 
+
+
     <ScrollView
         android:id="@+id/login_activity_form"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <ImageView
+                android:layout_width="170dp"
+                android:layout_height="170dp"
+                android:layout_marginTop="40dp"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/chef"
+                android:id="@+id/imageView" />
+
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="26dp">
 
                 <EditText
                     android:id="@+id/login_activity_email"
@@ -67,7 +83,7 @@
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="26dp"
                 android:text="@string/login_activity_login"
                 android:background="@color/button"
                 android:textStyle="bold" />
@@ -84,4 +100,6 @@
 
         </LinearLayout>
     </ScrollView>
+
+
 </android.support.design.widget.CoordinatorLayout>
