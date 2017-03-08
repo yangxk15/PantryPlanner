@@ -102,6 +102,7 @@ public class PantryFragment extends Fragment implements Button.OnClickListener, 
                 buttons[0].setVisibility(View.VISIBLE);
                 buttons[1].setVisibility(View.GONE);
                 buttons[2].setVisibility(View.GONE);
+                // TODO: change storage
                 //updateFragment();
                 break;
             case R.id.imageButton_pantry_delete:

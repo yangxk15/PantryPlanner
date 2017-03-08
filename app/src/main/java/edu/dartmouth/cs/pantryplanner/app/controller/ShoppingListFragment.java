@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -62,7 +63,7 @@ import me.himanshusoni.quantityview.QuantityView;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ShoppingListFragment extends Fragment implements ImageButton.OnClickListener, FragmentUtil {
+public class ShoppingListFragment extends Fragment implements FragmentUtil {
     Map<Item, Integer> selectedItems;
 
     Map<Item, Integer> mShoppingListItems;
@@ -86,8 +87,10 @@ public class ShoppingListFragment extends Fragment implements ImageButton.OnClic
                 if (selectedItems.isEmpty()) {
                     Toast.makeText(getActivity(), "Please select at least one item", Toast.LENGTH_SHORT).show();
                     return;
+                } else {
+                    // TODO: dialog
+                    new CompleteShoppingTask().execute();
                 }
-                new CompleteShoppingTask().execute();
             }
         });
         updateFragment();
@@ -113,15 +116,6 @@ public class ShoppingListFragment extends Fragment implements ImageButton.OnClic
 
         for (int i = ItemType.values().length - 1; i >= 0; --i) {
             mListView.expandGroup(i);
-        }
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.imageButton_shop_add:
-                Log.d("Click", "imageButton");
-                //TODO: add shopping entry
         }
     }
 
@@ -229,7 +223,6 @@ public class ShoppingListFragment extends Fragment implements ImageButton.OnClic
                 cBox.setChecked(true);
             }
 
-            // TODO: click complete button, reduce pantry storage
             cBox.setTag(Integer.valueOf(groupPosition * ItemType.values().length + childPosition)); // set the tag so we can identify the correct row in the listener
             cBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override

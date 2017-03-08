@@ -36,29 +36,36 @@ public class MyDialogFragment extends DialogFragment implements DialogInterface.
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public Dialog onCreateDialog(Bundle saveInstanceState) {
         mId = getArguments().getInt(dialogKey);
+        final Activity container = getActivity();
 
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext());
         View view;
 
         switch (mId) {
             case 0:
-                view = inflater.inflate(R.layout.fragment_dialog, null);
+                view = container.getLayoutInflater().inflate(R.layout.fragment_dialog, null);
                 mBuilder.setView(view);
                 mBuilder.setTitle("Create an entry");
                 mBuilder.setPositiveButton("Save", this);
                 mBuilder.setNegativeButton("Cancel", null);
-                return view;
+                return mBuilder.create();
             case 1:
-                view = inflater.inflate(R.layout.fragment_dialog_two_choice, null);
+                view = container.getLayoutInflater().inflate(R.layout.fragment_dialog_two_choice, null);
                 mBuilder.setView(view);
                 Button btnCreate = (Button) view.findViewById(R.id.button_dialog_create);
                 btnCreate.setOnClickListener(this);
                 Button btnImport = (Button) view.findViewById(R.id.button_dialog_import);
                 btnImport.setOnClickListener(this);
-                return view;
+                return mBuilder.create();
+            case 2:
+                view = container.getLayoutInflater().inflate(R.layout.fragment_dialog, null);
+                mBuilder.setView(view);
+                mBuilder.setTitle("Create an entry");
+                mBuilder.setPositiveButton("Save", this);
+                mBuilder.setNegativeButton("Cancel", null);
+                return mBuilder.create();
             default:
                 return null;
         }
