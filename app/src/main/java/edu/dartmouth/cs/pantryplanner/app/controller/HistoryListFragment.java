@@ -110,6 +110,7 @@ public class HistoryListFragment extends Fragment implements FragmentUtil {
         @Override
         protected void onPostExecute(IOException ex) {
             if (isCancelled()) {
+                mTask = null;
                 return;
             }
 
@@ -136,7 +137,6 @@ public class HistoryListFragment extends Fragment implements FragmentUtil {
                 }
                 Log.d(this.getClass().getName(), ex.toString());
             }
-            mTask = null;
         }
     }
 

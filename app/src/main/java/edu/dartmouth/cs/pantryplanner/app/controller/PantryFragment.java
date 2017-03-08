@@ -58,6 +58,7 @@ public class PantryFragment extends Fragment implements Button.OnClickListener, 
     private HashSet<PantryItem> selectedItems;
     private ImageButton[] buttons = new ImageButton[4];
     private ReadPantryListTask mTask = null;
+    private ChangePantryTask mTask2 = null;
 
     public PantryFragment() {
         isEdit = false;
@@ -260,6 +261,7 @@ public class PantryFragment extends Fragment implements Button.OnClickListener, 
         @Override
         protected void onPostExecute(IOException ex) {
             if (isCancelled()) {
+                mTask = null;
                 return;
             }
 
@@ -296,7 +298,6 @@ public class PantryFragment extends Fragment implements Button.OnClickListener, 
                 }
                 Log.d(this.getClass().getName(), ex.toString());
             }
-            mTask = null;
         }
     }
 
@@ -343,6 +344,7 @@ public class PantryFragment extends Fragment implements Button.OnClickListener, 
         @Override
         protected void onPostExecute(IOException ex) {
             if (isCancelled()) {
+                mTask2 = null;
                 return;
             }
 
@@ -399,6 +401,9 @@ public class PantryFragment extends Fragment implements Button.OnClickListener, 
         super.onPause();
         if (mTask != null) {
             mTask.cancel(true);
+        }
+        if (mTask2 != null) {
+            mTask2.cancel(true);
         }
     }
 

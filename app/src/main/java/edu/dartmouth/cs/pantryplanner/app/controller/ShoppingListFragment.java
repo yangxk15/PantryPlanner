@@ -299,6 +299,7 @@ public class ShoppingListFragment extends Fragment implements FragmentUtil, Butt
         @Override
         protected void onPostExecute(IOException ex) {
             if (isCancelled()) {
+                mTask = null;
                 return;
             }
 
@@ -321,7 +322,6 @@ public class ShoppingListFragment extends Fragment implements FragmentUtil, Butt
                 }
                 Log.d(this.getClass().getName(), ex.toString());
             }
-            mTask = null;
         }
     }
 
