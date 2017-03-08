@@ -267,10 +267,13 @@ public class ShoppingListFragment extends Fragment implements FragmentUtil, Butt
             IOException ex = null;
 
             try {
-                ShoppingListRecordApi shoppingListRecordApi = ServiceBuilderHelper.getBuilder(
+                ShoppingListRecordApi.Builder builder = ServiceBuilderHelper.getBuilder(
                         ShoppingListFragment.this.getActivity(),
                         ShoppingListRecordApi.Builder.class
-                ).build();
+                );
+                if (builder == null) return null;
+
+                ShoppingListRecordApi shoppingListRecordApi = builder.build();
 
                 List<ShoppingListRecord> shoppingListRecords = shoppingListRecordApi.listWith(
                         new Session(ShoppingListFragment.this.getActivity()).getString("email")
