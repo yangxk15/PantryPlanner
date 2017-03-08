@@ -119,7 +119,7 @@ public class ShoppingListFragment extends Fragment implements FragmentUtil, Butt
                     return;
                 } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setTitle("Choose those items?");
+                    builder.setTitle("Bought these items?");
                     builder.setNegativeButton("Cancel", null);
                     builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
