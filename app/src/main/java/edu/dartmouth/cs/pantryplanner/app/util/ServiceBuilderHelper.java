@@ -70,6 +70,7 @@ public class ServiceBuilderHelper {
                     "https://" + context.getString(R.string.project_id) + ".appspot.com/_ah/api/"
             );
         }
+        builder.setApplicationName(context.getString(R.string.app_name));
         return builder;
     }
 }

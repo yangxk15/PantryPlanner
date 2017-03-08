@@ -31,4 +31,8 @@ public class Session {
     public void putString(String key, String value) {
         mSharedPreferences.edit().putString(key, value).apply();
     }
+
+    public void clear() {
+        mSharedPreferences.edit().clear().apply();
+    }
 }
